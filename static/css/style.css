@@ -1,0 +1,92 @@
+body {
+	font-family: 'Lato', sans-serif;
+	letter-spacing: 0.1em;
+	color: white;
+	background-image: url("/static/img/background.jpg");
+    background-size: cover;
+    width: auto;
+    margin-top: 0px;
+}
+
+a {
+	color: white;
+	text-decoration: none;
+}
+
+.hover-link {
+	text-decoration: underline;
+}
+
+.hover-link:hover {
+	text-decoration: none;
+}
+
+.header {
+	width: 100%;
+	height: 80px;
+}
+
+#fl-left {
+    float: left;
+    position: relative;
+    margin-left: 10px;
+}
+
+#fl-right {
+    float: right;
+    position: relative;
+}
+
+#fl-right ul li {
+	display: inline-block;
+	margin-right: 1.5em;
+	font-size: 1em;
+	right: 1.5em;
+	top: 0.75em;
+}
+
+#fl-right ul li a {
+	border: solid 1px transparent;
+	line-height: 1em;
+	padding: 0.6em 0.75em;
+	text-decoration: none;
+}
+
+
+#fl-right ul li.active a, #fl-right ul li:hover a {
+	border: solid 1px;
+}
+
+.button {
+	background: none;
+	border: solid 1px;
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	color: white;
+	letter-spacing: 0.1em;
+	cursor: pointer;
+}
+
+.button.special {
+	background: #83d3c9;
+	border: solid #83d3c9 1px;
+	line-height: 1em;
+	padding: 0.6em 0.75em;
+	font-size: 1em;
+}
+
+.button.special:hover {
+	background: transparent;
+	border: solid white 1px;
+}
+
+.under-nav {
+	box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+	position: relative;
+	text-align: center;
+	margin-left: 25%;
+	margin-right: 25%;
+	padding: 30px;
+	margin-top: 80px;
+}
