@@ -1,6 +1,7 @@
-from flask import Flask, render_template, redirect, request, flash, session, url_for
+from flask import Flask, render_template, redirect, request, flash, session, url_for, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 import model
+
 
 app = Flask(__name__)
 app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'

@@ -20,12 +20,9 @@ class User(Base):
     user_type = Column(String(64))
     username = Column(String(64))
     password = Column(String(64))
-    firstName = Column(String(64))
-    lastName = Column(String(64))
-    email = Column(String(64), nullable = True)
-    cohort_id = Column(Integer, ForeignKey('cohorts.id'))
-
-    cohort = relationship("Cohort", backref=backref("users", order_by=id))
+    first_name = Column(String(64))
+    last_name = Column(String(64))
+    email = Column(String(128), nullable = True)
 
 class Cohort(Base):
     __tablename__ = "cohorts"
@@ -34,12 +31,22 @@ class Cohort(Base):
     name = Column(String(64))
     teacher_id = Column(Integer, ForeignKey('users.id'))
 
+class StudentCohort(Base):
+    __tablename__ = "studentcohorts"
+
+    id = Column(Integer, primary_key = True)
+    student_id = Column(Integer, ForeignKey('users.id'))
+    cohort_id = Column(Integer, ForeignKey('cohorts.id'))
+
+    student = relationship("User", backref=backref("studentcohorts", order_by=id))
+    cohort = relationship("Cohort", backref=backref("studentcohorts", order_by=id))
+
 class Test(Base):
     __tablename__ = "tests"
 
     id = Column(Integer, primary_key = True)
     name = Column(String(64))
-    date = Column(Date)
+    test_date = Column(Date)
 
 class Standard(Base):
     __tablename__ = "standards"
@@ -53,12 +60,12 @@ class Score(Base):
     __tablename__ = "scores"
 
     id = Column(Integer, primary_key = True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    student_id = Column(Integer, ForeignKey('users.id'))
     test_id = Column(Integer, ForeignKey('tests.id'))
     standard_id = Column(Integer, ForeignKey('standards.id'))
     score = Column(String(20))
 
-    user = relationship("User", backref=backref("scores", order_by=id))
+    student = relationship("User", backref=backref("scores", order_by=id))
     test = relationship("Test", backref=backref("scores", order_by=id))
     standard = relationship("Standard", backref=backref("scores", order_by=id))
 
@@ -68,7 +75,7 @@ def create_tables():
     Base.metadata.create_all(engine)
 
 def main():
-    pass
+    create_tables()
 
 if __name__ == "__main__":
     main()
