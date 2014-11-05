@@ -1,15 +1,9 @@
 from flask import Flask, render_template, redirect, request, flash, session, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
+import model
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/[YOUR_DATABASE_NAME]'
-# db = SQLAlchemy(app)
-
-# engine = create_engine('postgresql://localhost/[YOUR_DATABASE_NAME]')
-
-# login_manager = LoginManager()
-# login_manager.init_app(app)
+app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 
 @app.route("/")
 def index():
