@@ -4,7 +4,7 @@ var loopApp = angular.module('loopApp', [
   'ngRoute',
   // 'loopAnimations',
 
-  'loopControllers',
+  // 'loopControllers',
   // 'loopFilters',
   // 'loopServices'
 ]);
@@ -14,27 +14,27 @@ loopApp.config(['$routeProvider',
     $routeProvider.
       when('/', {
         templateUrl: '../static/partials/home.html',
-        controller: 'IndexCtrl'
+        // controller: 'IndexCtrl'
       }).
       when('/about', {
         templateUrl: '../static/partials/about.html',
-        controller: 'AboutCtrl'
+        // controller: 'AboutCtrl'
       }).
       when('/login', {
         templateUrl: '../static/partials/login.html',
-        controller: 'LoginCtrl'
+        // controller: 'LoginCtrl'
       }).
       when('/signup', {
         templateUrl: '../static/partials/signup.html',
-        controller: 'SignupCtrl'
+        // controller: 'SignupCtrl'
       }).
       when('/settings', {
         templateUrl: '../static/partials/settings.html',
-        controller: 'SettingsCtrl'
+        // controller: 'SettingsCtrl'
       }).
       when('/reports', {
         templateUrl: '../static/partials/reports.html',
-        controller: 'ReportsCtrl'
+        // controller: 'ReportsCtrl'
       }).
       otherwise({
         redirectTo: '/'
