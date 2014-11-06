@@ -5,9 +5,8 @@ import api
 app = Flask(__name__)
 app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 
-@app.route("/<path:path>")
 @app.route("/")
-def index(path=None):
+def index():
     return send_file("templates/index.html")
 
 # @app.route("/about")

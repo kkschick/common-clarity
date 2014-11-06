@@ -13,27 +13,27 @@ loopApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/', {
-        templateUrl: '/static/partials/home.html',
+        templateUrl: '../static/partials/home.html',
         controller: 'IndexCtrl'
       }).
       when('/about', {
-        templateUrl: '/static/partials/about.html',
+        templateUrl: '../static/partials/about.html',
         controller: 'AboutCtrl'
       }).
       when('/login', {
-        templateUrl: '/static/partials/login.html',
+        templateUrl: '../static/partials/login.html',
         controller: 'LoginCtrl'
       }).
       when('/signup', {
-        templateUrl: '/static/partials/signup.html',
+        templateUrl: '../static/partials/signup.html',
         controller: 'SignupCtrl'
       }).
       when('/settings', {
-        templateUrl: '/static/partials/settings.html',
+        templateUrl: '../static/partials/settings.html',
         controller: 'SettingsCtrl'
       }).
       when('/reports', {
-        templateUrl: '/static/partials/reports.html',
+        templateUrl: '../static/partials/reports.html',
         controller: 'ReportsCtrl'
       }).
       otherwise({
