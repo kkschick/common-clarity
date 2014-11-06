@@ -1,6 +1,7 @@
-from flask import Flask, render_template, redirect, request, flash, send_file, session, url_for, jsonify
+from flask import Flask, make_response, send_file, session, jsonify
 import model
 import api
+import json
 
 app = Flask(__name__)
 app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
@@ -9,10 +10,25 @@ app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 def index():
 	return send_file("templates/index.html")
 
-@app.route("/api/addclass")
+def _convert_to_JSON(result):
+	"""Convert result object to a JSON web request."""
+
+	response = make_response(json.dumps(result))
+	response.headers['Access-Control-Allow-Origin'] = "*"
+	response.mimetype = "application/json"
+	return response
+
+@app.route("/api/addclass", methods=['POST'])
 def addclass(name, teacher_id):
-	result = api.add_new_cohort(name, teacher_id)
-	return result
+	# result = api.add_new_cohort(name, teacher_id)
+	# return result
+	print response
+
+@app.route("/api/test")
+def test(id):
+	result = api.show_standard(id)
+	return _convert_to_JSON(result)
+
 
 # @app.route("/login", methods=["POST"])
 # def process_login():

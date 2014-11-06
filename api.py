@@ -1,6 +1,9 @@
 # from flask import session
 import model
 
+def show_standard(id):
+    standard = Standard.query.filter_by(id=id).first()
+    return standard
 
 def get_user_id(username, password):
 	"""Get the user_id and pass it through with every API call."""
@@ -51,6 +54,7 @@ def add_new_cohort(name, teacher_id):
 	# cohort = model.Cohort(name=name, teacher_id=teacher_id)
 	# model.session.add(cohort)
 	# model.session.commit()
+	print response
 
 def create_student(username, password, first_name, last_name):
 	"""Create new student user in users table. Return user_id."""

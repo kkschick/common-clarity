@@ -2,15 +2,16 @@
 
 var loopControllers = angular.module('loopControllers', []);
 
-loopControllers.controller('SettingsController', ['$scope', function($scope){
+loopControllers.controller('SettingsController', ['$scope', '$http', function($scope){
 	$scope.master = {};
 
-	$scope.addCohort = function(cohort) {
+	$scope.addCohort = function(cohort, $http) {
 		$scope.master = angular.copy(cohort);
 		$scope.cohort = {};
-		$http.post("api/addclass", $scope.master).success(function(data, status, headers) {
-		alert("Class added!");
-	});
+		$http({
+			url: "/api/addclass",
+			method: "POST",
+			data: $scope.master
+		});
 	};
-
 }]);
