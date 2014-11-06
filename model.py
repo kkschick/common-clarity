@@ -47,6 +47,9 @@ class Test(Base):
     id = Column(Integer, primary_key = True)
     name = Column(String(64))
     test_date = Column(Date)
+    teacher_id = Column(Integer, ForeignKey('users.id'))
+
+    teacher = relationship("User", backref=backref("tests", order_by=id))
 
 class Standard(Base):
     __tablename__ = "standards"
