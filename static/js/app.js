@@ -24,6 +24,10 @@ loopApp.config(['$routeProvider',
         templateUrl: '../static/partials/login.html',
         // controller: 'LoginCtrl'
       }).
+      when('/logout', {
+        templateUrl: '../static/partials/logout.html',
+        // controller: 'LogoutCtrl'
+      }).
       when('/signup', {
         templateUrl: '../static/partials/signup.html',
         // controller: 'SignupCtrl'

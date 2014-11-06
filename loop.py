@@ -9,14 +9,6 @@ app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 def index():
     return send_file("templates/index.html")
 
-# @app.route("/about")
-# def about():
-#     return render_template("about.html")
-
-# @app.route("/login")
-# def show_login():
-#     return render_template("login.html")
-
 # @app.route("/login", methods=["POST"])
 # def process_login():
 #     email = request.form.get("email")
@@ -28,10 +20,6 @@ def index():
 #     else:
 #         session['user'] = user.id
 #         return redirect('/')
-
-# @app.route("/signup")
-# def show_signup():
-#     return render_template("signup.html")
 
 # @app.route("/signup", methods=["POST"])
 # def make_new_account():
