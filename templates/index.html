@@ -1,16 +1,24 @@
 <!DOCTYPE HTML>
-<html>
-	<head>
-		<title>Loop</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8">
-		<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-		<!-- <link rel="stylesheet" href="/maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
-		<link rel="stylesheet" href="/static/css/style.css">
-		<link rel="icon" type="image/ico" href="/static/img/favicon.ico">
-	</head>
+<html lang="en" ng-app="loopApp">
+    <head>
+        <title>Loop</title>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/ico" href="/static/img/favicon.ico">
+        <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="/static/css/style.css">
+        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="js/app.js"></script>
+<!--    <script src="js/animations.js"></script>
+        <script src="js/controllers.js"></script>
+        <script src="js/filters.js"></script>
+        <script src="js/services.js"></script> -->
+    </head>
 
 	<body>
-
 		<div class="container header">
 			<div class="navbar-header">
 				<div class="col-md-6" id="fl-left">
@@ -25,12 +33,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="container under-nav">
-			<h1 class="cover-heading">LOOP</h1>
-            <p class="lead">Making your Common Core data actionable and improving the feedback loop between teachers and students</p><br>
-            <a href="/about" class="button special">LEARN MORE</a>
-		</div>
-		<script src="//code.angularjs.org/1.2.26/angular.min.js"></script>
-		<script src="//code.angularjs.org/1.2.26/angular-route.min.js"></script>
+
+        <div class="container">
+            <div ng-view class="view-frame"></div>
+        </div>
+
 	</body>
 </html>

@@ -1,28 +1,42 @@
 'use strict';
 
-/* App Module */
-
-var phonecatApp = angular.module('phonecatApp', [
+var loopApp = angular.module('loopApp', [
   'ngRoute',
-  'phonecatAnimations',
+  // 'loopAnimations',
 
-  'phonecatControllers',
-  'phonecatFilters',
-  'phonecatServices'
+  'loopControllers',
+  // 'loopFilters',
+  // 'loopServices'
 ]);
 
-phonecatApp.config(['$routeProvider',
+loopApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
-      when('/phones', {
-        templateUrl: 'partials/phone-list.html',
-        controller: 'PhoneListCtrl'
+      when('/', {
+        templateUrl: '/static/partials/home.html',
+        controller: 'IndexCtrl'
       }).
-      when('/phones/:phoneId', {
-        templateUrl: 'partials/phone-detail.html',
-        controller: 'PhoneDetailCtrl'
+      when('/about', {
+        templateUrl: '/static/partials/about.html',
+        controller: 'AboutCtrl'
+      }).
+      when('/login', {
+        templateUrl: '/static/partials/login.html',
+        controller: 'LoginCtrl'
+      }).
+      when('/signup', {
+        templateUrl: '/static/partials/signup.html',
+        controller: 'SignupCtrl'
+      }).
+      when('/settings', {
+        templateUrl: '/static/partials/settings.html',
+        controller: 'SettingsCtrl'
+      }).
+      when('/reports', {
+        templateUrl: '/static/partials/reports.html',
+        controller: 'ReportsCtrl'
       }).
       otherwise({
-        redirectTo: '/phones'
+        redirectTo: '/'
       });
   }]);
