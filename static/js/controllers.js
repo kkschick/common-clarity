@@ -2,43 +2,20 @@
 
 var loopControllers = angular.module('loopControllers', []);
 
-function IndexCtrl($scope) {
+loopControllers.controller('SettingsController', ['$scope', function($scope){
+	$scope.master = {};
 
-}
+	$scope.addCohort = function(cohort) {
+		console.log(angular.copy(cohort));
+		$scope.master = angular.copy(cohort);
+		$scope.cohort = {};
+	};
 
-function AboutCtrl($scope) {
-
-}
-
-function SignupCtrl($scope) {
-
-}
-
-function LoginCtrl($scope) {
-
-}
-
-function SettingsCtrl($scope) {
-
-}
-
-function ReportsCtrl($scope) {
-
-}
-
-// loopControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
-//   function($scope, Phone) {
-//     $scope.phones = Phone.query();
-//     $scope.orderProp = 'age';
-//   }]);
-
-// loopControllers.controller('PhoneDetailCtrl', ['$scope', '$routeParams', 'Phone',
-//   function($scope, $routeParams, Phone) {
-//     $scope.phone = Phone.get({phoneId: $routeParams.phoneId}, function(phone) {
-//       $scope.mainImageUrl = phone.images[0];
-//     });
-
-//     $scope.setImage = function(imageUrl) {
-//       $scope.mainImageUrl = imageUrl;
-//     }
-//   }]);
+	// $http.post('/api/addclass', $scope.master).
+	// 	success(function() {
+	// 	console.log("YAY");
+	// }).
+	// error(function() {
+	// 	console.log("NO!");
+	// });
+}]);

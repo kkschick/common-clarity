@@ -1,4 +1,10 @@
 # from flask import session
+import model
+
+
+def get_user_id(username, password):
+	"""Get the user_id and pass it through with every API call."""
+	pass
 
 """Log-in"""
 
@@ -42,7 +48,9 @@ def delete_student(student_id):
 
 def add_new_cohort(name, teacher_id):
 	"""Create new cohort in cohorts table. Return cohort_id."""
-	pass
+	cohort = model.Cohort(name=name, teacher_id=teacher_id)
+	model.session.add(cohort)
+	model.session.commit()
 
 def create_student(username, password, first_name, last_name):
 	"""Create new student user in users table. Return user_id."""

@@ -2,11 +2,11 @@
 
 /* Services */
 
-// var phonecatServices = angular.module('phonecatServices', ['ngResource']);
+var loopServices = angular.module('loopServices', ['ngResource']);
 
-// phonecatServices.factory('Phone', ['$resource',
-//   function($resource){
-//     return $resource('phones/:phoneId.json', {}, {
-//       query: {method:'GET', params:{phoneId:'phones'}, isArray:true}
-//     });
-//   }]);
+loopServices.factory('Phone', ['$resource',
+  function($resource){
+    return $resource('phones/:phoneId.json', {}, {
+      query: {method:'GET', params:{phoneId:'phones'}, isArray:true}
+    });
+  }]);

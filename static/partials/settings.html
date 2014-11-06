@@ -12,3 +12,16 @@
 		</div>
 	</div>
 </div>
+<div class="large-under-nav" ng-controller="SettingsController">
+	<h2>SETTINGS</h2>
+	<p>Set up your classes and students.</p><br>
+
+	<p>Enter the name of a class:</p>
+	<form name="class">
+		<!-- <label>Class Name: </label> -->
+			<input type="text" class="form-field" ng-model="cohort.name" />
+			<button ng-click="addCohort(cohort)" class="button special">ADD CLASS</button>
+	</form>
+	cohort: {{ cohort | json }} <br>
+	master: {{master | json }}
+</div>

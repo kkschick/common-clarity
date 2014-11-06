@@ -4,7 +4,7 @@ var loopApp = angular.module('loopApp', [
   'ngRoute',
   // 'loopAnimations',
 
-  // 'loopControllers',
+  'loopControllers',
   // 'loopFilters',
   // 'loopServices'
 ]);
@@ -34,7 +34,7 @@ loopApp.config(['$routeProvider',
       }).
       when('/settings', {
         templateUrl: '../static/partials/settings.html',
-        // controller: 'SettingsCtrl'
+        controller: 'SettingsController'
       }).
       when('/reports', {
         templateUrl: '../static/partials/reports.html',

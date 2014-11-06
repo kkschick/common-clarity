@@ -9,6 +9,11 @@ app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 def index():
     return send_file("templates/index.html")
 
+@app.route("/api/addclass")
+def addclass(name, teacher_id):
+	result = api.add_new_cohort(name, teacher_id)
+	return result
+
 # @app.route("/login", methods=["POST"])
 # def process_login():
 #     email = request.form.get("email")

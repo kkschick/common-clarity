@@ -82,6 +82,11 @@ a {
 	border: solid white 1px;
 }
 
+.form-field {
+	height: 25px;
+	font-size: 1em;
+}
+
 .under-nav {
 	box-shadow: inset 0 0 100px rgba(0,0,0,.5);
 	position: relative;
@@ -90,4 +95,13 @@ a {
 	margin-right: 25%;
 	padding: 30px;
 	margin-top: 80px;
+}
+
+.large-under-nav {
+	box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+	position: relative;
+	margin-left: 1%;
+	margin-right: 2%;
+	padding: 20px;
+	margin-top: 40px;
 }

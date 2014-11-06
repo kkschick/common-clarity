@@ -42,6 +42,7 @@ class StudentCohort(Base):
     cohort = relationship("Cohort", backref=backref("studentcohorts", order_by=id))
 
 class Test(Base):
+
     __tablename__ = "tests"
 
     id = Column(Integer, primary_key = True)
