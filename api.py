@@ -48,9 +48,9 @@ def delete_student(student_id):
 
 def add_new_cohort(name, teacher_id):
 	"""Create new cohort in cohorts table. Return cohort_id."""
-	cohort = model.Cohort(name=name, teacher_id=teacher_id)
-	model.session.add(cohort)
-	model.session.commit()
+	# cohort = model.Cohort(name=name, teacher_id=teacher_id)
+	# model.session.add(cohort)
+	# model.session.commit()
 
 def create_student(username, password, first_name, last_name):
 	"""Create new student user in users table. Return user_id."""

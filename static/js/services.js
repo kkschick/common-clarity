@@ -10,3 +10,5 @@ loopServices.factory('Phone', ['$resource',
       query: {method:'GET', params:{phoneId:'phones'}, isArray:true}
     });
   }]);
+
+

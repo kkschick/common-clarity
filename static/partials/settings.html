@@ -18,8 +18,10 @@
 
 	<p>Enter the name of a class:</p>
 	<form name="class">
-		<!-- <label>Class Name: </label> -->
+		<label>Class Name: </label>
 			<input type="text" class="form-field" ng-model="cohort.name" />
+		<label>ID: </label>
+			<input type="text" class="form-field" ng-model="cohort.id" />
 			<button ng-click="addCohort(cohort)" class="button special">ADD CLASS</button>
 	</form>
 	cohort: {{ cohort | json }} <br>

@@ -13,6 +13,7 @@ def index():
 def addclass(name, teacher_id):
 	result = api.add_new_cohort(name, teacher_id)
 	return result
+	print "hello"
 
 # @app.route("/login", methods=["POST"])
 # def process_login():
