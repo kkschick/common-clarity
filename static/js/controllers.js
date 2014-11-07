@@ -47,15 +47,39 @@ loopControllers.controller('LogoutController', ['$scope', '$location', '$http', 
 }]);
 
 loopControllers.controller('SettingsController', ['$scope', '$http', function($scope, $http){
-	$scope.master = {};
+	$scope.new_cohort = {};
 
 	$scope.addCohort = function(cohort) {
-		$scope.master = angular.copy(cohort);
+		$scope.new_cohort = angular.copy(cohort);
 		$scope.cohort = {};
 		$http({
 			url: "/api/addclass/",
 			method: "POST",
-			data: $scope.master
+			data: $scope.new_cohort
 		});
 	};
+
+	$http.get("/api/getclasses/").success(function(data) {
+		$scope.cohorts = data;
+	});
+
 }]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

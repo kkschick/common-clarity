@@ -32,7 +32,8 @@ def get_teacher_cohorts(teacher_id):
 	"""Get teacher's cohorts and students in those cohorts from the db.
 	Use teacher_id to get cohort_ids associated with that teacher and
 	return them. If none, return False."""
-	pass
+	cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+	return cohorts
 
 def get_students_in_cohort(cohort_id):
 	"""Use cohort_ids associated with teacher_id to query studentcohorts

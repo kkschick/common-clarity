@@ -120,9 +120,13 @@ input {
 }
 
 p {
+	text-align: center;
+}
+
+form p {
 	text-align:left;
 }
 
-p input {
+form p input {
 	float: right;
 }

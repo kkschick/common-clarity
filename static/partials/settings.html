@@ -21,6 +21,9 @@
 			<input type="text" class="form-field" ng-model="cohort.name" />
 			<button ng-click="addCohort(cohort)" class="button special">ADD CLASS</button>
 	</form>
-	<p>{{master.name}}</p>
+
 	<h3>View Classes</h3>
+	<ul>
+		<li ng-repeat="cohort in cohorts">{{cohort}}</li>
+	</ul>
 </div>

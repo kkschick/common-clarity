@@ -23,14 +23,17 @@ def addclass():
 	class_info = json.loads(request.data)
 	name = class_info.get("name")
 	teacher_id = session['user']
-	user = api.add_new_cohort(name, teacher_id)
+	cohort = api.add_new_cohort(name, teacher_id)
 	return "Success"
 
 @app.route("/api/getclasses/")
 def get_cohorts():
 	teacher_id = session['user']
 	cohorts = api.get_teacher_cohorts(teacher_id)
-	return _convert_to_JSON(cohorts)
+	cohort_names = []
+	for cohort in cohorts:
+		cohort_names.append(cohort.name)
+	return _convert_to_JSON(cohort_names)
 
 @app.route("/api/signup/", methods=['POST'])
 def adduser():
