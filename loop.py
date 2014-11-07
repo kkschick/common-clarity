@@ -1,4 +1,4 @@
-from flask import Flask, make_response, send_file, session, jsonify
+from flask import Flask, make_response, send_file, session, jsonify, request
 import model
 import api
 import json
@@ -18,17 +18,13 @@ def _convert_to_JSON(result):
 	response.mimetype = "application/json"
 	return response
 
-@app.route("/api/addclass", methods=['POST'])
-def addclass(name, teacher_id):
-	# result = api.add_new_cohort(name, teacher_id)
-	# return result
-	print response
-
-@app.route("/api/test")
-def test(id):
-	result = api.show_standard(id)
-	return _convert_to_JSON(result)
-
+@app.route("/api/addclass/", methods=['POST'])
+def addclass():
+	class_info = json.loads(request.data)
+	name = class_info.get("name")
+	teacher_id = class_info.get("id")
+	api.add_new_cohort(name, teacher_id)
+	return None
 
 # @app.route("/login", methods=["POST"])
 # def process_login():
