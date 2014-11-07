@@ -2,6 +2,21 @@
 
 var loopControllers = angular.module('loopControllers', []);
 
+loopControllers.controller('SignupController', ['$scope', '$location', '$http', function($scope, $location, $http) {
+	$scope.new_user = {};
+
+	$scope.addUser = function(user) {
+		$scope.new_user = angular.copy(user);
+		$scope.user = {};
+		$http({
+			url: "/api/signup/",
+			method: "POST",
+			data: $scope.new_user
+		}).success(function (data) {
+			$location.path('/#/login');
+		});
+	};
+}]);
 
 loopControllers.controller('SettingsController', ['$scope', '$http', function($scope, $http){
 	$scope.master = {};

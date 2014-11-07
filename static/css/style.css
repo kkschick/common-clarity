@@ -105,3 +105,24 @@ a {
 	padding: 20px;
 	margin-top: 40px;
 }
+
+.sign-in-box {
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+label {
+	display: inline-block;
+}
+
+input {
+	display: inline-block;
+}
+
+p {
+  text-align:left;
+}
+
+p input {
+  float:right;
+}

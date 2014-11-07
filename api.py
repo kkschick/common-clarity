@@ -15,10 +15,11 @@ def get_user(username, password):
 
 """Sign-up"""
 
-def create_teacher_user(first_name, last_name, email, username, password):
-	"""Get form data and insert new user into users table"""
-	pass
-
+def create_teacher_user(user_type, first_name, last_name, email, username, password):
+	"""Get form data and add new user to users table"""
+	user = model.User(user_type=user_type, first_name=first_name, last_name=last_name, email=email, username=username, password=password)
+	model.session.add(user)
+	model.session.commit()
 
 
 """Settings"""

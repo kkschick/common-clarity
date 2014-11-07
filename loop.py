@@ -24,7 +24,19 @@ def addclass():
 	name = class_info.get("name")
 	teacher_id = class_info.get("id")
 	api.add_new_cohort(name, teacher_id)
-	return None
+	return "Success"
+
+@app.route("/api/signup/", methods=['POST'])
+def adduser():
+	new_user = json.loads(request.data)
+	user_type = "teacher"
+	first_name = new_user.get("first_name")
+	last_name = new_user.get("last_name")
+	email = new_user.get("email")
+	username = new_user.get("username")
+	password = new_user.get("password")
+	api.create_teacher_user(user_type, first_name, last_name, email, username, password)
+	return "Success"
 
 # @app.route("/login", methods=["POST"])
 # def process_login():

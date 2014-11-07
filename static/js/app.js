@@ -30,7 +30,7 @@ loopApp.config(['$routeProvider',
       }).
       when('/signup', {
         templateUrl: '../static/partials/signup.html',
-        // controller: 'SignupCtrl'
+        controller: 'SignupController'
       }).
       when('/settings', {
         templateUrl: '../static/partials/settings.html',
