@@ -16,14 +16,40 @@
 	<h2>SETTINGS</h2>
 	<h3>Set up your classes and students.</h3><br>
 
-	<h3>Enter the name of a class:</h3>
-	<form name="class">
-			<input type="text" class="form-field" ng-model="cohort.name" />
-			<button ng-click="addCohort(cohort)" class="button special">ADD CLASS</button>
-	</form>
-
-	<h3>View Classes</h3>
-	<ul>
-		<li ng-repeat="cohort in cohorts">{{cohort}}</li>
-	</ul>
+	<table>
+		<tr>
+			<th>
+				<h2>ADD CLASSES</h2>
+			</th>
+			<th>
+				<h2>VIEW CLASSES</h2>
+			</th>
+		</tr>
+		<tr>
+			<td>
+				<h4>Enter the name of a class:</h4>
+				<form name="class">
+						<input type="text" class="form-field" ng-model="cohort.name" />
+						<button ng-click="addCohort(cohort)" class="button special">ADD CLASS</button>
+				</form>
+				<h4>Add a student to the class:</h4>
+				<form name="student">
+					<label>FIRST NAME: </label>
+						<input type="text" class="form-field" ng-model="user.first_name" /><br><br>
+					<label>LAST NAME: </label>
+						<input type="text" class="form-field" ng-model="user.last_name" /><br><br>
+					<label>USERNAME: </label>
+						<input type="text" class="form-field" ng-model="user.username" /><br><br>
+					<label>PASSWORD: </label>
+						<input type="password" class="form-field" ng-model="user.password" /><br><br>
+						<button ng-click="addStudent(user)" class="button special">ADD STUDENT</button>
+				</form>
+			</td>
+			<td>
+				<ul class="list-of-links">
+					<li ng-repeat="cohort in cohorts">{{cohort}}</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
 </div>

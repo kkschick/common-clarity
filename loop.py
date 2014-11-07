@@ -26,6 +26,17 @@ def addclass():
 	cohort = api.add_new_cohort(name, teacher_id)
 	return "Success"
 
+@app.route("/api/addstudent/", methods=['POST'])
+def addstudent():
+	student_info = json.loads(request.data)
+	user_type = "student"
+	first_name = student_info.get("first_name")
+	last_name = student_info.get("last_name")
+	username = student_info.get("username")
+	password = student_info.get("password")
+	student = api.create_student(user_type, first_name, last_name, username, password)
+	return "Success"
+
 @app.route("/api/getclasses/")
 def get_cohorts():
 	teacher_id = session['user']

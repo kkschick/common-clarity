@@ -59,16 +59,21 @@ loopControllers.controller('SettingsController', ['$scope', '$http', function($s
 		});
 	};
 
+	$scope.addStudent = function(user) {
+		$scope.new_user = angular.copy(user);
+		$scope.user = {};
+		$http({
+			url: "/api/addstudent/",
+			method: "POST",
+			data: $scope.new_user
+		});
+	};
+
 	$http.get("/api/getclasses/").success(function(data) {
 		$scope.cohorts = data;
 	});
 
 }]);
-
-
-
-
-
 
 
 
