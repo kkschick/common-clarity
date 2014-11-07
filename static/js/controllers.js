@@ -13,7 +13,8 @@ loopControllers.controller('SignupController', ['$scope', '$location', '$http', 
 			method: "POST",
 			data: $scope.new_user
 		}).success(function (data) {
-			$location.path('/#/login');
+			// alert("You created an account! Click LOG IN to log into your new account.")
+			$location.path('/login/');
 		});
 	};
 }]);
