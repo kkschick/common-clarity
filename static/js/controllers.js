@@ -34,6 +34,12 @@ loopControllers.controller('LoginController', ['$scope', '$location', '$http', f
 	};
 }]);
 
+loopControllers.controller('LogoutController', ['$scope', '$location', function($scope, $location) {
+
+	$scope.logoutUser = function() {
+		$location.path('/');
+	};
+}]);
 
 loopControllers.controller('SettingsController', ['$scope', '$http', function($scope, $http){
 	$scope.master = {};

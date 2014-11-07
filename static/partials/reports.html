@@ -3,11 +3,11 @@
 		<div class="col-md-6" id="fl-left">
 			<h1><a href="/">LOOP</a></h1>
 		</div>
-		<div class="col-md-6" id="fl-right">
+		<div class="col-md-6" id="fl-right" ng-controller="LogoutController">
 			<ul>
 				<li><a href="/#/reports">REPORTS</a></li>
 				<li><a href="/#/settings">SETTINGS</a></li>
-				<li><a href="/#/logout" class="button special">LOG OUT</a></li>
+				<li><a href="/#/logout" class="button special" ng-click="logoutUser()">LOG OUT</a></li>
 			</ul>
 		</div>
 	</div>
