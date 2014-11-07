@@ -3,9 +3,9 @@ body {
 	letter-spacing: 0.1em;
 	color: white;
 	background-image: url("/static/img/background.jpg");
-    background-size: cover;
-    width: auto;
-    margin-top: 0px;
+	background-size: cover;
+	width: auto;
+	margin-top: 0px;
 }
 
 a {
@@ -27,14 +27,14 @@ a {
 }
 
 #fl-left {
-    float: left;
-    position: relative;
-    margin-left: 10px;
+	float: left;
+	position: relative;
+	margin-left: 10px;
 }
 
 #fl-right {
-    float: right;
-    position: relative;
+	float: right;
+	position: relative;
 }
 
 #fl-right ul li {
@@ -120,9 +120,9 @@ input {
 }
 
 p {
-  text-align:left;
+	text-align:left;
 }
 
 p input {
-  float:right;
+	float: right;
 }

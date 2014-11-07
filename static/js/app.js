@@ -22,7 +22,7 @@ loopApp.config(['$routeProvider',
       }).
       when('/login', {
         templateUrl: '../static/partials/login.html',
-        // controller: 'LoginCtrl'
+        controller: 'LoginController'
       }).
       when('/logout', {
         templateUrl: '../static/partials/logout.html',

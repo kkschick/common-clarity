@@ -13,11 +13,27 @@ loopControllers.controller('SignupController', ['$scope', '$location', '$http', 
 			method: "POST",
 			data: $scope.new_user
 		}).success(function (data) {
-			// alert("You created an account! Click LOG IN to log into your new account.")
 			$location.path('/login/');
 		});
 	};
 }]);
+
+loopControllers.controller('LoginController', ['$scope', '$location', '$http', function($scope, $location, $http) {
+	$scope.user_to_login = {};
+
+	$scope.loginUser = function(user) {
+		$scope.user_to_login = angular.copy(user);
+		$scope.user = {};
+		$http({
+			url: "/api/login/",
+			method: "POST",
+			data: $scope.user_to_login
+		}).success(function (data) {
+			$location.path('/reports/');
+		});
+	};
+}]);
+
 
 loopControllers.controller('SettingsController', ['$scope', '$http', function($scope, $http){
 	$scope.master = {};

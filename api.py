@@ -1,4 +1,4 @@
-# from flask import session
+from flask import session
 import model
 
 def get_user_id(username, password):
@@ -9,7 +9,12 @@ def get_user_id(username, password):
 
 def get_user(username, password):
 	"""Check if user exists; if exists, authenticate pw and return success msg"""
-	pass
+	user = model.User.query.filter_by(username=username).first()
+	if user == None:
+		return "Fail"
+	else:
+		session['user'] = user.id
+		return "Success"
 
 
 

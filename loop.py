@@ -38,28 +38,14 @@ def adduser():
 	api.create_teacher_user(user_type, first_name, last_name, email, username, password)
 	return "Success"
 
-# @app.route("/login", methods=["POST"])
-# def process_login():
-#     email = request.form.get("email")
-#     password = request.form.get("password")
+@app.route("/api/login/", methods=['POST'])
+def loginuser():
+	user_to_login = json.loads(request.data)
+	username = user_to_login.get("username")
+	password = user_to_login.get("password")
+	response = api.get_user(username, password)
+	return response
 
-#     if user == None:
-#         flash ("This user is not registered yet")
-#         return redirect('signup')
-#     else:
-#         session['user'] = user.id
-#         return redirect('/')
-
-# @app.route("/signup", methods=["POST"])
-# def make_new_account():
-#     email = request.form.get("email")
-#     password = request.form.get("password")
-#     age = request.form.get("age")
-#     gender = request.form.get("gender")
-#     zipcode = request.form.get("zipcode")
-#     model.create_user(email, password, gender, zipcode, age)
-#     flash ("You're registered! Now please log in.")
-#     return redirect('/login')
 
 # @app.route("/logout")
 # def process_logout():
