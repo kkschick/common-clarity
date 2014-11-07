@@ -14,14 +14,13 @@
 </div>
 <div class="large-under-nav" ng-controller="SettingsController">
 	<h2>SETTINGS</h2>
-	<p>Set up your classes and students.</p><br>
+	<h3>Set up your classes and students.</h3><br>
 
-	<p>Enter the name of a class:</p>
+	<h3>Enter the name of a class:</h3>
 	<form name="class">
-		<label>Class Name: </label>
 			<input type="text" class="form-field" ng-model="cohort.name" />
-		<label>ID: </label>
-			<input type="text" class="form-field" ng-model="cohort.id" />
 			<button ng-click="addCohort(cohort)" class="button special">ADD CLASS</button>
 	</form>
+	<p>{{master.name}}</p>
+	<h3>View Classes</h3>
 </div>

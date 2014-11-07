@@ -22,9 +22,15 @@ def _convert_to_JSON(result):
 def addclass():
 	class_info = json.loads(request.data)
 	name = class_info.get("name")
-	teacher_id = class_info.get("id")
+	teacher_id = session['user']
 	user = api.add_new_cohort(name, teacher_id)
 	return "Success"
+
+@app.route("/api/getclasses/")
+def get_cohorts():
+	teacher_id = session['user']
+	cohorts = api.get_teacher_cohorts(teacher_id)
+	return _convert_to_JSON(cohorts)
 
 @app.route("/api/signup/", methods=['POST'])
 def adduser():
