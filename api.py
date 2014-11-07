@@ -1,5 +1,5 @@
-from flask import session
 import model
+from flask import session
 
 def get_user_id(username, password):
 	"""Get the user_id and pass it through with every API call."""
@@ -10,13 +10,12 @@ def get_user_id(username, password):
 def get_user(username, password):
 	"""Check if user exists; if exists, authenticate pw and return success msg"""
 	user = model.User.query.filter_by(username=username).first()
-	if user == None:
-		return "Fail"
-	else:
-		session['user'] = user.id
-		return "Success"
+	return user
 
+"""Log-out"""
 
+def logout():
+	session.clear()
 
 """Sign-up"""
 

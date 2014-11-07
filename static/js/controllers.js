@@ -34,10 +34,15 @@ loopControllers.controller('LoginController', ['$scope', '$location', '$http', f
 	};
 }]);
 
-loopControllers.controller('LogoutController', ['$scope', '$location', function($scope, $location) {
+loopControllers.controller('LogoutController', ['$scope', '$location', '$http', function($scope, $location, $http) {
 
 	$scope.logoutUser = function() {
-		$location.path('/');
+		$http({
+			url: "/api/logout/",
+			method: "POST",
+		}).success(function () {
+			$location.path('/');
+		});
 	};
 }]);
 

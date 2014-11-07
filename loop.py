@@ -23,7 +23,7 @@ def addclass():
 	class_info = json.loads(request.data)
 	name = class_info.get("name")
 	teacher_id = class_info.get("id")
-	api.add_new_cohort(name, teacher_id)
+	user = api.add_new_cohort(name, teacher_id)
 	return "Success"
 
 @app.route("/api/signup/", methods=['POST'])
@@ -43,14 +43,15 @@ def loginuser():
 	user_to_login = json.loads(request.data)
 	username = user_to_login.get("username")
 	password = user_to_login.get("password")
-	response = api.get_user(username, password)
-	return response
+	user = api.get_user(username, password)
+	session['user'] = user.id
+	return "Success"
 
 
-# @app.route("/logout")
-# def process_logout():
-#     session.clear()
-#     return redirect("/")
+@app.route("/api/logout/", methods=['POST'])
+def process_logout():
+	api.logout()
+
 
 if __name__ == "__main__":
-    app.run(debug = True)
+	app.run(debug = True)
