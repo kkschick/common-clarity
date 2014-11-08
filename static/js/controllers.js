@@ -70,6 +70,7 @@ loopControllers.controller('SettingsController', ['$scope', '$http', function($s
 			data: $scope.new_cohort
 		});
 
+		$scope.sent = true;
 		$scope.new_cohort = {};
 		$scope.students = [];
 		$scope.new_cohort.students = $scope.students;
