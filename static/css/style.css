@@ -57,12 +57,6 @@ a {
 	border: solid 1px;
 }
 
-.nav-tabs {
-	position: relative;
-	float: left;
-	margin-left: 0px;
-}
-
 .button {
 	background: none;
 	border: solid 1px;
@@ -153,8 +147,14 @@ form p input {
 	width: 100%;
 	height: 100%;
 	text-align: left;
+	table-layout: fixed;
 }
 
 th {
 	font-size: 0.75em;
+}
+
+.border-column {
+	border-left: 3px solid white;
+	padding-left: 5%;
 }

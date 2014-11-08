@@ -20,7 +20,7 @@
             <th>
                 <h2>ADD NEW CLASS</h2>
             </th>
-            <th>
+            <th class="border-column">
                 <h2>VIEW CLASSES</h2>
             </th>
         </tr>
@@ -52,7 +52,7 @@
                     <button ng-click="addRow(user)" value="Add" class="button small"><strong>+</strong></button><br><br>
                     <button ng-click="submitCohort(cohort, user)" class="button special">CREATE CLASS</button>
             </td>
-            <td>
+            <td class="border-column">
                 <ul class="list-of-links">
                     <li ng-repeat="cohort in cohorts">{{cohort}}</li>
                 </ul>
