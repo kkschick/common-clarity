@@ -39,7 +39,7 @@ def get_students_in_cohort(cohort_id):
 	"""Use cohort_ids associated with teacher_id to query studentcohorts
 	to get student_ids for that cohort and query users for those students.
 	If none, return False."""
-	pass
+	students = model.Cohort.query.filter_by(cohort_id=cohort_id).all()
 
 def edit_student_info(student_id, new_field_value):
 	"""Change student first_name, last_name, username, or password.
@@ -60,7 +60,7 @@ def add_new_cohort(name, teacher_id):
 	return new_cohort.id
 
 def create_student(user_type, first_name, last_name, username, password):
-	"""Create new student user in users table. Return user_id."""
+	"""Create new student user in users table. Return cohort_id."""
 	user = model.User(user_type=user_type, first_name=first_name, last_name=last_name, username=username, password=password)
 	model.session.add(user)
 	model.session.commit()

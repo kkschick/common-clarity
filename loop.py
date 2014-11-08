@@ -1,4 +1,5 @@
-from flask import Flask, make_response, send_file, session, jsonify, request
+from flask import Flask, make_response, send_file, session, request
+from sqlalchemy.orm import joinedload
 import model
 import api
 import json
@@ -43,6 +44,7 @@ def get_cohorts():
 	for cohort in cohorts:
 		cohort_names.append(cohort.name)
 	return _convert_to_JSON(cohort_names)
+
 
 @app.route("/api/signup/", methods=['POST'])
 def adduser():
