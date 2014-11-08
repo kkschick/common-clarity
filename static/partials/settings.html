@@ -14,7 +14,6 @@
 </div>
 <div class="large-under-nav" ng-controller="SettingsController">
     <h2>SETTINGS</h2>
-    <h3>Set up your classes and students.</h3><br>
 
     <table class="big-table">
         <tr>
@@ -29,7 +28,7 @@
             <td>
                 <form name="class">
                     <input type="text" class="form-field" placeholder="ENTER CLASS NAME" ng-model="cohort.name" /><br><br>
-
+                    <h3>ADD STUDENTS</h3>
                     <table id="add-student-table">
                         <tr>
                             <th>FIRST NAME</th>
@@ -50,9 +49,8 @@
                             <td><input type="password" ng-model="user.password" /></td>
                         </tr>
                     </table>
-                    <button ng-click="addRow(user)" value="Add">Add Row</button><br><br>
-                    <button ng-click="submitCohort(cohort, user)" class="button special">ADD</button>
-                {{new_cohort | json}}
+                    <button ng-click="addRow(user)" value="Add" class="button small"><strong>+</strong></button><br><br>
+                    <button ng-click="submitCohort(cohort, user)" class="button special">CREATE CLASS</button>
             </td>
             <td>
                 <ul class="list-of-links">

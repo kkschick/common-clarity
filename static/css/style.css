@@ -82,9 +82,16 @@ a {
 	font-size: 1em;
 }
 
-.button.special:hover {
+.button.special:hover, .button.small:hover {
 	background: transparent;
 	border: solid white 1px;
+}
+
+.button.small {
+	border-radius: 100%;
+	background: #83d3c9;
+	border: solid #83d3c9 1px;
+	font-size: 1em;
 }
 
 .form-field {
@@ -148,3 +155,6 @@ form p input {
 	text-align: left;
 }
 
+th {
+	font-size: 0.75em;
+}
