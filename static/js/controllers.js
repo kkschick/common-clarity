@@ -47,48 +47,32 @@ loopControllers.controller('LogoutController', ['$scope', '$location', '$http', 
 }]);
 
 loopControllers.controller('SettingsController', ['$scope', '$http', function($scope, $http){
-	// $scope.new_cohort = {};
-
-	// $scope.addCohort = function(cohort) {
-	// 	$scope.new_cohort = angular.copy(cohort);
-	// 	$scope.cohort = {};
-	// 	$http({
-	// 		url: "/api/addclass/",
-	// 		method: "POST",
-	// 		data: $scope.new_cohort
-	// 	});
-	// };
-
-	// $scope.addStudent = function(user) {
-	// 	$scope.new_user = angular.copy(user);
-	// 	$scope.user = {};
-	// 	$http({
-	// 		url: "/api/addstudent/",
-	// 		method: "POST",
-	// 		data: $scope.new_user
-	// 	});
-	// };
 
 	$scope.new_cohort = {};
 	$scope.students = [];
 	$scope.new_cohort.students = $scope.students;
 
-	$scope.addCohort = function(cohort) {
-		$scope.new_cohort.cohort = cohort;
-		$scope.cohort = {};
-	};
-
-	$scope.addStudent = function(user) {
+	$scope.addRow = function(user) {
 		$scope.students.push(user);
 		$scope.user = {};
 	};
 
-	$scope.submitCohort = function() {
+	$scope.submitCohort = function(cohort, user) {
+		$scope.new_cohort.cohort = cohort;
+		$scope.cohort = {};
+
+		$scope.students.push(user);
+		$scope.user = {};
+
 		$http({
 			url: "/api/addclass/",
 			method: "POST",
 			data: $scope.new_cohort
 		});
+
+		$scope.new_cohort = {};
+		$scope.students = [];
+		$scope.new_cohort.students = $scope.students;
 	};
 
 	$http.get("/api/getclasses/").success(function(data) {
