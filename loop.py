@@ -21,21 +21,38 @@ def _convert_to_JSON(result):
 @app.route("/api/addclass/", methods=['POST'])
 def addclass():
 	class_info = json.loads(request.data)
-	name = class_info.get("name")
+	cohort_name = (class_info.get("cohort")).get("name")
 	teacher_id = session['user']
-	cohort = api.add_new_cohort(name, teacher_id)
+	cohort_id = api.add_new_cohort(cohort_name, teacher_id)
+	list_of_students = class_info.get("students")
+	for student in list_of_students:
+		user_type = "student"
+		first_name = student.get("first_name")
+		last_name = student.get("last_name")
+		username = student.get("username")
+		password = student.get("password")
+		student_id = api.create_student(user_type, first_name, last_name, username, password)
+		api.add_student_to_cohort(student_id, cohort_id)
 	return "Success"
 
-@app.route("/api/addstudent/", methods=['POST'])
-def addstudent():
-	student_info = json.loads(request.data)
-	user_type = "student"
-	first_name = student_info.get("first_name")
-	last_name = student_info.get("last_name")
-	username = student_info.get("username")
-	password = student_info.get("password")
-	student = api.create_student(user_type, first_name, last_name, username, password)
-	return "Success"
+# @app.route("/api/addclass/", methods=['POST'])
+# def addclass():
+# 	class_info = json.loads(request.data)
+# 	name = class_info.get("name")
+# 	teacher_id = session['user']
+# 	cohort = api.add_new_cohort(name, teacher_id)
+# 	return "Success"
+
+# @app.route("/api/addstudent/", methods=['POST'])
+# def addstudent():
+# 	student_info = json.loads(request.data)
+# 	user_type = "student"
+# 	first_name = student_info.get("first_name")
+# 	last_name = student_info.get("last_name")
+# 	username = student_info.get("username")
+# 	password = student_info.get("password")
+# 	student = api.create_student(user_type, first_name, last_name, username, password)
+# 	return "Success"
 
 @app.route("/api/getclasses/")
 def get_cohorts():

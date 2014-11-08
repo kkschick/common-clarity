@@ -43,7 +43,9 @@
 					<label>PASSWORD: </label>
 						<input type="password" class="form-field" ng-model="user.password" /><br><br>
 						<button ng-click="addStudent(user)" class="button special">ADD STUDENT</button>
-				</form>
+				</form><br>
+				<button ng-click="submitCohort()" class="button special">SUBMIT CLASS</button>
+				{{new_cohort | json}}
 			</td>
 			<td>
 				<ul class="list-of-links">
@@ -53,3 +55,15 @@
 		</tr>
 	</table>
 </div>
+div>
+
+
+
+
+
+
+
+
+
+
+

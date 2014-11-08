@@ -56,22 +56,22 @@ def add_new_cohort(name, teacher_id):
 	cohort = model.Cohort(name=name, teacher_id=teacher_id)
 	model.session.add(cohort)
 	model.session.commit()
-	cohort_id = model.Cohort.query.filter_by(name=name).first()
-	session['cohort'] = cohort_id.id
+	new_cohort = model.Cohort.query.filter_by(name=name).first()
+	return new_cohort.id
 
 def create_student(user_type, first_name, last_name, username, password):
 	"""Create new student user in users table. Return user_id."""
 	user = model.User(user_type=user_type, first_name=first_name, last_name=last_name, username=username, password=password)
 	model.session.add(user)
 	model.session.commit()
-	cohort_id = model.Cohort.query.filter_by(name=name).first()
-	session['cohort'] = cohort_id.id
+	new_user = model.User.query.filter_by(username=username).first()
+	return new_user.id
 
 def add_student_to_cohort(student_id, cohort_id):
 	"""Add newly-created student to studentcohorts table."""
-	pass
-
-
+	studentcohort = model.StudentCohort(student_id=student_id, cohort_id=cohort_id)
+	model.session.add(studentcohort)
+	model.session.commit()
 
 """Reports"""
 
