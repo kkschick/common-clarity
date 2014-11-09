@@ -1,5 +1,6 @@
 import model
 from flask import session
+from sqlalchemy.orm import joinedload
 
 def get_user_id(username, password):
 	"""Get the user_id and pass it through with every API call."""
@@ -39,7 +40,8 @@ def get_students_in_cohort(cohort_id):
 	"""Use cohort_ids associated with teacher_id to query studentcohorts
 	to get student_ids for that cohort and query users for those students.
 	If none, return False."""
-	students = model.Cohort.query.filter_by(cohort_id=cohort_id).all()
+	students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
+	return students
 
 def edit_student_info(student_id, new_field_value):
 	"""Change student first_name, last_name, username, or password.
