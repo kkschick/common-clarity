@@ -39,21 +39,19 @@ def addclass():
 def get_cohorts():
     teacher_id = session['user']
     cohorts = api.get_teacher_cohorts(teacher_id)
-    # cohort_names = []
-    # all_cohorts = {'cohort.name': [student, student]}
     all_cohorts = {}
     for cohort in cohorts:
+        full_class = {}
         cohort_id = cohort.id
         students = api.get_students_in_cohort(cohort_id)
         list_of_students = []
         for student in students:
-            list_of_students.append(student.student_id)
-
-
-        all_cohorts[cohort.name] = [list_of_students]
-        # cohort_names.append(cohort.name)
-        # cohort_id = cohort.id
-        # students.append(api.get_students_in_cohort(cohort_id))
+            student = api.get_student_by_id(student.student_id)
+            student_name = student.first_name + " " + student.last_name
+            list_of_students.append(student_name)
+        full_class["name"] = cohort.name
+        full_class["students"] = list_of_students
+        all_cohorts[cohort.name] = full_class
     return _convert_to_JSON(all_cohorts)
 
 

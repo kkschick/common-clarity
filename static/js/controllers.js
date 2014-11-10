@@ -74,6 +74,10 @@ loopControllers.controller('SettingsController', ['$scope', '$http', function($s
         $scope.new_cohort = {};
         $scope.students = [];
         $scope.new_cohort.students = $scope.students;
+
+        $http.get("/api/getclasses/").success(function(data) {
+            $scope.cohorts = data;
+    });
     };
 
     $http.get("/api/getclasses/").success(function(data) {
