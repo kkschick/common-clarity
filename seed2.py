@@ -2,14 +2,14 @@ import model
 import csv
 from datetime import datetime
 
-name = "Class 1 Interim"
-date = datetime(2014, 01, 30)
+name = "Class 2 Interim"
+date = datetime.strptime("2014-01-30", "%Y-%m-%d")
 
 def load_test_file(session, name, date):
 
-    with open('seed_data/test_class1_interim.csv', 'rb') as f:
+    with open('seed_data/test_class2_interim.csv', 'rb') as f:
 
-        test = model.Test(name=name, date=date)
+        test = model.Test(name=name, test_date=date)
         session.add(test)
         session.commit()
 
