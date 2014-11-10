@@ -2,12 +2,12 @@ import model
 import csv
 from datetime import datetime
 
-name = "Class 2 Interim"
-date = datetime.strptime("2014-01-30", "%Y-%m-%d")
+name = "Class 2 Predictive"
+date = datetime.strptime("2013-10-30", "%Y-%m-%d")
 
 def load_test_file(session, name, date):
 
-    with open('seed_data/test_class2_interim.csv', 'rb') as f:
+    with open('seed_data/test_class2_predictive.csv', 'rb') as f:
 
         test = model.Test(name=name, test_date=date)
         session.add(test)
@@ -20,14 +20,31 @@ def load_test_file(session, name, date):
 
         standards = []
         scores = []
-        for fields in reader:
-            standard = fields[0].split(" ")
-            standards.append(standard[0])
-            scores.append(fields[1:-5])
+        for rows in reader:
+            standards.append(rows[0])
+            scores.append(rows[1:-5])
 
         standard_ids = []
         for standard in standards:
-            standard_id = (model.Standard.query.filter_by(code=standard).first()).id
+            standard_split = standard.split(" ")
+            standard_code = standard_split[0]
+            standard = model.Standard.query.filter_by(code=standard_code).first()
+            if standard == None:
+                categories = {'RF': 'Foundational Skills',
+                              'RI': 'Informational Text',
+                              'L': 'Language',
+                              'RL': 'Literature',
+                              'SL': 'Speaking and Listening',
+                              'W': 'Writing'}
+                cat_code = (standard_code.split("."))[0]
+                description = ' '.join(standard_split[1:])
+                stan = model.Standard(category=categories[cat_code], code=standard_code, description=description)
+                session.add(stan)
+                session.commit()
+                standard = model.Standard.query.filter_by(code=standard_code).first()
+                standard_id = standard.id
+                standard_ids.append(standard_id)
+            standard_id = standard.id
             standard_ids.append(standard_id)
 
         student_ids = []
@@ -40,16 +57,15 @@ def load_test_file(session, name, date):
 
         test_id = (model.Test.query.filter_by(name=name).first()).id
 
-        i = 0
+        j = 0
         for student in student_ids:
-            j = 0
-            for i in range(len(standard_ids)):
-                standard = standard_ids[j]
+            i = 0
+            for standard in standard_ids:
                 score = scores[i][j]
-                j += 1
-                score = model.Score(student_id=student, test_id=test_id, standard_id=standard, score=score)
-                session.add(score)
-            i += 1
+                new_score = model.Score(student_id=student, test_id=test_id, standard_id=standard, score=score)
+                session.add(new_score)
+                i += 1
+            j += 1
 
         session.commit()
 
