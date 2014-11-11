@@ -93,7 +93,9 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
 
     $http.get("/api/getclasses/").success(function(data) {
         $scope.cohorts = data;
+
     });
+
 
     $scope.changeClick = function() {
         if ($scope.import_clicked === true) {

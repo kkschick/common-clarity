@@ -44,7 +44,9 @@ def get_students_in_cohort(cohort_id):
     students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
     student_names = []
     for student in students:
-        student_names.append(student.student.first_name + ' ' + student.student.last_name)
+        student_dict = {}
+        student_dict["name"] = student.student.first_name + ' ' + student.student.last_name
+        student_names.append(student_dict)
     return student_names
 
 def get_student_by_id(student_id):

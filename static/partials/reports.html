@@ -16,17 +16,39 @@
     <h2>REPORTS</h2>
 
     <button ng-click="changeClick()" ng-show="import_clicked_button" class="button special">IMPORT TEST DATA</button>
-    <div ng-show="import_clicked">
-    <form action="/upload/" method="POST" enctype="multipart/form-data">
-        <h4>SELECT A CLASS:</h4>
-            <select ng-model="cohort_select" name="cohort" id="cohort" required="required" class="form-field">
-                <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
-            </select><br><br>
-        TEST NAME: <input type="text" name="test_name" class="form-field"><br><br>
-        TEST DATE: <input type="date" name="test_date" class="form-field"><br><br>
-        <input type="file" name="csvfile" class="form-field"> <br><br>
 
-        <input type="submit" name="submit" value="IMPORT TEST" ng-show="import_clicked_button = true" class="button special">
-    </form>
+    <div ng-show="import_clicked">
+        <form action="/upload/" method="POST" enctype="multipart/form-data">
+            <h4>SELECT A CLASS:</h4>
+                <select ng-model="cohort_select" name="cohort" id="cohort" required="required" class="form-field">
+                    <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
+                </select><br><br>
+            TEST NAME: <input type="text" name="test_name" class="form-field"><br><br>
+            TEST DATE: <input type="date" name="test_date" class="form-field"><br><br>
+            <input type="file" name="csvfile" class="form-field"> <br><br>
+
+            <input type="submit" name="submit" value="IMPORT TEST" ng-show="import_clicked_button = true" class="button special">
+        </form>
+    </div>
+    <hr>
+    <div>
+        <h3>SELECT A GROUP TO VIEW REPORTS BY</h3>
+        <h4>Reports can be viewed across all classes, by a single class, or by a single student.</h4>
+        <form name="report_cohort">
+            Select a class: <select ng-model="selectedCohort" name="cohort" id="cohort" required="required" class="form-field">
+                <option value="0">All Classes</option>
+                <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
+            </select><br>
+            <div ng-disabled="!selectedCohort" ng-show="selectedCohort > 0">
+            Select a student (optional): <select ng-model="selectedStudent" name="student" id="student" class="form-field">
+                <option ng-repeat="student in cohorts[selectedCohort - 1].students">{{student.name}}
+                </option>
+            </select><br><br>
+            </div>
+
+
+
+
+        </form>
     </div>
 </div>

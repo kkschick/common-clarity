@@ -72,7 +72,7 @@ def addclass():
 def get_cohorts():
     teacher_id = session['user']
     cohorts = api.get_teacher_cohorts(teacher_id)
-    all_cohorts = {}
+    all_cohorts = []
     for cohort in cohorts:
         full_class = {}
         cohort_id = cohort.id
@@ -80,7 +80,7 @@ def get_cohorts():
         full_class["cohort_id"] = cohort_id
         full_class["name"] = cohort.name
         full_class["students"] = students
-        all_cohorts[cohort.name] = full_class
+        all_cohorts.append(full_class)
     return _convert_to_JSON(all_cohorts)
 
 @app.route("/api/signup/", methods=['POST'])
