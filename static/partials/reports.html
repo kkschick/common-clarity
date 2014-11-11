@@ -38,7 +38,8 @@
             Select a class: <select ng-model="selectedCohort" name="cohort" id="cohort" required="required" class="form-field">
                 <option value="0">All Classes</option>
                 <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
-            </select><br>
+            </select><br><br>
+
             <div ng-disabled="!selectedCohort" ng-show="selectedCohort > 0">
             Select a student (optional): <select ng-model="selectedStudent" name="student" id="student" class="form-field">
                 <option ng-repeat="student in cohorts[selectedCohort - 1].students">{{student.name}}
@@ -46,9 +47,11 @@
             </select><br><br>
             </div>
 
-
-
-
+            <button ng-click="viewReport(selectedCohort, selectedStudent)" class="button special">VIEW REPORT</button>
         </form>
+
+        <h3 ng-show="all_selected">REPORTS FOR ALL CLASSES:</h3>
+        <h3 ng-model="selectedUser" ng-show="cohort_selected">REPORTS FOR {{selectedUser | uppercase}}:</h3>
+
     </div>
 </div>

@@ -96,7 +96,6 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
 
     });
 
-
     $scope.changeClick = function() {
         if ($scope.import_clicked === true) {
             $scope.import_clicked = false;
@@ -107,6 +106,31 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
             $scope.import_clicked_button = false;
         }
     };
+
+    $scope.viewReport = function(selectedCohort, selectedStudent) {
+
+
+        if ($scope.selectedStudent) {
+            $scope.selectedUser = $scope.selectedStudent;
+            $scope.cohort_selected = true;
+            $scope.all_selected = false;
+        }
+
+        else if ($scope.selectedCohort > 0) {
+            $scope.selectedUser = $scope.cohorts[$scope.selectedCohort - 1].name;
+            $scope.cohort_selected = true;
+            $scope.all_selected = false;
+        }
+
+        else {
+            $scope.cohort_selected = false;
+            $scope.all_selected = true;
+        }
+
+
+
+    };
+
 
 }]);
 
