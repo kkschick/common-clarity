@@ -10,6 +10,11 @@ def test():
     response = api.aggregate_most_recent_by_standard_overall_cohort(1)
     return _convert_to_JSON(response)
 
+@app.route("/api/test2/")
+def test2():
+    response = api.aggregate_all_tests_by_standard_overall_cohort(1)
+    return _convert_to_JSON(response)
+
 @app.route("/")
 def index():
     return send_file("templates/index.html")
