@@ -1,4 +1,4 @@
-from flask import Flask, make_response, send_file, session, request
+from flask import Flask, make_response, send_file, session, request, redirect, flash
 import api
 import json
 import os
@@ -10,6 +10,20 @@ ALLOWED_EXTENSIONS = set(['csv'])
 app = Flask(__name__)
 app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# @app.route("/api/test/")
+# def test():
+#     response = api.aggregate_most_recent_by_standard_overall_cohort(1)
+#     return _convert_to_JSON(response)
+
+# @app.route("/api/test2/")
+# def test2():
+#     response = api.aggregate_all_tests_by_standard_overall_cohort(1)
+#     return _convert_to_JSON(response)
+
+@app.route("/")
+def index():
+    return send_file("templates/index.html")
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -25,23 +39,9 @@ def upload_file():
             csvfile.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     test_name = request.form.get("test_name")
     test_date = request.form.get("test_date")
-    api.parse_CSV(file_path, test_name, test_date, 4)
-    return "Hi"
-
-
-# @app.route("/api/test/")
-# def test():
-#     response = api.aggregate_most_recent_by_standard_overall_cohort(1)
-#     return _convert_to_JSON(response)
-
-# @app.route("/api/test2/")
-# def test2():
-#     response = api.aggregate_all_tests_by_standard_overall_cohort(1)
-#     return _convert_to_JSON(response)
-
-@app.route("/")
-def index():
-    return send_file("templates/index.html")
+    cohort_id = request.form["cohort"]
+    api.parse_CSV(file_path, test_name, test_date, cohort_id)
+    return redirect("/#/reports/")
 
 def _convert_to_JSON(result):
     """Convert result object to a JSON web request."""
@@ -77,6 +77,7 @@ def get_cohorts():
         full_class = {}
         cohort_id = cohort.id
         students = api.get_students_in_cohort(cohort_id)
+        full_class["cohort_id"] = cohort_id
         full_class["name"] = cohort.name
         full_class["students"] = students
         all_cohorts[cohort.name] = full_class

@@ -89,9 +89,23 @@ loopControllers.controller('SettingsController', ['$scope', '$http', function($s
 
 loopControllers.controller('ReportsController', ['$scope', '$http', function($scope, $http){
 
+    $scope.import_clicked_button = true;
+
     $http.get("/api/getclasses/").success(function(data) {
         $scope.cohorts = data;
     });
+
+    $scope.changeClick = function() {
+        if ($scope.import_clicked === true) {
+            $scope.import_clicked = false;
+            $scope.import_clicked_button = true;
+        }
+        else {
+            $scope.import_clicked = true;
+            $scope.import_clicked_button = false;
+        }
+    };
+
 }]);
 
 
