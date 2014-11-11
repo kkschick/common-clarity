@@ -7,7 +7,7 @@ app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 
 @app.route("/api/test/")
 def test():
-    response = api.check_if_data(1)
+    response = api.aggregate_most_recent_by_standard_overall_cohort(1)
     return _convert_to_JSON(response)
 
 @app.route("/")

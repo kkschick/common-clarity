@@ -1,5 +1,6 @@
 import model
 from flask import session
+from sqlalchemy.sql import func
 
 """Log-in"""
 
@@ -197,26 +198,121 @@ def parse_CSV(csv, name, date, cohort_id):
 def get_overall_cohort_data(teacher_id):
     """Use teacher_id to get student_ids through the cohorts table. Get all scores
     for all students in all the cohorts associated with that teacher_id."""
-    pass
 
-def filter_overall_by_most_recent_test(all_cohorts_data):
+    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+    for cohort in cohorts:
+        students = cohort.studentcohorts
+        stu_scores = []
+        for student in students:
+            student_id = student.student.id
+            scores = model.Score.query.filter_by(student_id=student_id).all()
+            for score in scores:
+                new_score = score.score
+                stu_scores.append(new_score)
+    return stu_scores
+
+def get_overall_by_most_recent_test(teacher_id):
     """Take in data returned by get_overall_cohort_data. Filter by most recent
     test_id. Return filtered data."""
-    pass
 
-def aggregate_most_recent_for_overall_cohort(filtered_all_cohorts_data):
+    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+    tests = model.Test.query.filter(model.Test.test_date==func.max(model.Test.test_date).select()).all()
+    test_ids = []
+    student_ids = []
+    for cohort in cohorts:
+        students = cohort.studentcohorts
+        for student in students:
+            student_ids.append(student.student.id)
+    for test in tests:
+        test_ids.append(test.id)
+
+    scores_list = []
+    for test_id in test_ids:
+        for student_id in student_ids:
+            scores = model.Score.query.filter_by(student_id=student_id, test_id=test_id).all()
+            for score in scores:
+                scores_list.append(score.score)
+
+    return scores_list
+
+def get_counts_and_percents(data):
+    """Take in a list of scores and output counts and percentages."""
+
+    length = len(data)
+
+    M_count = 0
+    A_count = 0
+    FB_count = 0
+
+    most_recent_scores = {}
+
+    for item in data:
+        if item == 'M':
+            M_count +=1
+        elif item == 'A':
+            A_count +=1
+        elif item == 'FB':
+            FB_count += 1
+
+    most_recent_scores['M_count'] = M_count
+    most_recent_scores['A_count'] = A_count
+    most_recent_scores['FB_count'] = FB_count
+
+    M_percent = (float(M_count) / float(length))
+    A_percent = (float(A_count) / float(length))
+    FB_percent = (float(FB_count) / float(length))
+
+    most_recent_scores['M_percent'] = M_percent
+    most_recent_scores['A_percent'] = A_percent
+    most_recent_scores['FB_percent'] = FB_percent
+
+    return most_recent_scores
+
+def aggregate_most_recent_for_overall_cohort(teacher_id):
     """Add up counts of M, A, and FB scores and return counts and percentages."""
-    pass
 
-def aggregate_all_tests_for_overall_cohort(all_cohorts_data):
+    data = filter_overall_by_most_recent_test(teacher_id)
+    return get_counts_and_percents(data)
+
+
+def aggregate_all_tests_for_overall_cohort(teacher_id):
     """Take in data returned by get_overall_cohort_data. Add up counts of M, A,
     and FB scores and return counts and percentages for each test_id."""
-    pass
 
-def aggregate_most_recent_by_standard_overall_cohort(filtered_all_cohorts_data):
+    data = get_overall_cohort_data(teacher_id)
+    return get_counts_and_percents(data)
+
+
+def aggregate_most_recent_by_standard_overall_cohort(teacher_id):
     """Break out filtered data by standard. Aggregate M/A/FB scores by standard
     and return counts and percentages for each standard."""
-    pass
+
+    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+    tests = model.Test.query.filter(model.Test.test_date==func.max(model.Test.test_date).select()).all()
+    test_ids = []
+    student_ids = []
+    standard_ids = []
+    for cohort in cohorts:
+        students = cohort.studentcohorts
+        for student in students:
+            student_ids.append(student.student.id)
+    for test in tests:
+        test_ids.append(test.id)
+        standards = model.Score.query.filter_by(test_id=test.id, student_id=student_ids[0]).all()
+        for standard in standards:
+            standard_ids.append(standard.standard_id)
+
+    scores_by_standard = {}
+    for test_id in test_ids:
+        for student_id in student_ids:
+            scores = model.Score.query.filter_by(student_id=student_id, test_id=test_id).all()
+            for standard in standard_ids:
+                scores_by_standard[standard] = []
+                for score in scores:
+                    scores_by_standard[standard].append(score.score)
+
+    return scores_by_standard
+
 
 def aggregate_all_tests_by_standard_overall_cohort(all_cohorts_data, standard):
     """Take in data returned by get_overall_cohort_data and filter it by the
@@ -256,7 +352,12 @@ def aggregate_all_tests_by_standard_single_cohort(single_cohort_data, standard):
 
 def get_student_scores(student_id):
     """Use student_id to get all scores for that student. Return score data."""
-    pass
+
+    scores = model.Score.query.filter_by(student_id=student_id).all()
+    score_list = []
+    for score in scores:
+        score_list.append(score.score)
+    return score_list
 
 def aggregate_most_recent_for_student(student_data):
     """Filter data from get_student_scores by most recent test. Add up counts of
