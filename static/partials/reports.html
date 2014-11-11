@@ -1,14 +1,26 @@
 <div class="container header">
-	<div class="navbar-header">
-		<div class="col-md-6" id="fl-left">
-			<h1><a href="/">LOOP</a></h1>
-		</div>
-		<div class="col-md-6" id="fl-right" ng-controller="LogoutController">
-			<ul>
-				<li><a href="/#/reports">REPORTS</a></li>
-				<li><a href="/#/settings">SETTINGS</a></li>
-				<li><a href="/#/logout" class="button special" ng-click="logoutUser()">LOG OUT</a></li>
-			</ul>
-		</div>
-	</div>
+    <div class="navbar-header">
+        <div class="col-md-6" id="fl-left">
+            <h1><a href="/">LOOP</a></h1>
+        </div>
+        <div class="col-md-6" id="fl-right" ng-controller="LogoutController">
+            <ul>
+                <li><a href="/#/reports">REPORTS</a></li>
+                <li><a href="/#/settings">SETTINGS</a></li>
+                <li><a href="/#/logout" class="button special" ng-click="logoutUser()">LOG OUT</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="large-under-nav" ng-controller="ReportsController">
+    <h2>REPORTS</h2>
+
+<form action="/api/upload/" method="post" enctype="multipart/form-data">
+Upload file: <input type="file" name="csvfile" /> <br />
+             <input type="submit" name="submit" value="Submit" />
+</form>
+
+{{csvbody}}
+{{csvfile}}
+
 </div>

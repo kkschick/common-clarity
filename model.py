@@ -31,6 +31,8 @@ class Cohort(Base):
     name = Column(String(64))
     teacher_id = Column(Integer, ForeignKey('users.id'))
 
+    teacher = relationship("User", backref=backref("cohorts", order_by=id))
+
 class StudentCohort(Base):
     __tablename__ = "studentcohorts"
 
@@ -48,6 +50,9 @@ class Test(Base):
     id = Column(Integer, primary_key = True)
     name = Column(String(64))
     test_date = Column(Date)
+    cohort_id = Column(Integer, ForeignKey('cohorts.id'))
+
+    cohort = relationship("Cohort", backref=backref("tests", order_by=id))
 
 class Standard(Base):
     __tablename__ = "standards"

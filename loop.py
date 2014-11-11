@@ -1,10 +1,14 @@
 from flask import Flask, make_response, send_file, session, request
-import model
 import api
 import json
 
 app = Flask(__name__)
 app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
+
+@app.route("/api/test/")
+def test():
+    response = api.check_if_data(1)
+    return _convert_to_JSON(response)
 
 @app.route("/")
 def index():
@@ -44,16 +48,10 @@ def get_cohorts():
         full_class = {}
         cohort_id = cohort.id
         students = api.get_students_in_cohort(cohort_id)
-        list_of_students = []
-        for student in students:
-            student = api.get_student_by_id(student.student_id)
-            student_name = student.first_name + " " + student.last_name
-            list_of_students.append(student_name)
         full_class["name"] = cohort.name
-        full_class["students"] = list_of_students
+        full_class["students"] = students
         all_cohorts[cohort.name] = full_class
     return _convert_to_JSON(all_cohorts)
-
 
 @app.route("/api/signup/", methods=['POST'])
 def adduser():
