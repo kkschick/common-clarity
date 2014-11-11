@@ -15,12 +15,9 @@
 <div class="large-under-nav" ng-controller="ReportsController">
     <h2>REPORTS</h2>
 
-<form action="/api/upload/" method="post" enctype="multipart/form-data">
+<form action="/upload/" method="post" enctype="multipart/form-data">
 Upload file: <input type="file" name="csvfile" /> <br />
              <input type="submit" name="submit" value="Submit" />
 </form>
-
-{{csvbody}}
-{{csvfile}}
 
 </div>

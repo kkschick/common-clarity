@@ -1,19 +1,41 @@
 from flask import Flask, make_response, send_file, session, request
 import api
 import json
+import os
+from werkzeug import secure_filename
+
+UPLOAD_FOLDER = "./static/uploads/"
+ALLOWED_EXTENSIONS = set(['csv'])
 
 app = Flask(__name__)
 app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route("/api/test/")
-def test():
-    response = api.aggregate_most_recent_by_standard_overall_cohort(1)
-    return _convert_to_JSON(response)
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-@app.route("/api/test2/")
-def test2():
-    response = api.aggregate_all_tests_by_standard_overall_cohort(1)
-    return _convert_to_JSON(response)
+@app.route('/upload/', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        csvfile = request.files['csvfile']
+        if csvfile and allowed_file(csvfile.filename):
+            filename = secure_filename(csvfile.filename)
+            file_path = app.config['UPLOAD_FOLDER'] + filename
+            csvfile.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    api.parse_CSV(file_path, "Test Class", "2013-10-30", 4)
+    return "Success"
+
+
+# @app.route("/api/test/")
+# def test():
+#     response = api.aggregate_most_recent_by_standard_overall_cohort(1)
+#     return _convert_to_JSON(response)
+
+# @app.route("/api/test2/")
+# def test2():
+#     response = api.aggregate_all_tests_by_standard_overall_cohort(1)
+#     return _convert_to_JSON(response)
 
 @app.route("/")
 def index():

@@ -1,6 +1,8 @@
 import model
 from flask import session
+import csv
 from sqlalchemy.sql import func
+from datetime import datetime
 
 """Log-in"""
 
@@ -13,7 +15,7 @@ def get_user(username, password):
 """Log-out"""
 
 def logout():
-    session.clear()
+    model.session.clear()
 
 """Sign-up"""
 
@@ -106,18 +108,20 @@ def check_if_data(teacher_id):
     return scores_exist
 
 
-def parse_CSV(csv, name, date, cohort_id):
+def parse_CSV(csv_path, name, date, cohort_id):
     """Take CSV file that was uploaded and parse it. Create new test in Tests table.
     Match student names to users table and match CCSS to the standards table and
     get user_id and standard_id. Use test_id returned from create_new_test, user_id,
     and standard_id, and add score to scores table."""
 
-    with open('csv', 'rb') as f:
+    date = datetime.strptime(date, "%Y-%m-%d")
+
+    with open(csv_path, 'rb') as f:
 
     # Create new test in tests database
         test = model.Test(name=name, test_date=date, cohort_id=cohort_id)
-        session.add(test)
-        session.commit()
+        model.session.add(test)
+        model.session.commit()
 
         reader = csv.reader(f, delimiter=',')
 
@@ -153,8 +157,8 @@ def parse_CSV(csv, name, date, cohort_id):
                 cat_code = (standard_code.split("."))[0]
                 description = ' '.join(standard_split[1:])
                 stan = model.Standard(category=categories[cat_code], code=standard_code, description=description)
-                session.add(stan)
-                session.commit()
+                model.session.add(stan)
+                model.session.commit()
 
                 # Once it's added, get its ID and add to the standard IDs list
                 standard = model.Standard.query.filter_by(code=standard_code).first()
@@ -189,11 +193,11 @@ def parse_CSV(csv, name, date, cohort_id):
             for standard in standard_ids:
                 score = scores[i][j]
                 new_score = model.Score(student_id=student, test_id=test_id, standard_id=standard, score=score)
-                session.add(new_score)
+                model.session.add(new_score)
                 i += 1
             j += 1
 
-        session.commit()
+        model.session.commit()
 
 def get_overall_cohort_data(teacher_id):
     """Use teacher_id to get student_ids through the cohorts table. Get all scores
