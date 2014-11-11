@@ -23,8 +23,10 @@ def upload_file():
             filename = secure_filename(csvfile.filename)
             file_path = app.config['UPLOAD_FOLDER'] + filename
             csvfile.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    api.parse_CSV(file_path, "Test Class", "2013-10-30", 4)
-    return "Success"
+    test_name = request.form.get("test_name")
+    test_date = request.form.get("test_date")
+    api.parse_CSV(file_path, test_name, test_date, 4)
+    return "Hi"
 
 
 # @app.route("/api/test/")

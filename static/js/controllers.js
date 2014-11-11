@@ -89,11 +89,9 @@ loopControllers.controller('SettingsController', ['$scope', '$http', function($s
 
 loopControllers.controller('ReportsController', ['$scope', '$http', function($scope, $http){
 
-    $scope.csvbody = {};
-
-    $scope.submitFile = function(csvfile) {
-        $scope.csvbody = csvfile;
-    };
+    $http.get("/api/getclasses/").success(function(data) {
+        $scope.cohorts = data;
+    });
 }]);
 
 

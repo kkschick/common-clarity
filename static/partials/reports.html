@@ -15,9 +15,19 @@
 <div class="large-under-nav" ng-controller="ReportsController">
     <h2>REPORTS</h2>
 
-<form action="/upload/" method="post" enctype="multipart/form-data">
-Upload file: <input type="file" name="csvfile" /> <br />
-             <input type="submit" name="submit" value="Submit" />
-</form>
+    <h3>IMPORT TEST DATA</h3>
+    <h4>Select a class:</h4>
+        <select ng-model="cohorts">
+            <option ng-repeat="cohort in cohorts">{{cohort.name}}</option>
+        </select><br><br>
+
+    <form action="/upload/" method="POST" enctype="multipart/form-data">
+
+        Test Name: <input type="text" name="test_name"><br>
+        Test Date: <input type="date" name="test_date"><br>
+        <input type="file" name="csvfile"> <br><br>
+
+        <input type="submit" name="submit" value="IMPORT TEST" class="button special">
+    </form>
 
 </div>
