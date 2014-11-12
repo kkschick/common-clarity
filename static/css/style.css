@@ -172,26 +172,13 @@ hr {
 }
 
 .chart {
-    padding: 3px;
-}
-
-.bar {
-    fill: #45ADA8;
-}
-
-.chart div {
   width: 0;
-  transition: all 1s ease-out;
-  -moz-transition: all 1s ease-out;
-  -webkit-transition: all 1s ease-out;
+  font-size: 11px;
+  text-transform: uppercase;
 }
 
-.chart div {
-  font: 10px sans-serif;
-  background-color: white;
-  text-align: right;
-  padding: 3px;
-  margin: 5px;
-  color: white;
-  box-shadow: 2px 2px 2px #666;
+.axis path {
+  fill: none;
+  stroke: #FFFFFF;
+  shape-rendering: crispEdges;
 }
