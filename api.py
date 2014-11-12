@@ -280,9 +280,9 @@ def get_counts_and_percents(data):
     a2_dict['value'] = a_percent * 100
     fb2_dict['value'] = fb_percent * 100
 
-    # summed_scores.append(m_dict)
-    # summed_scores.append(a_dict)
-    # summed_scores.append(fb_dict)
+    summed_scores.append(m_dict)
+    summed_scores.append(a_dict)
+    summed_scores.append(fb_dict)
     summed_scores.append(m2_dict)
     summed_scores.append(a2_dict)
     summed_scores.append(fb2_dict)
