@@ -260,9 +260,9 @@ def get_counts_and_percents(data):
         elif item == 'FB':
             fb_count += 1
 
-    m_dict = { 'name': 'M' }
-    a_dict = { 'name': 'A' }
-    fb_dict = { 'name': 'FB' }
+    m_dict = { 'name': '1M' }
+    a_dict = { 'name': '2A' }
+    fb_dict = { 'name': '3FB' }
 
     m_dict['value'] = m_count
     a_dict['value'] = a_count
@@ -272,9 +272,9 @@ def get_counts_and_percents(data):
     a_percent = (float(a_count) / float(length))
     fb_percent = (float(fb_count) / float(length))
 
-    m2_dict = { 'name': 'M' }
-    a2_dict = { 'name': 'A' }
-    fb2_dict = { 'name': 'FB' }
+    m2_dict = { 'name': '1M' }
+    a2_dict = { 'name': '2A' }
+    fb2_dict = { 'name': '3FB' }
 
     m2_dict['value'] = m_percent * 100
     a2_dict['value'] = a_percent * 100

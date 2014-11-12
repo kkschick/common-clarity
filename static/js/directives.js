@@ -12,7 +12,7 @@ loopDirectives.directive( 'd3StackedBars', [
         data: '='
       },
       link: function (scope, element) {
-        var margin = {top: 20, right: 20, bottom: 30, left: 50},
+        var margin = {top: 30, right: 20, bottom: 30, left: 70},
           width = 480 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom;
 
@@ -39,14 +39,14 @@ loopDirectives.directive( 'd3StackedBars', [
             .tickFormat(d3.format(".0%"));
 
         scope.render = function(data) {
-          x.domain(data.map(function(d) { return d.Name; }));
+        x.domain(data.map(function(d) { return d.Name; }));
 
         color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Name"; }));
 
         data.forEach(function(d) {
         var y0 = 0;
-        d.ages = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
-        d.ages.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
+        d.values = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
+        d.values.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
         });
 
         svg.selectAll('g.axis').remove();
@@ -62,28 +62,37 @@ loopDirectives.directive( 'd3StackedBars', [
             .call(yAxis)
           .append("text")
             .attr("transform", "rotate(-90)")
-            .attr("y", 8)
+            .attr("y", -60)
+            .attr("x", -90)
             .attr("dy", ".6em")
             .style("text-anchor", "end")
             .attr("fill", "white")
             .text("% of students");
 
+        var bars = svg.selectAll(".bar").data(data);
+        bars.enter()
+          .append("g")
+          .attr("class", "bar")
+          .attr("transform", function(d) { return "translate(" + x(d.Name) + ",0)"; });
 
-          var bars = svg.selectAll(".bar").data(data);
-          bars.enter()
-            .append("g")
-            .attr("class", "bar")
-            .attr("transform", function(d) { return "translate(" + x(d.Name) + ",0)"; });
+        bars.selectAll("rect")
+            .data(function(d) { return d.values; })
+          .enter().append("rect")
+            .attr("width", x.rangeBand())
+            .attr("y", function(d) { return y(d.y1); })
+            .attr("height", function(d) { return y(d.y0) - y(d.y1); })
+            .style("fill", function(d) { return color(d.name); });
 
-          bars.selectAll("rect")
-              .data(function(d) { return d.ages; })
-            .enter().append("rect")
-              .attr("width", x.rangeBand())
-              .attr("y", function(d) { return y(d.y1); })
-              .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-              .style("fill", function(d) { return color(d.name); });
+        bars.selectAll("text")
+          .data(function(d) {return d.values;})
+          .enter()
+          .append("text")
+          .attr("x", 50)
+          .attr("y", function(d, i) { return y(d.y1) + (y(d.y0) - y(d.y1))/2; })
+          .style("text-anchor", "middle")
+          .text(function(d) { return d.name ; });
 
-        };
+      };
 
           scope.$watch('data', function(){
               scope.render(scope.data);
