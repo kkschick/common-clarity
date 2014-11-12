@@ -11,16 +11,6 @@ app = Flask(__name__)
 app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# @app.route("/api/test/")
-# def test():
-#     response = api.aggregate_most_recent_by_standard_overall_cohort(1)
-#     return _convert_to_JSON(response)
-
-# @app.route("/api/test2/")
-# def test2():
-#     response = api.aggregate_all_tests_by_standard_overall_cohort(1)
-#     return _convert_to_JSON(response)
-
 @app.route("/")
 def index():
     return send_file("templates/index.html")
@@ -82,6 +72,13 @@ def get_cohorts():
         full_class["students"] = students
         all_cohorts.append(full_class)
     return _convert_to_JSON(all_cohorts)
+
+@app.route("/api/allcohortcounts/")
+def all_cohort_data():
+    data = api.get_overall_cohort_data(1)
+    response = api.get_counts_and_percents(data)
+    print response
+    return _convert_to_JSON(response)
 
 @app.route("/api/signup/", methods=['POST'])
 def adduser():

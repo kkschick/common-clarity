@@ -3,10 +3,11 @@
 var loopApp = angular.module('loopApp', [
   'ngRoute',
   // 'loopAnimations',
-
   'loopControllers',
+  'loopDirectives'
+  // 'angularCharts',
   // 'loopFilters',
-  // 'loopServices'
+  // 'loopServices',
 ]);
 
 loopApp.config(['$routeProvider',

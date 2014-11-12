@@ -246,33 +246,48 @@ def get_counts_and_percents(data):
 
     length = len(data)
 
-    M_count = 0
-    A_count = 0
-    FB_count = 0
+    m_count = 0
+    a_count = 0
+    fb_count = 0
 
-    most_recent_scores = {}
+    summed_scores = []
 
     for item in data:
         if item == 'M':
-            M_count +=1
+            m_count +=1
         elif item == 'A':
-            A_count +=1
+            a_count +=1
         elif item == 'FB':
-            FB_count += 1
+            fb_count += 1
 
-    most_recent_scores['M_count'] = M_count
-    most_recent_scores['A_count'] = A_count
-    most_recent_scores['FB_count'] = FB_count
+    m_dict = { 'name': 'M' }
+    a_dict = { 'name': 'A' }
+    fb_dict = { 'name': 'FB' }
 
-    M_percent = (float(M_count) / float(length))
-    A_percent = (float(A_count) / float(length))
-    FB_percent = (float(FB_count) / float(length))
+    m_dict['value'] = m_count
+    a_dict['value'] = a_count
+    fb_dict['value'] = fb_count
 
-    most_recent_scores['M_percent'] = M_percent
-    most_recent_scores['A_percent'] = A_percent
-    most_recent_scores['FB_percent'] = FB_percent
+    m_percent = (float(m_count) / float(length))
+    a_percent = (float(a_count) / float(length))
+    fb_percent = (float(fb_count) / float(length))
 
-    return most_recent_scores
+    m2_dict = { 'name': 'M' }
+    a2_dict = { 'name': 'A' }
+    fb2_dict = { 'name': 'FB' }
+
+    m2_dict['value'] = m_percent * 100
+    a2_dict['value'] = a_percent * 100
+    fb2_dict['value'] = fb_percent * 100
+
+    # summed_scores.append(m_dict)
+    # summed_scores.append(a_dict)
+    # summed_scores.append(fb_dict)
+    summed_scores.append(m2_dict)
+    summed_scores.append(a2_dict)
+    summed_scores.append(fb2_dict)
+
+    return summed_scores
 
 def aggregate_most_recent_for_overall_cohort(teacher_id):
     """Add up counts of M, A, and FB scores and return counts and percentages."""

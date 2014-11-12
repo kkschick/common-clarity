@@ -89,6 +89,19 @@ loopControllers.controller('SettingsController', ['$scope', '$http', function($s
 
 loopControllers.controller('ReportsController', ['$scope', '$http', function($scope, $http){
 
+    $http.get("/api/allcohortcounts/").success(function(data) {
+        $scope.all_cohorts_data = data;
+
+    });
+
+    $scope.myData = [
+        {name: 'AngularJS', count: 300},
+        {name: 'D3.JS', count: 150},
+        {name: 'jQuery', count: 400},
+        {name: 'Backbone.js', count: 300},
+        {name: 'Ember.js', count: 100}
+    ];
+
     $scope.import_clicked_button = true;
 
     $http.get("/api/getclasses/").success(function(data) {
@@ -127,19 +140,6 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
             $scope.all_selected = true;
         }
 
-
-
     };
 
-
 }]);
-
-
-
-
-
-
-
-
-
-
