@@ -12,7 +12,7 @@ loopDirectives.directive( 'd3StackedBars', [
         data: '='
       },
       link: function (scope, element) {
-        var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        var margin = {top: 20, right: 20, bottom: 30, left: 50},
           width = 480 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom;
 
@@ -23,7 +23,7 @@ loopDirectives.directive( 'd3StackedBars', [
           .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
+        var x = d3.scale.ordinal().rangeRoundBands([0, width], .2);
         var y = d3.scale.linear().rangeRound([height, 0]);
 
         var color = d3.scale.ordinal()
@@ -62,8 +62,8 @@ loopDirectives.directive( 'd3StackedBars', [
             .call(yAxis)
           .append("text")
             .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
+            .attr("y", 8)
+            .attr("dy", ".6em")
             .style("text-anchor", "end")
             .attr("fill", "white")
             .text("% of students");

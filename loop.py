@@ -76,9 +76,9 @@ def get_cohorts():
 @app.route("/api/allcohortcounts/")
 def all_cohort_data():
     response = [
-{"Name": "All Classes", "M":"62", "A": "210", "FB": "208"},
-{"Name": "1st Period", "M":"30", "A": "110", "FB": "100"},
-{"Name": "2nd Period", "M":"32", "A": "100", "FB": "108"},
+{"Name": "All Tests", "M":"62", "A": "210", "FB": "208"},
+{"Name": "Test 1", "M":"30", "A": "110", "FB": "100"},
+{"Name": "Test 2", "M":"32", "A": "100", "FB": "108"},
 ]
     return _convert_to_JSON(response)
 
