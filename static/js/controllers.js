@@ -89,11 +89,6 @@ loopControllers.controller('SettingsController', ['$scope', '$http', function($s
 
 loopControllers.controller('ReportsController', ['$scope', '$http', function($scope, $http){
 
-    $http.get("/api/allcohortcounts/").success(function(data) {
-        $scope.all_cohorts_data = data;
-
-    });
-
     $scope.import_clicked_button = true;
 
     $http.get("/api/getclasses/").success(function(data) {
@@ -125,11 +120,21 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
             $scope.selectedUser = $scope.cohorts[$scope.selectedCohort - 1].name;
             $scope.cohort_selected = true;
             $scope.all_selected = false;
+            // $http.get("/api/allcohortcounts/").success(function(data) {
+            //     $scope.all_cohorts_data[selectedCohort] = data;
+
+            // });
+
         }
 
         else {
             $scope.cohort_selected = false;
             $scope.all_selected = true;
+            $http.get("/api/allcohortcounts/").success(function(data) {
+                $scope.all_cohorts_data = data;
+
+            });
+
         }
 
     };

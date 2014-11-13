@@ -1,4 +1,4 @@
-from flask import Flask, make_response, send_file, session, request, redirect, flash
+from flask import Flask, make_response, send_file, session, request, redirect
 import api
 import json
 import os
@@ -10,6 +10,11 @@ ALLOWED_EXTENSIONS = set(['csv'])
 app = Flask(__name__)
 app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route("/test/")
+def test():
+    return _convert_to_JSON(api.get_all_cohort_data_by_test(1))
+
 
 @app.route("/")
 def index():
@@ -75,11 +80,8 @@ def get_cohorts():
 
 @app.route("/api/allcohortcounts/")
 def all_cohort_data():
-    response = [
-{"Name": "All Tests", "3":"62", "2": "210", "1": "208"},
-{"Name": "Test 1", "3":"30", "2": "110", "1": "100"},
-{"Name": "Test 2", "3":"32", "2": "100", "1": "108"},
-]
+    teacher_id = session['user']
+    response = api.get_all_cohort_data_by_test(teacher_id)
     return _convert_to_JSON(response)
 
 @app.route("/api/signup/", methods=['POST'])

@@ -94,20 +94,20 @@ def add_student_to_cohort(student_id, cohort_id):
 
 """Reports"""
 
-def check_if_data(teacher_id):
-    """Use teacher_id to query tests table and see if any tests exist for that
-    teacher. Return boolean."""
+# def check_if_data(teacher_id):
+#     """Use teacher_id to query tests table and see if any tests exist for that
+#     teacher. Return boolean."""
 
-    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
-    scores_exist = False
-    for cohort in cohorts:
-        students = cohort.studentcohorts
-        for student in students:
-            student_id = student.student.id
-            scores = model.Score.query.filter_by(student_id=student_id).first()
-            if scores != None:
-                scores_exist = True
-    return scores_exist
+#     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+#     scores_exist = False
+#     for cohort in cohorts:
+#         students = cohort.studentcohorts
+#         for student in students:
+#             student_id = student.student.id
+#             scores = model.Score.query.filter_by(student_id=student_id).first()
+#             if scores != None:
+#                 scores_exist = True
+#     return scores_exist
 
 
 def parse_CSV(csv_path, name, date, cohort_id):
@@ -201,21 +201,121 @@ def parse_CSV(csv_path, name, date, cohort_id):
 
         model.session.commit()
 
-def get_overall_cohort_data(teacher_id):
-    """Use teacher_id to get student_ids through the cohorts table. Get all scores
-    for all students in all the cohorts associated with that teacher_id."""
+def get_all_cohort_data_by_test(teacher_id):
+    """Use teacher id to get all student scores by test and aggregate counts of
+    M/A/FB by test."""
 
+    # Get all teacher cohorts
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+    print cohorts
+    # Make list of all tests associated with teacher's cohorts
+    all_tests = []
     for cohort in cohorts:
-        students = cohort.studentcohorts
-        stu_scores = []
-        for student in students:
-            student_id = student.student.id
-            scores = model.Score.query.filter_by(student_id=student_id).all()
-            for score in scores:
-                new_score = score.score
-                stu_scores.append(new_score)
-    return stu_scores
+
+        # Get all tests associated with that cohort id
+        tests = model.Test.query.filter_by(cohort_id=cohort.id).all()
+
+        for test in tests:
+            all_tests.append(test)
+
+    print all_tests
+    resp_list = []
+    m_total = 0
+    a_total = 0
+    fb_total = 0
+
+    total_dict = {"Name": "All Tests"}
+    resp_list.append(total_dict)
+
+    for test in all_tests:
+        resp_dict = {}
+        resp_dict["Name"] = test.name
+
+        # Get all scores associated with each test id
+        scores = model.Score.query.filter_by(test_id=test.id).all()
+
+        m_count = 0
+        a_count = 0
+        fb_count = 0
+        for score in scores:
+            if score.score == 'M':
+                m_count +=1
+            elif score.score == 'A':
+                a_count +=1
+            elif score.score == 'FB':
+                fb_count += 1
+
+        m_total += m_count
+        a_total += a_count
+        fb_total += fb_count
+        resp_dict["3"] = m_count
+        resp_dict["2"] = a_count
+        resp_dict["1"] = fb_count
+        resp_list.append(resp_dict)
+
+    total_dict["3"] = m_total
+    total_dict["2"] = a_total
+    total_dict["1"] = fb_total
+
+    return resp_list
+
+def get_one_cohort_data_by_test(teacher_id, cohort_id):
+    """Use teacher id to get all student scores by test and aggregate counts of
+    M/A/FB by test."""
+
+    # Get all teacher cohorts
+    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+    print cohorts
+    # Make list of all tests associated with teacher's cohorts
+    all_tests = []
+    for cohort in cohorts:
+
+        # Get all tests associated with that cohort id
+        tests = model.Test.query.filter_by(cohort_id=cohort.id).all()
+
+        for test in tests:
+            all_tests.append(test)
+
+    print all_tests
+    resp_list = []
+    m_total = 0
+    a_total = 0
+    fb_total = 0
+
+    total_dict = {"Name": "All Tests"}
+    resp_list.append(total_dict)
+
+    for test in all_tests:
+        resp_dict = {}
+        resp_dict["Name"] = test.name
+
+        # Get all scores associated with each test id
+        scores = model.Score.query.filter_by(test_id=test.id).all()
+
+        m_count = 0
+        a_count = 0
+        fb_count = 0
+        for score in scores:
+            if score.score == 'M':
+                m_count +=1
+            elif score.score == 'A':
+                a_count +=1
+            elif score.score == 'FB':
+                fb_count += 1
+
+        m_total += m_count
+        a_total += a_count
+        fb_total += fb_count
+        resp_dict["3"] = m_count
+        resp_dict["2"] = a_count
+        resp_dict["1"] = fb_count
+        resp_list.append(resp_dict)
+
+    total_dict["3"] = m_total
+    total_dict["2"] = a_total
+    total_dict["1"] = fb_total
+
+    return resp_list
 
 def get_overall_by_most_recent_test(teacher_id):
     """Take in data returned by get_overall_cohort_data. Filter by most recent

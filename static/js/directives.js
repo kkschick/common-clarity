@@ -12,8 +12,8 @@ loopDirectives.directive( 'd3StackedBars', [
         data: '='
       },
       link: function (scope, element) {
-        var margin = {top: 30, right: 20, bottom: 30, left: 70},
-          width = 480 - margin.left - margin.right,
+        var margin = {top: 30, right: 20, bottom: 60, left: 70},
+          width = 600 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom;
 
         var svg = d3.select(element[0])
@@ -54,7 +54,15 @@ loopDirectives.directive( 'd3StackedBars', [
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
             .attr("fill", "white")
-            .call(xAxis);
+            .call(xAxis)
+            .selectAll("text")
+              .style("text-anchor", "end")
+              .style("font-size","10px")
+              .attr("dx", "-.8em")
+              .attr("dy", ".15em")
+              .attr("transform", function(d) {
+                  return "rotate(-20)";
+                  });
 
         svg.append("g")
             .attr("class", "y axis")
@@ -87,7 +95,7 @@ loopDirectives.directive( 'd3StackedBars', [
           .data(function(d) {return d.values;})
           .enter()
           .append("text")
-          .attr("x", 50)
+          .attr("x", x.rangeBand() / 2)
           .attr("y", function(d, i) { return y(d.y1) + (y(d.y0) - y(d.y1))/2; })
           .style("text-anchor", "middle")
           .text(function(d) { return d.name ; });
