@@ -254,58 +254,52 @@ def get_all_cohort_data_by_test(teacher_id):
 
     return resp_list
 
-def get_one_cohort_data_by_test(teacher_id):
+def get_one_cohort_data_by_test(cohort_id):
     """Use cohort id to get all student scores for that cohort by test and
     aggregate counts of M/A/FB by test."""
 
+    # Get tests for that cohort
+    tests = model.Test.query.filter_by(cohort_id=cohort_id).all()
 
-    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+    resp_list = []
+    m_total = 0
+    a_total = 0
+    fb_total = 0
 
-    class_dict = {}
-    for cohort in cohorts:
+    total_dict = {"Name": "All Tests"}
+    resp_list.append(total_dict)
 
-        tests = model.Test.query.filter_by(cohort_id=cohort.id).all()
+    for test in tests:
+        resp_dict = {}
+        resp_dict["Name"] = test.name
 
-        resp_list = []
-        class_dict[cohort.id] = resp_list
+        # Get all scores associated with each test id
+        scores = model.Score.query.filter_by(test_id=test.id).all()
 
-        m_total = 0
-        a_total = 0
-        fb_total = 0
+        m_count = 0
+        a_count = 0
+        fb_count = 0
+        for score in scores:
+            if score.score == 'M':
+                m_count +=1
+            elif score.score == 'A':
+                a_count +=1
+            elif score.score == 'FB':
+                fb_count += 1
 
-        total_dict = {"Name": "All Tests"}
-        resp_list.append(total_dict)
+        m_total += m_count
+        a_total += a_count
+        fb_total += fb_count
+        resp_dict["3"] = m_count
+        resp_dict["2"] = a_count
+        resp_dict["1"] = fb_count
+        resp_list.append(resp_dict)
 
-        for test in tests:
-            resp_dict = {}
-            resp_dict["Name"] = test.name
+    total_dict["3"] = m_total
+    total_dict["2"] = a_total
+    total_dict["1"] = fb_total
 
-            scores = model.Score.query.filter_by(test_id=test.id).all()
-
-            m_count = 0
-            a_count = 0
-            fb_count = 0
-            for score in scores:
-                if score.score == 'M':
-                    m_count +=1
-                elif score.score == 'A':
-                    a_count +=1
-                elif score.score == 'FB':
-                    fb_count += 1
-
-            m_total += m_count
-            a_total += a_count
-            fb_total += fb_count
-            resp_dict["3"] = m_count
-            resp_dict["2"] = a_count
-            resp_dict["1"] = fb_count
-            resp_list.append(resp_dict)
-
-        total_dict["3"] = m_total
-        total_dict["2"] = a_total
-        total_dict["1"] = fb_total
-
-    return class_dict
+    return resp_list
 
 def get_one_student_data_by_test(student_id):
 
@@ -405,57 +399,6 @@ def get_one_student_data_by_test(student_id):
 #                         student_tests.append(scores_dict)
 
 #         return all_student_scores
-
-# def get_one_cohort_data_by_test_coh(cohort_id):
-#     """Use cohort id to get all student scores for that cohort by test and
-#     aggregate counts of M/A/FB by test."""
-
-#     # Get tests for that cohort
-#     tests = model.Test.query.filter_by(cohort_id=cohort_id).all()
-
-#     resp_list = []
-#     m_total = 0
-#     a_total = 0
-#     fb_total = 0
-
-#     total_dict = {"Name": "All Tests"}
-#     resp_list.append(total_dict)
-
-#     for test in tests:
-#         resp_dict = {}
-#         resp_dict["Name"] = test.name
-
-#         # Get all scores associated with each test id
-#         scores = model.Score.query.filter_by(test_id=test.id).all()
-
-#         m_count = 0
-#         a_count = 0
-#         fb_count = 0
-#         for score in scores:
-#             if score.score == 'M':
-#                 m_count +=1
-#             elif score.score == 'A':
-#                 a_count +=1
-#             elif score.score == 'FB':
-#                 fb_count += 1
-
-#         m_total += m_count
-#         a_total += a_count
-#         fb_total += fb_count
-#         resp_dict["3"] = m_count
-#         resp_dict["2"] = a_count
-#         resp_dict["1"] = fb_count
-#         resp_list.append(resp_dict)
-
-#     total_dict["3"] = m_total
-#     total_dict["2"] = a_total
-#     total_dict["1"] = fb_total
-
-#     return resp_list
-
-
-
-
 
 # def get_overall_by_most_recent_test(teacher_id):
 #     """Take in data returned by get_overall_cohort_data. Filter by most recent

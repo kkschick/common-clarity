@@ -42,8 +42,7 @@
 
             <div ng-disabled="!selectedCohort" ng-show="selectedCohort > 0">
             SELECT A STUDENT (optional): <select ng-model="selectedStudent" name="student" id="student" class="form-field">
-                <option ng-repeat="student in cohorts[selectedCohort - 1].students" value="{{student.id}}">{{student.name}}
-                </option>
+                <option ng-repeat="student in cohorts[selectedCohort - 1].students" value="{{student.id}}">{{student.name}}</option>
             </select><br><br>
             </div>
 

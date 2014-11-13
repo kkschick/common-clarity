@@ -66,6 +66,7 @@ a {
     color: white;
     letter-spacing: 0.1em;
     cursor: pointer;
+    text-transform: uppercase;
 }
 
 .button.special {

@@ -11,14 +11,6 @@ app = Flask(__name__)
 app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route("/test/")
-def test():
-    student_id = request.args.get("id")
-    response = api.get_one_student_data_by_test(student_id)
-    print response
-    return _convert_to_JSON(response)
-
-
 @app.route("/")
 def index():
     return send_file("templates/index.html")
@@ -89,12 +81,14 @@ def all_cohort_data():
 
 @app.route("/api/singlecohortcounts/")
 def single_cohort_data():
-    response = api.get_one_cohort_data_by_test(1)
+    cohort_id = request.args.get("id")
+    response = api.get_one_cohort_data_by_test(cohort_id)
     return _convert_to_JSON(response)
 
 @app.route("/api/singlestudentcounts/")
 def single_student_data():
-    response = api.get_one_student_data_by_test(2)
+    student_id = request.args.get("id")
+    response = api.get_one_student_data_by_test(student_id)
     return _convert_to_JSON(response)
 
 @app.route("/api/signup/", methods=['POST'])

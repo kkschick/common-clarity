@@ -112,28 +112,16 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         $scope.student_selected = false;
         $scope.cohort_selected = false;
         $scope.all_selected = false;
-        $http.get("/api/singlecohortcounts/").success(function(data) {
-            $scope.one_cohort_data = data[$scope.selectedCohort];
-        });
+
         $http.get("/api/allcohortcounts/").success(function(data) {
             $scope.all_cohorts_data = data;
         });
-        $http.get("/test/", { params: {id: $scope.selectedStudent}}).success(function(data){
+        $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+            $scope.one_cohort_data = data;
+        });
+        $http.get("/api/singlestudentcounts/", { params: {id: $scope.selectedStudent }}).success(function(data){
             $scope.one_student_data = data;
         });
-
-        // $http({
-        //     url: "/test/",
-        //     method: "GET",
-        //     params: {id: $scope.selectedStudent}
-        //  }).success(function(data) {
-        //     $scope.one_student_data = data;
-        //  });
-
-
-        // $http.get("/test/:selectedStudent").success(function(data) {
-        //     $scope.one_student_data = data;
-        // });
 
         if ($scope.selectedStudent) {
             $scope.selectedUser = $scope.selectedStudent;
