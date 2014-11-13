@@ -48,6 +48,7 @@ def get_students_in_cohort(cohort_id):
     for student in students:
         student_dict = {}
         student_dict["name"] = student.student.first_name + ' ' + student.student.last_name
+        student_dict["id"] = student.student.id
         student_names.append(student_dict)
     return student_names
 

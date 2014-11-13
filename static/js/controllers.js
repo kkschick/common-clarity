@@ -118,9 +118,22 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         $http.get("/api/allcohortcounts/").success(function(data) {
             $scope.all_cohorts_data = data;
         });
-        $http.get("/api/singlestudentcounts/").success(function(data) {
+        $http.get("/test/", { params: {id: $scope.selectedStudent}}).success(function(data){
             $scope.one_student_data = data;
         });
+
+        // $http({
+        //     url: "/test/",
+        //     method: "GET",
+        //     params: {id: $scope.selectedStudent}
+        //  }).success(function(data) {
+        //     $scope.one_student_data = data;
+        //  });
+
+
+        // $http.get("/test/:selectedStudent").success(function(data) {
+        //     $scope.one_student_data = data;
+        // });
 
         if ($scope.selectedStudent) {
             $scope.selectedUser = $scope.selectedStudent;

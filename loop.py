@@ -13,7 +13,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/test/")
 def test():
-    return _convert_to_JSON(api.get_one_student_data_by_test(1))
+    student_id = request.args.get("id")
+    response = api.get_one_student_data_by_test(student_id)
+    print response
+    return _convert_to_JSON(response)
 
 
 @app.route("/")
