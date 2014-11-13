@@ -55,8 +55,11 @@
 
     </div>
 
-    <div class="chart">
+    <div class="chart" ng-show="all_selected">
         <d3-stacked-bars data="all_cohorts_data"></d3-stacked-bars>
+    </div>
+    <div class="chart">
+        <d3-stacked-bars data="one_cohort_data" ng-show="cohort_selected"></d3-stacked-bars>
     </div>
 
 </div>

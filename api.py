@@ -207,7 +207,6 @@ def get_all_cohort_data_by_test(teacher_id):
 
     # Get all teacher cohorts
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
-    print cohorts
     # Make list of all tests associated with teacher's cohorts
     all_tests = []
     for cohort in cohorts:
@@ -218,7 +217,6 @@ def get_all_cohort_data_by_test(teacher_id):
         for test in tests:
             all_tests.append(test)
 
-    print all_tests
     resp_list = []
     m_total = 0
     a_total = 0
@@ -259,24 +257,13 @@ def get_all_cohort_data_by_test(teacher_id):
 
     return resp_list
 
-def get_one_cohort_data_by_test(teacher_id, cohort_id):
-    """Use teacher id to get all student scores by test and aggregate counts of
-    M/A/FB by test."""
+def get_one_cohort_data_by_test(cohort_id):
+    """Use cohort id to get all student scores for that cohort by test and
+    aggregate counts of M/A/FB by test."""
 
-    # Get all teacher cohorts
-    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
-    print cohorts
-    # Make list of all tests associated with teacher's cohorts
-    all_tests = []
-    for cohort in cohorts:
+    # Get tests for that cohort
+    tests = model.Test.query.filter_by(cohort_id=cohort_id).all()
 
-        # Get all tests associated with that cohort id
-        tests = model.Test.query.filter_by(cohort_id=cohort.id).all()
-
-        for test in tests:
-            all_tests.append(test)
-
-    print all_tests
     resp_list = []
     m_total = 0
     a_total = 0
@@ -285,7 +272,7 @@ def get_one_cohort_data_by_test(teacher_id, cohort_id):
     total_dict = {"Name": "All Tests"}
     resp_list.append(total_dict)
 
-    for test in all_tests:
+    for test in tests:
         resp_dict = {}
         resp_dict["Name"] = test.name
 

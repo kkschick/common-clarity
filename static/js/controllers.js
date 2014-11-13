@@ -120,10 +120,10 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
             $scope.selectedUser = $scope.cohorts[$scope.selectedCohort - 1].name;
             $scope.cohort_selected = true;
             $scope.all_selected = false;
-            // $http.get("/api/allcohortcounts/").success(function(data) {
-            //     $scope.all_cohorts_data[selectedCohort] = data;
+            $http.get("/api/singlecohortcounts/").success(function(data) {
+                $scope.one_cohort_data = data;
 
-            // });
+            });
 
         }
 
