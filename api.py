@@ -321,8 +321,7 @@ def get_one_student_data_by_test(student_id):
 
     for cohort in cohorts:
 
-        tests = model.Test.query.filter_by(cohort_id=cohort.id).all()
-
+        tests = model.Test.query.filter_by(cohort_id=cohort.cohort_id).all()
         for test in tests:
             scores_dict = {}
             scores_dict["Name"] = test.name
