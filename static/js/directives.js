@@ -100,16 +100,11 @@ loopDirectives.directive( 'd3StackedBars', [
           .style("text-anchor", "middle")
           .text(function(d) {
             if (d.name != "values") {
-                if (d.name === "1") {
-                  return "FB";
-                }
-                else if (d.name === "2") {
-                  return "A";
-                }
-                else if (d.name === "3") {
-                  return "M";
-                }
+                return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
             }});
+
+
+
 
       };
 
