@@ -98,7 +98,18 @@ loopDirectives.directive( 'd3StackedBars', [
           .attr("x", x.rangeBand() / 2)
           .attr("y", function(d, i) { return y(d.y1) + (y(d.y0) - y(d.y1))/2; })
           .style("text-anchor", "middle")
-          .text(function(d) { return d.name ; });
+          .text(function(d) {
+            if (d.name != "values") {
+                if (d.name === "1") {
+                  return "FB";
+                }
+                else if (d.name === "2") {
+                  return "A";
+                }
+                else if (d.name === "3") {
+                  return "M";
+                }
+            }});
 
       };
 
