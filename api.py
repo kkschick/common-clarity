@@ -257,7 +257,6 @@ def get_all_cohort_data_by_test(teacher_id):
 
     return resp_list
 
-
 def get_one_cohort_data_by_test(teacher_id):
     """Use cohort id to get all student scores for that cohort by test and
     aggregate counts of M/A/FB by test."""
@@ -311,6 +310,102 @@ def get_one_cohort_data_by_test(teacher_id):
 
     return class_dict
 
+
+# def get_one_cohort_data_by_test_coh(cohort_id):
+#     """Use cohort id to get all student scores for that cohort by test and
+#     aggregate counts of M/A/FB by test."""
+
+#     # Get tests for that cohort
+#     tests = model.Test.query.filter_by(cohort_id=cohort_id).all()
+
+#     resp_list = []
+#     m_total = 0
+#     a_total = 0
+#     fb_total = 0
+
+#     total_dict = {"Name": "All Tests"}
+#     resp_list.append(total_dict)
+
+#     for test in tests:
+#         resp_dict = {}
+#         resp_dict["Name"] = test.name
+
+#         # Get all scores associated with each test id
+#         scores = model.Score.query.filter_by(test_id=test.id).all()
+
+#         m_count = 0
+#         a_count = 0
+#         fb_count = 0
+#         for score in scores:
+#             if score.score == 'M':
+#                 m_count +=1
+#             elif score.score == 'A':
+#                 a_count +=1
+#             elif score.score == 'FB':
+#                 fb_count += 1
+
+#         m_total += m_count
+#         a_total += a_count
+#         fb_total += fb_count
+#         resp_dict["3"] = m_count
+#         resp_dict["2"] = a_count
+#         resp_dict["1"] = fb_count
+#         resp_list.append(resp_dict)
+
+#     total_dict["3"] = m_total
+#     total_dict["2"] = a_total
+#     total_dict["1"] = fb_total
+
+#     return resp_list
+
+
+def get_one_student_data_by_test(student_id):
+
+    cohorts = model.StudentCohort.query.filter_by(student_id=student_id).all()
+
+    scores_list = []
+
+    total_dict = {"Name": "All Tests"}
+    scores_list.append(total_dict)
+    m_total = 0
+    a_total = 0
+    fb_total = 0
+
+    for cohort in cohorts:
+
+        tests = model.Test.query.filter_by(cohort_id=cohort.id).all()
+
+        for test in tests:
+            scores_dict = {}
+            scores_dict["Name"] = test.name
+            scores = model.Score.query.filter_by(test_id=test.id, student_id=student_id).all()
+
+            m_count = 0
+            a_count = 0
+            fb_count = 0
+            for score in scores:
+                if score.score == 'M':
+                    m_count +=1
+                elif score.score == 'A':
+                    a_count +=1
+                elif score.score == 'FB':
+                    fb_count += 1
+
+            m_total += m_count
+            a_total += a_count
+            fb_total += fb_count
+            scores_dict["3"] = m_count
+            scores_dict["2"] = a_count
+            scores_dict["1"] = fb_count
+            scores_list.append(scores_dict)
+
+    total_dict["3"] = m_total
+    total_dict["2"] = a_total
+    total_dict["1"] = fb_total
+
+    return scores_list
+
+
 def get_overall_by_most_recent_test(teacher_id):
     """Take in data returned by get_overall_cohort_data. Filter by most recent
     test_id. Return filtered data."""
@@ -335,53 +430,7 @@ def get_overall_by_most_recent_test(teacher_id):
 
     return scores_list
 
-def get_counts_and_percents(data):
-    """Take in a list of scores and output counts and percentages."""
 
-    length = len(data)
-
-    m_count = 0
-    a_count = 0
-    fb_count = 0
-
-    summed_scores = []
-
-    for item in data:
-        if item == 'M':
-            m_count +=1
-        elif item == 'A':
-            a_count +=1
-        elif item == 'FB':
-            fb_count += 1
-
-    m_dict = { 'name': '1M' }
-    a_dict = { 'name': '2A' }
-    fb_dict = { 'name': '3FB' }
-
-    m_dict['value'] = m_count
-    a_dict['value'] = a_count
-    fb_dict['value'] = fb_count
-
-    m_percent = (float(m_count) / float(length))
-    a_percent = (float(a_count) / float(length))
-    fb_percent = (float(fb_count) / float(length))
-
-    m2_dict = { 'name': '1M' }
-    a2_dict = { 'name': '2A' }
-    fb2_dict = { 'name': '3FB' }
-
-    m2_dict['value'] = m_percent * 100
-    a2_dict['value'] = a_percent * 100
-    fb2_dict['value'] = fb_percent * 100
-
-    summed_scores.append(m_dict)
-    summed_scores.append(a_dict)
-    summed_scores.append(fb_dict)
-    summed_scores.append(m2_dict)
-    summed_scores.append(a2_dict)
-    summed_scores.append(fb2_dict)
-
-    return summed_scores
 
 def aggregate_most_recent_for_overall_cohort(teacher_id):
     """Add up counts of M, A, and FB scores and return counts and percentages."""

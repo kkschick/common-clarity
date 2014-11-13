@@ -52,6 +52,7 @@
 
         <h3 ng-show="all_selected">REPORTS FOR ALL CLASSES:</h3>
         <h3 ng-model="selectedUser" ng-show="cohort_selected">REPORTS FOR {{selectedUser | uppercase}}:</h3>
+        <h3 ng-model="selectedUser" ng-show="student_selected">REPORTS FOR {{selectedUser | uppercase}}:</h3>
 
     </div>
 
@@ -60,6 +61,9 @@
     </div>
     <div class="chart">
         <d3-stacked-bars data="one_cohort_data" ng-show="cohort_selected"></d3-stacked-bars>
+    </div>
+    <div class="chart">
+        <d3-stacked-bars data="one_student_data" ng-show="student_selected"></d3-stacked-bars>
     </div>
 
 </div>
