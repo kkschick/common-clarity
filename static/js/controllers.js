@@ -109,6 +109,8 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
 
     $scope.viewReport = function(selectedCohort, selectedStudent) {
 
+        $scope.cohort_selected = false;
+        $scope.all_selected = false;
 
         if ($scope.selectedStudent) {
             $scope.selectedUser = $scope.selectedStudent;
@@ -121,7 +123,7 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
             $scope.cohort_selected = true;
             $scope.all_selected = false;
             $http.get("/api/singlecohortcounts/").success(function(data) {
-                $scope.one_cohort_data = data;
+                $scope.one_cohort_data = data[$scope.selectedCohort];
 
             });
 

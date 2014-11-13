@@ -57,7 +57,7 @@ loopDirectives.directive( 'd3StackedBars', [
             .call(xAxis)
             .selectAll("text")
               .style("text-anchor", "end")
-              .style("font-size","10px")
+              .style("font-size","12px")
               .attr("dx", "-.8em")
               .attr("dy", ".15em")
               .attr("transform", function(d) {
