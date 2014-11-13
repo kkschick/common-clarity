@@ -41,7 +41,7 @@ loopDirectives.directive( 'd3StackedBars', [
         scope.render = function(data) {
         x.domain(data.map(function(d) { return d.Name; }));
 
-        color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Name"; }));
+        color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Name" && key!== "values"; }));
 
         data.forEach(function(d) {
         var y0 = 0;
@@ -90,7 +90,6 @@ loopDirectives.directive( 'd3StackedBars', [
             .attr("y", function(d) { return y(d.y1); })
             .attr("height", function(d) { return y(d.y0) - y(d.y1); })
             .style("fill", function(d) { return color(d.name); });
-
         bars.selectAll("text")
           .data(function(d) {return d.values;})
           .enter()
@@ -109,30 +108,30 @@ loopDirectives.directive( 'd3StackedBars', [
               .attr("class", "legend")
               .attr("transform", function(d, i) { return "translate(40," + i * 20 + ")"; });
 
-          legend.append("rect")
-              .attr("x", width - 18)
-              .attr("width", 18)
-              .attr("height", 18)
-              .style("fill", color);
+        legend.append("rect")
+            .attr("x", width - 18)
+            .attr("width", 18)
+            .attr("height", 18)
+            .style("fill", color);
 
-          legend.append("text")
-              .attr("x", width - 24)
-              .attr("y", 9)
-              .attr("dy", ".35em")
-              .style("text-anchor", "end")
-              .attr("fill", "white")
-              .text(function(d) {
-                if (d != "values") {
-                  if (d === "3") {
-                    return "M";
-                  }
-                  else if (d === "2") {
-                    return "A";
-                  }
-                  else if (d === "1") {
-                    return "FB";
-                  }
-          }});
+        legend.append("text")
+            .attr("x", width - 24)
+            .attr("y", 9)
+            .attr("dy", ".35em")
+            .style("text-anchor", "end")
+            .attr("fill", "white")
+            .text(function(d) {
+              if (d != "values") {
+                if (d === "3") {
+                  return "M";
+                }
+                else if (d === "2") {
+                  return "A";
+                }
+                else if (d === "1") {
+                  return "FB";
+                }
+        }});
       };
 
           scope.$watch('data', function(){

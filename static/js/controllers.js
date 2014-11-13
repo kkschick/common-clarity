@@ -107,24 +107,24 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         }
     };
 
-    $scope.viewReport = function() {
+    $scope.viewReport = function(selectedCohort, selectedStudent) {
 
         $scope.student_selected = false;
         $scope.cohort_selected = false;
         $scope.all_selected = false;
 
-        if ($scope.selectedStudent) {
-            $scope.selectedUser = $scope.selectedStudent;
+        if (selectedStudent) {
+            $scope.selectedUser = selectedStudent;
             $scope.student_selected = true;
             $scope.cohort_selected = false;
             $scope.all_selected = false;
-            $http.get("/api/singlestudentcounts/", { params: {id: $scope.selectedStudent }}).success(function(data){
+            $http.get("/api/singlestudentcounts/", { params: {id: selectedStudent }}).success(function(data){
                 $scope.one_student_data = data;
             });
         }
 
-        else if ($scope.selectedCohort > 0) {
-            $scope.selectedUser = $scope.cohorts[$scope.selectedCohort - 1].name;
+        else if (selectedCohort > 0) {
+            $scope.selectedUser = $scope.cohorts[selectedCohort - 1].name;
             $scope.student_selected = false;
             $scope.cohort_selected = true;
             $scope.all_selected = false;
