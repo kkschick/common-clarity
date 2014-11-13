@@ -107,27 +107,20 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         }
     };
 
-    $scope.viewReport = function(selectedCohort, selectedStudent) {
+    $scope.viewReport = function() {
 
         $scope.student_selected = false;
         $scope.cohort_selected = false;
         $scope.all_selected = false;
-
-        $http.get("/api/allcohortcounts/").success(function(data) {
-            $scope.all_cohorts_data = data;
-        });
-        $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-            $scope.one_cohort_data = data;
-        });
-        $http.get("/api/singlestudentcounts/", { params: {id: $scope.selectedStudent }}).success(function(data){
-            $scope.one_student_data = data;
-        });
 
         if ($scope.selectedStudent) {
             $scope.selectedUser = $scope.selectedStudent;
             $scope.student_selected = true;
             $scope.cohort_selected = false;
             $scope.all_selected = false;
+            $http.get("/api/singlestudentcounts/", { params: {id: $scope.selectedStudent }}).success(function(data){
+                $scope.one_student_data = data;
+            });
         }
 
         else if ($scope.selectedCohort > 0) {
@@ -135,12 +128,18 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
             $scope.student_selected = false;
             $scope.cohort_selected = true;
             $scope.all_selected = false;
+            $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+                $scope.one_cohort_data = data;
+            });
         }
 
         else {
             $scope.student_selected = false;
             $scope.cohort_selected = false;
             $scope.all_selected = true;
+            $http.get("/api/allcohortcounts/").success(function(data) {
+                $scope.all_cohorts_data = data;
+            });
         }
 
     };
