@@ -310,6 +310,59 @@ def get_one_cohort_data_by_test(teacher_id):
 
     return class_dict
 
+# def get_one_student_data_by_test(teacher_id):
+
+# # {
+# #     "Walter Klyce": [{"Name": "All Tests", "M": 5}, {"Name": "Test 2", "M": 3}],
+# #     "Katie Schick": [{"Name": "All Tests", "M": 5}, {"Name": "Test 2", "M": 3}],
+# # }
+
+# # Student name into outer dict with tests list
+
+
+#     all_student_scores = {}
+
+#     teacher = model.User.query.filter_by(id=teacher_id).first()
+
+#     cohorts = teacher.cohorts
+
+#     test_list = []
+#     for cohort in cohorts:
+#         tests = cohort.tests
+#         for test in tests:
+#             test_list.append(test)
+#         studentcohorts = cohort.studentcohorts
+#         student_tests = []
+#         for test in test_list:
+#             for studcohort in studentcohorts:
+#                 students = model.User.query.filter_by(id=studcohort.student.id).all()
+#                 for student in students:
+#                     all_student_scores[studcohort.student.first_name + ' ' + studcohort.student.last_name] = student_tests
+#                     scores_dict = {}
+#                     scores = model.Score.query.filter_by(student_id=studcohort.student.id, test_id=test.id).all()
+#                     for score in scores:
+#                         scores_dict["Name"] = test.name
+
+#                         m_count = 0
+#                         a_count = 0
+#                         fb_count = 0
+#                         for score in scores:
+#                             if score.score == 'M':
+#                                 m_count +=1
+#                             elif score.score == 'A':
+#                                 a_count +=1
+#                             elif score.score == 'FB':
+#                                 fb_count += 1
+
+#                         # m_total += m_count
+#                         # a_total += a_count
+#                         # fb_total += fb_count
+#                         scores_dict["3"] = m_count
+#                         scores_dict["2"] = a_count
+#                         scores_dict["1"] = fb_count
+#                         student_tests.append(scores_dict)
+
+#         return all_student_scores
 
 # def get_one_cohort_data_by_test_coh(cohort_id):
 #     """Use cohort id to get all student scores for that cohort by test and
