@@ -20,6 +20,7 @@ loopDirectives.directive( 'd3StackedBars', [
           .append("svg")
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom)
+          .attr('id', 'svg_id')
           .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -39,6 +40,9 @@ loopDirectives.directive( 'd3StackedBars', [
             .tickFormat(d3.format(".0%"));
 
         scope.render = function(data) {
+
+        svg.selectAll("*").remove();
+
         x.domain(data.map(function(d) { return d.Name; }));
 
         color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Name" && key!== "values"; }));
@@ -87,9 +91,11 @@ loopDirectives.directive( 'd3StackedBars', [
             .data(function(d) { return d.values; })
           .enter().append("rect")
             .attr("width", x.rangeBand())
+            .attr("class", "rect")
             .attr("y", function(d) { return y(d.y1); })
             .attr("height", function(d) { return y(d.y0) - y(d.y1); })
             .style("fill", function(d) { return color(d.name); });
+
         bars.selectAll("text")
           .data(function(d) {return d.values;})
           .enter()
@@ -136,7 +142,9 @@ loopDirectives.directive( 'd3StackedBars', [
 
           scope.$watch('data', function(){
               scope.render(scope.data);
-          }, true);
+          });
+
+
         }
     };
   }
