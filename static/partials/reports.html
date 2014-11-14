@@ -55,8 +55,8 @@
     </div>
 
     <div ng-show="viewReportClicked">
-        <form action="selectedReport">
-            <input type="radio" name="reportToView" value="overall" checked="checked">VIEW OVERALL
+        <form action="selectedReport" ng-model="selectedSubReport">
+            <input type="radio" name="reportToView" value="1" checked="checked">VIEW OVERALL
             <input type="radio" name="reportToView" value="byStandard">VIEW BY STANDARD<br>
         </form>
 

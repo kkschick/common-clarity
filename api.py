@@ -446,17 +446,32 @@ def aggregate_most_recent_by_standard_overall_cohort(teacher_id):
     and return counts and percentages for each standard."""
 
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
-    tests = model.Test.query.filter(model.Test.test_date==func.max(model.Test.test_date).select()).all()
-    test_ids = []
+
+    most_recent_tests = []
+    for cohort in cohorts:
+        # test = model.Test.query.filter(model.Test.cohort_id==cohort.id).filter(model.Test.test_date==func.max(model.Test.test_date).select()).first()
+        # print test
+
+        tests = model.Test.query.filter_by(cohort_id=cohort.id).all()
+        prev_date = None
+        for test in tests:
+            if prev_date == None:
+                prev_date = test.test_date
+            elif prev_date <= test.test_date:
+                prev_date = test.test_date
+        for test in tests:
+            if test.test_date == prev_date:
+                test_id = test.id
+        most_recent_tests.append(test_id)
+
     student_ids = []
     standard_ids = []
     for cohort in cohorts:
         students = cohort.studentcohorts
         for student in students:
             student_ids.append(student.student.id)
-    for test in tests:
-        test_ids.append(test.id)
-        standards = model.Score.query.filter_by(test_id=test.id, student_id=student_ids[0]).all()
+    for test_id in most_recent_tests:
+        standards = model.Score.query.filter_by(test_id=test_id, student_id=student_ids[0]).all()
         for standard in standards:
             standard_ids.append(standard.standard_id)
 
@@ -464,7 +479,7 @@ def aggregate_most_recent_by_standard_overall_cohort(teacher_id):
     for standard in standard_ids:
         scores_by_standard[standard] = []
 
-    for test_id in test_ids:
+    for test_id in most_recent_tests:
         for student_id in student_ids:
             for standard_id in standard_ids:
                 scores = model.Score.query.filter_by(student_id=student_id, test_id=test_id, standard_id=standard_id).all()
@@ -472,7 +487,27 @@ def aggregate_most_recent_by_standard_overall_cohort(teacher_id):
                     scores_by_standard[standard_id].append(score.score)
 
     for standard in standard_ids:
-        scores_by_standard[standard] = get_counts_and_percents(scores_by_standard[standard])
+        list_to_count = scores_by_standard[standard]
+
+        scores_dict = {}
+
+        m_count = 0
+        a_count = 0
+        fb_count = 0
+
+        for item in list_to_count:
+            if item == "M":
+                m_count += 1
+            elif item == "A":
+                a_count += 1
+            elif item == "FB":
+                fb_count += 1
+
+        scores_dict["3"] = m_count
+        scores_dict["2"] = a_count
+        scores_dict["1"] = fb_count
+
+        scores_by_standard[standard] = [scores_dict]
 
     return scores_by_standard
 
