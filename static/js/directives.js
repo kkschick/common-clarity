@@ -12,7 +12,7 @@ loopDirectives.directive( 'd3StackedBars', [
         data: '='
       },
       link: function (scope, element) {
-        var margin = {top: 30, right: 40, bottom: 60, left: 70},
+        var margin = {top: 30, right: 60, bottom: 60, left: 70},
           width = 600 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom;
 
@@ -108,6 +108,25 @@ loopDirectives.directive( 'd3StackedBars', [
                 return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
             }});
 
+
+        var tip = d3.tip()
+          .attr('class', 'd3-tip')
+          .offset([-10, 0])
+          .html(function(d) {
+              if (d != "values") {
+                if (d === "3") {
+                  return "Meets Standard (>75%)";
+                }
+                else if (d === "2") {
+                  return "Approaches Standard (>50%)";
+                }
+                else if (d === "1") {
+                  return "Falls Below Standard (>0%)";
+                }
+        }});
+
+        svg.call(tip);
+
         var legend = svg.selectAll(".legend")
               .data(color.domain().slice().reverse())
             .enter().append("g")
@@ -115,16 +134,17 @@ loopDirectives.directive( 'd3StackedBars', [
               .attr("transform", function(d, i) { return "translate(40," + i * 20 + ")"; });
 
         legend.append("rect")
-            .attr("x", width - 18)
+            .attr("x", width - 36)
             .attr("width", 18)
             .attr("height", 18)
-            .style("fill", color);
+            .style("fill", color)
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
 
         legend.append("text")
-            .attr("x", width - 24)
+            .attr("x", width - 10)
             .attr("y", 9)
             .attr("dy", ".35em")
-            .style("text-anchor", "end")
             .attr("fill", "white")
             .text(function(d) {
               if (d != "values") {
