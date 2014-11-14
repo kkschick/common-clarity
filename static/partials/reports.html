@@ -32,9 +32,8 @@
     </div>
     <hr>
     <div>
-        <h3>SELECT A GROUP TO VIEW REPORTS BY</h3>
-        <h4>Reports can be viewed across all classes, by a single class, or by a single student.</h4>
-        <form name="report_cohort">
+        <h3>VIEW REPORTS BY:</h3>
+        <form name="reportCohort">
 
             SELECT A CLASS: <select ng-model="selectedCohort" name="cohort" id="cohort" required="required" class="form-field">
                 <option value="0">All Classes</option>
@@ -49,23 +48,36 @@
             <button ng-click="viewReport()" class="button special" id="update">VIEW REPORT</button>
         </form>
 
-        <h3 ng-show="allSelected">REPORTS FOR ALL CLASSES:</h3>
-        <h3 ng-model="selectedUser" ng-show="cohortSelected">REPORTS FOR {{selectedUser | uppercase}}:</h3>
-        <h3 ng-model="selectedUser" ng-show="studentSelected">REPORTS FOR {{selectedUser | uppercase}}:</h3>
+        <h2 ng-show="allSelected">REPORTS FOR ALL CLASSES:</h2>
+        <h2 ng-model="selectedUser" ng-show="cohortSelected">REPORTS FOR {{selectedUser | uppercase}}:</h2>
+        <h2 ng-model="selectedUser" ng-show="studentSelected">REPORTS FOR {{selectedUser | uppercase}}:</h2>
 
     </div>
+
+    <div ng-show="viewReportClicked">
+        <form action="selectedReport">
+            <input type="radio" name="reportToView" value="overall" checked="checked">VIEW OVERALL
+            <input type="radio" name="reportToView" value="byStandard">VIEW BY STANDARD<br>
+        </form>
+
+    </div>
+
 
     <div class="chart" ng-show="allSelected">
         <d3-stacked-bars data="allCohortsData"></d3-stacked-bars>
     </div>
 
-    <div class="chart">
-        <d3-stacked-bars data="oneCohortData" ng-show="cohortSelected"></d3-stacked-bars>
+
+
+    <div class="chart" ng-show="cohortSelected">
+        <d3-stacked-bars data="oneCohortData"></d3-stacked-bars>
     </div>
 
-    <div class="chart">
-        <d3-stacked-bars data="oneStudentData" ng-show="studentSelected"></d3-stacked-bars>
+
+    <div class="chart" ng-show="studentSelected">
+        <d3-stacked-bars data="oneStudentData"></d3-stacked-bars>
     </div>
+
 
 </div>
 

@@ -115,6 +115,8 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         $scope.cohortSelected = false;
         $scope.allSelected = false;
 
+        $scope.viewReportClicked = true;
+
         if ($scope.selectedStudent) {
             var student = JSON.parse($scope.selectedStudent);;
             $scope.selectedUser = student.name;
