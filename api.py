@@ -445,6 +445,8 @@ def aggregate_most_recent_by_standard_overall_cohort(teacher_id):
     """Break out filtered data by standard. Aggregate M/A/FB scores by standard
     and return counts and percentages for each standard."""
 
+    scores_list = []
+
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
 
     most_recent_tests = []
@@ -465,51 +467,80 @@ def aggregate_most_recent_by_standard_overall_cohort(teacher_id):
         most_recent_tests.append(test_id)
 
     student_ids = []
-    standard_ids = []
+    standards_list = []
     for cohort in cohorts:
         students = cohort.studentcohorts
         for student in students:
             student_ids.append(student.student.id)
     for test_id in most_recent_tests:
-        standards = model.Score.query.filter_by(test_id=test_id, student_id=student_ids[0]).all()
-        for standard in standards:
-            standard_ids.append(standard.standard_id)
+        scores = model.Score.query.filter_by(test_id=test_id, student_id=student_ids[0]).all()
+        for score in scores:
+            standards = model.Standard.query.filter_by(id=score.standard_id).all()
+            for standard in standards:
+                standards_list.append(standard)
 
-    scores_by_standard = {}
-    for standard in standard_ids:
-        scores_by_standard[standard] = []
+    for standard in standards_list:
+        scores_by_standard = {}
+        scores_by_standard["Name"] = standard.code
+        scores_by_standard["Description"] = standard.description
+        scores_by_standard["ID"] = standard.id
 
-    for test_id in most_recent_tests:
-        for student_id in student_ids:
-            for standard_id in standard_ids:
-                scores = model.Score.query.filter_by(student_id=student_id, test_id=test_id, standard_id=standard_id).all()
+        for test_id in most_recent_tests:
+            for student_id in student_ids:
+                scores = model.Score.query.filter_by(student_id=student_id, test_id=test_id, standard_id=standard.id).all()
+
+                m_count = 0
+                a_count = 0
+                fb_count = 0
                 for score in scores:
-                    scores_by_standard[standard_id].append(score.score)
+                    if score.score == "M":
+                        m_count += 1
+                    elif score.score == "A":
+                        a_count += 1
+                    elif score.score == "FB":
+                        fb_count += 1
 
-    for standard in standard_ids:
-        list_to_count = scores_by_standard[standard]
+                scores_by_standard["3"] = m_count
+                scores_by_standard["2"] = a_count
+                scores_by_standard["1"] = fb_count
 
-        scores_dict = {}
+    #     scores_list.append(scores_by_standard)
 
-        m_count = 0
-        a_count = 0
-        fb_count = 0
+    # return scores_list
 
-        for item in list_to_count:
-            if item == "M":
-                m_count += 1
-            elif item == "A":
-                a_count += 1
-            elif item == "FB":
-                fb_count += 1
+    # for test_id in most_recent_tests:
+    #     for student_id in student_ids:
+    #         for standard_id in standard_ids:
+    #             scores = model.Score.query.filter_by(student_id=student_id, test_id=test_id, standard_id=standard_id).all()
+    #             for score in scores:
+    #                 scores_by_standard[standard_id].append(score.score)
 
-        scores_dict["3"] = m_count
-        scores_dict["2"] = a_count
-        scores_dict["1"] = fb_count
+    # for standard in standard_ids:
+    #     list_to_count = scores_by_standard[standard]
 
-        scores_by_standard[standard] = [scores_dict]
+    #     scores_dict = {}
 
-    return scores_by_standard
+    #     m_count = 0
+    #     a_count = 0
+    #     fb_count = 0
+
+    #     for item in list_to_count:
+    #         if item == "M":
+    #             m_count += 1
+    #         elif item == "A":
+    #             a_count += 1
+    #         elif item == "FB":
+    #             fb_count += 1
+
+    #     scores_dict["3"] = m_count
+    #     scores_dict["2"] = a_count
+    #     scores_dict["1"] = fb_count
+
+    #     scores_by_standard[standard] = [scores_dict]
+
+    #     scores_list.append(scores_by_standard)
+
+    # return scores_list
 
 
 def aggregate_all_tests_by_standard_overall_cohort(teacher_id):
