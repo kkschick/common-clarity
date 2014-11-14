@@ -109,12 +109,13 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
 
     $scope.viewReport = function() {
 
+        $scope.selectedUser = null;
+
         $scope.student_selected = false;
         $scope.cohort_selected = false;
         $scope.all_selected = false;
 
         if ($scope.selectedStudent) {
-            $scope.selectedUser = null;
             $scope.selectedUser = $scope.selectedStudent;
             $scope.student_selected = true;
             $scope.cohort_selected = false;
@@ -122,10 +123,10 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
             $http.get("/api/singlestudentcounts/", { params: {id: $scope.selectedStudent }}).success(function(data){
                 $scope.one_student_data = data;
             });
+            $scope.selectedStudent = null;
         }
 
         else if ($scope.selectedCohort > 0) {
-            $scope.selectedUser = null;
             $scope.selectedUser = $scope.cohorts[$scope.selectedCohort - 1].name;
             $scope.student_selected = false;
             $scope.cohort_selected = true;
