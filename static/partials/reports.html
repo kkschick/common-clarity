@@ -15,9 +15,9 @@
 <div class="large-under-nav" ng-controller="ReportsController">
     <h2>REPORTS</h2>
 
-    <button ng-click="changeClick()" ng-show="import_clicked_button" class="button special">IMPORT TEST DATA</button>
+    <button ng-click="changeClick()" ng-show="importClickedButton" class="button special">IMPORT TEST DATA</button>
 
-    <div ng-show="import_clicked">
+    <div ng-show="importClicked">
         <form action="/upload/" method="POST" enctype="multipart/form-data">
             <h4>SELECT A CLASS:</h4>
                 <select ng-model="cohort_select" name="cohort" id="cohort" required="required" class="form-field">
@@ -27,7 +27,7 @@
             TEST DATE: <input type="date" name="test_date" class="form-field"><br><br>
             <input type="file" name="csvfile" class="form-field"> <br><br>
 
-            <input type="submit" name="submit" value="IMPORT TEST" ng-show="import_clicked_button = true" class="button special">
+            <input type="submit" name="submit" value="IMPORT TEST" ng-show="importClickedButton = true" class="button special">
         </form>
     </div>
     <hr>
@@ -43,30 +43,28 @@
 
             <div ng-disabled="!selectedCohort" ng-show="selectedCohort > 0">
             SELECT A STUDENT (optional): <select ng-model="selectedStudent" name="student" id="student" class="form-field">
-                <option ng-repeat="student in cohorts[selectedCohort - 1].students" value="{{student.id}}">{{student.name}}</option>
+                <option ng-repeat="student in cohorts[selectedCohort - 1].students" value="{{student}}">{{student.name}}</option>
             </select><br><br>
             </div>
             <button ng-click="viewReport()" class="button special" id="update">VIEW REPORT</button>
         </form>
-cohort {{selectedCohort}}<br>
-student {{selectedStudent}}<br>
-user {{selectedUser}}<br>
-        <h3 ng-show="all_selected">REPORTS FOR ALL CLASSES:</h3>
-        <h3 ng-model="selectedUser" ng-show="cohort_selected">REPORTS FOR {{selectedUser | uppercase}}:</h3>
-        <h3 ng-model="selectedUser" ng-show="student_selected">REPORTS FOR {{selectedUser | uppercase}}:</h3>
+
+        <h3 ng-show="allSelected">REPORTS FOR ALL CLASSES:</h3>
+        <h3 ng-model="selectedUser" ng-show="cohortSelected">REPORTS FOR {{selectedUser | uppercase}}:</h3>
+        <h3 ng-model="selectedUser" ng-show="studentSelected">REPORTS FOR {{selectedUser | uppercase}}:</h3>
 
     </div>
 
-    <div class="chart" ng-show="all_selected">
-        <d3-stacked-bars data="all_cohorts_data"></d3-stacked-bars>
-    </div>
-
-    <div class="chart">
-        <d3-stacked-bars data="one_cohort_data" ng-show="cohort_selected"></d3-stacked-bars>
+    <div class="chart" ng-show="allSelected">
+        <d3-stacked-bars data="allCohortsData"></d3-stacked-bars>
     </div>
 
     <div class="chart">
-        <d3-stacked-bars data="one_student_data" ng-show="student_selected"></d3-stacked-bars>
+        <d3-stacked-bars data="oneCohortData" ng-show="cohortSelected"></d3-stacked-bars>
+    </div>
+
+    <div class="chart">
+        <d3-stacked-bars data="oneStudentData" ng-show="studentSelected"></d3-stacked-bars>
     </div>
 
 </div>

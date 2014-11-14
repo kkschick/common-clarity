@@ -2,10 +2,8 @@
 
 var loopApp = angular.module('loopApp', [
   'ngRoute',
-  // 'loopAnimations',
   'loopControllers',
   'loopDirectives'
-  // 'angularCharts',
   // 'loopFilters',
   // 'loopServices',
 ]);
