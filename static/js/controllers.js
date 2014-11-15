@@ -118,11 +118,13 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         $scope.viewReportClicked = true;
 
         if ($scope.selectedStudent) {
+            $scope.viewReportClicked = false;
             var student = JSON.parse($scope.selectedStudent);
             $scope.selectedUser = student.name;
             $scope.studentSelected = true;
             $scope.cohortSelected = false;
             $scope.allSelected = false;
+
             $http.get("/api/singlestudentcounts/", { params: {id: student.id }}).success(function(data){
                 $scope.oneStudentData = data;
             });
@@ -131,20 +133,33 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
 
         else if ($scope.selectedCohort > 0) {
             $scope.selectedUser = $scope.cohorts[$scope.selectedCohort - 1].name;
+            $scope.selectedSubReport = "overall";
             $scope.studentSelected = false;
             $scope.cohortSelected = true;
             $scope.allSelected = false;
+
             $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
                 $scope.oneCohortData = data;
+            });
+
+            $http.get("/api/mostrecentcohort/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+                $scope.cohortStandard = data;
             });
         }
 
         else {
+
+            $scope.selectedSubReport = "overall";
             $scope.studentSelected = false;
             $scope.cohortSelected = false;
             $scope.allSelected = true;
+
             $http.get("/api/allcohortcounts/").success(function(data) {
                 $scope.allCohortsData = data;
+            });
+
+            $http.get("/api/mostrecentall/").success(function(data) {
+                $scope.allStandard = data;
             });
         }
 

@@ -33,6 +33,7 @@ class Cohort(Base):
 
     teacher = relationship("User", backref=backref("cohorts", order_by=id))
 
+
 class StudentCohort(Base):
     __tablename__ = "studentcohorts"
 

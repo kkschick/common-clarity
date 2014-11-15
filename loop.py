@@ -14,7 +14,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/test/")
 def test():
-    return _convert_to_JSON(api.aggregate_most_recent_by_standard_overall_cohort(1))
+    return _convert_to_JSON(api.aggregate_all_scores_by_standard_single_student(31))
 
 @app.route("/")
 def index():
@@ -95,6 +95,19 @@ def single_student_data():
     student_id = request.args.get("id")
     response = api.get_one_student_data_by_test(student_id)
     return _convert_to_JSON(response)
+
+@app.route("/api/mostrecentall/")
+def most_recent_all_by_standard():
+    teacher_id = session['user']
+    response = api.aggregate_most_recent_by_standard_overall_cohort(teacher_id)
+    return _convert_to_JSON(response)
+
+@app.route("/api/mostrecentcohort/")
+def most_recent_single_cohort_by_standard():
+    cohort_id = request.args.get("id")
+    response = api.aggregate_most_recent_by_standard_single_cohort(cohort_id)
+    return _convert_to_JSON(response)
+
 
 @app.route("/api/signup/", methods=['POST'])
 def adduser():

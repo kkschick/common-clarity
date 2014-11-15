@@ -55,27 +55,29 @@
     </div>
 
     <div ng-show="viewReportClicked">
-        <form action="selectedReport" ng-model="selectedSubReport">
-            <input type="radio" name="reportToView" value="1" checked="checked">VIEW OVERALL
-            <input type="radio" name="reportToView" value="byStandard">VIEW BY STANDARD<br>
+        <form action="selectedReport">
+            <input type="radio" ng-model="selectedSubReport" value="overall" ng-checked="true">VIEW OVERALL
+            <input type="radio" ng-model="selectedSubReport" value="byStandard">VIEW BY STANDARD<br>
         </form>
 
     </div>
 
-
     <div class="chart" ng-show="allSelected">
-        <d3-stacked-bars data="allCohortsData"></d3-stacked-bars>
+        <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="allCohortsData"></d3-stacked-bars>
+        <d3-stacked-bars-wide ng-show="selectedSubReport === 'byStandard'" data="allStandard"></d3-stacked-bars-wide>
     </div>
 
 
 
     <div class="chart" ng-show="cohortSelected">
-        <d3-stacked-bars data="oneCohortData"></d3-stacked-bars>
+        <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="oneCohortData"></d3-stacked-bars>
+        <d3-stacked-bars-wide ng-show="selectedSubReport === 'byStandard'" data="cohortStandard"></d3-stacked-bars-wide>
     </div>
 
 
     <div class="chart" ng-show="studentSelected">
-        <d3-stacked-bars data="oneStudentData"></d3-stacked-bars>
+        <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="oneStudentData"></d3-stacked-bars>
+
     </div>
 
 
