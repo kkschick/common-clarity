@@ -3,7 +3,6 @@ body {
     letter-spacing: 0.1em;
     color: white;
     background-image: url("/static/img/background.jpg");
-    background-size: cover;
     width: auto;
     margin-top: 0px;
 }
@@ -149,6 +148,12 @@ form p input {
     height: 100%;
     text-align: left;
     table-layout: fixed;
+}
+
+.standard-table {
+    width: 650px;
+    text-transform: none;
+    font-size: 11px;
 }
 
 th {

@@ -64,14 +64,41 @@
 
     <div class="chart" ng-show="allSelected">
         <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="allCohortsData"></d3-stacked-bars>
-        <d3-stacked-bars-wide ng-show="selectedSubReport === 'byStandard'" data="allStandard"></d3-stacked-bars-wide>
+
+        <div ng-show="selectedSubReport === 'byStandard'">
+            <d3-stacked-bars-wide data="allStandard"></d3-stacked-bars-wide>
+            <table class="standard-table">
+                <tr>
+                    <td>CODE</td>
+                    <td>DESCRIPTION</td>
+                </tr>
+                <tr ng-repeat="item in tableStandard">
+                    <td>{{item.Name}}</td>
+                    <td>{{item.Description}}</td>
+                </tr>
+            </table>
+        </div>
+
     </div>
 
 
 
     <div class="chart" ng-show="cohortSelected">
         <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="oneCohortData"></d3-stacked-bars>
-        <d3-stacked-bars-wide ng-show="selectedSubReport === 'byStandard'" data="cohortStandard"></d3-stacked-bars-wide>
+
+        <div ng-show="selectedSubReport === 'byStandard'">
+            <d3-stacked-bars-wide data="cohortStandard"></d3-stacked-bars-wide>
+            <table class="standard-table">
+                <tr>
+                    <td>CODE</td>
+                    <td>DESCRIPTION</td>
+                </tr>
+                <tr ng-repeat="item in tableCohortStandard">
+                    <td>{{item.Name}}</td>
+                    <td>{{item.Description}}</td>
+                </tr>
+            </table>
+        </div>
     </div>
 
 

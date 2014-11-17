@@ -118,6 +118,7 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         $scope.viewReportClicked = true;
 
         if ($scope.selectedStudent) {
+            $scope.selectedSubReport = "overall";
             $scope.viewReportClicked = false;
             var student = JSON.parse($scope.selectedStudent);
             $scope.selectedUser = student.name;
@@ -144,6 +145,7 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
 
             $http.get("/api/mostrecentcohort/", {params: { id: $scope.selectedCohort }}).success(function(data) {
                 $scope.cohortStandard = data;
+                $scope.tableCohortStandard = angular.copy(data);
             });
         }
 
@@ -160,6 +162,7 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
 
             $http.get("/api/mostrecentall/").success(function(data) {
                 $scope.allStandard = data;
+                $scope.tableStandard = angular.copy(data);
             });
         }
 

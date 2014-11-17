@@ -180,7 +180,7 @@ loopDirectives.directive( 'd3StackedBarsWide', [
       },
       link: function (scope, element) {
         var margin = {top: 30, right: 60, bottom: 60, left: 70},
-          width = 800 - margin.left - margin.right,
+          width = 650 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom;
 
         var svg = d3.select(element[0])
