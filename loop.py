@@ -1,4 +1,4 @@
-from flask import Flask, make_response, send_file, session, request, redirect, abort
+from flask import Flask, make_response, send_file, session, request, redirect
 import api
 import json
 import os
@@ -32,6 +32,22 @@ def upload_file():
     cohort_id = request.form["cohort"]
     api.parse_CSV(file_path, test_name, test_date, cohort_id)
     return redirect("/#/reports/")
+
+@app.route('/upload2/', methods=['GET', 'POST'])
+def upload_class_file():
+    if request.method == 'POST':
+        csvfile = request.files['studentfile']
+        if csvfile and allowed_file(csvfile.filename):
+            filename = secure_filename(csvfile.filename)
+            file_path = app.config['UPLOAD_FOLDER'] + filename
+            csvfile.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    class_name = request.form.get("class_name")
+    teacher_id = session['user']
+    cohort_id = api.add_new_cohort(class_name, teacher_id)
+
+    api.create_student_from_csv(file_path, 10)
+
+    return redirect("/#/settings/")
 
 def _convert_to_JSON(result):
     """Convert result object to a JSON web request."""

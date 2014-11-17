@@ -90,23 +90,24 @@ def add_student_to_cohort(student_id, cohort_id):
     model.session.add(studentcohort)
     model.session.commit()
 
+def create_student_from_csv(csv_path, cohort_id):
+    """Parse CSV of new students and add each to users table in database."""
+
+    user_type = "student"
+
+    with open(csv_path, 'rb') as f:
+        reader = csv.reader(f, delimiter=',')
+        for row in reader:
+            user = model.User(user_type=user_type, first_name=row[0], last_name=row[1], username=row[2], password=row[3])
+            model.session.add(user)
+            model.session.commit()
+            student_id = (model.User.query.filter_by(username=row[2]).first()).id
+            studentcohort = model.StudentCohort(student_id=student_id, cohort_id=cohort_id)
+            model.session.add(studentcohort)
+            model.session.commit()
+
+
 """Reports"""
-
-# def check_if_data(teacher_id):
-#     """Use teacher_id to query tests table and see if any tests exist for that
-#     teacher. Return boolean."""
-
-#     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
-#     scores_exist = False
-#     for cohort in cohorts:
-#         students = cohort.studentcohorts
-#         for student in students:
-#             student_id = student.student.id
-#             scores = model.Score.query.filter_by(student_id=student_id).first()
-#             if scores != None:
-#                 scores_exist = True
-#     return scores_exist
-
 
 def parse_CSV(csv_path, name, date, cohort_id):
     """Take CSV file that was uploaded and parse it. Create new test in Tests table.
@@ -132,9 +133,9 @@ def parse_CSV(csv_path, name, date, cohort_id):
         # Read through the rest of the file and add the standards and scores to lists
         standards = []
         scores = []
-        for rows in reader:
-            standards.append(rows[0])
-            scores.append(rows[1:-5])
+        for row in reader:
+            standards.append(row[0])
+            scores.append(row[1:-5])
 
         # Create list of standard IDs
         standard_ids = []
