@@ -1,4 +1,4 @@
-from flask import Flask, make_response, send_file, session, request, redirect
+from flask import Flask, make_response, send_file, session, request, redirect, abort
 import api
 import json
 import os
@@ -8,13 +8,8 @@ UPLOAD_FOLDER = "./static/uploads/"
 ALLOWED_EXTENSIONS = set(['csv'])
 
 app = Flask(__name__)
-app.secret_key = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
+app.config['SECRET_KEY'] = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-
-@app.route("/test/")
-def test():
-    return _convert_to_JSON(api.aggregate_all_scores_by_standard_single_student(31))
 
 @app.route("/")
 def index():
@@ -110,7 +105,7 @@ def most_recent_single_cohort_by_standard():
 
 
 @app.route("/api/signup/", methods=['POST'])
-def adduser():
+def add_user():
     new_user = json.loads(request.data)
     user_type = "teacher"
     first_name = new_user.get("first_name")
@@ -118,11 +113,13 @@ def adduser():
     email = new_user.get("email")
     username = new_user.get("username")
     password = new_user.get("password")
+    if model.User.query.filter_by(username=username).first() is not None:
+        return "This username already exists."
     api.create_teacher_user(user_type, first_name, last_name, email, username, password)
     return "Success"
 
 @app.route("/api/login/", methods=['POST'])
-def loginuser():
+def login_user():
     user_to_login = json.loads(request.data)
     username = user_to_login.get("username")
     password = user_to_login.get("password")

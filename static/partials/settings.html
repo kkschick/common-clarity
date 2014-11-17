@@ -15,54 +15,74 @@
 <div class="large-under-nav" ng-controller="SettingsController">
     <h2>SETTINGS</h2>
     <hr>
-    <table class="big-table">
-        <tr>
-            <th>
-                <h2>ADD NEW CLASS</h2>
-            </th>
-            <th class="border-column">
-                <h2>VIEW CLASSES</h2>
-            </th>
-        </tr>
-        <tr>
-            <td>
-                <form name="class">
-                    <input type="text" class="form-field" placeholder="ENTER CLASS NAME" ng-model="cohort.name" /><br><br>
-                    <h3>ADD STUDENTS</h3>
-                    <table id="add-student-table">
-                        <tr>
-                            <th>FIRST NAME</th>
-                            <th>LAST NAME</th>
-                            <th>USERNAME</th>
-                            <th>PASSWORD</th>
-                        </tr>
-                        <tr ng-repeat="student in students">
-                            <td>{{student.first_name}}</td>
-                            <td>{{student.last_name}}</td>
-                            <td>{{student.username}}</td>
-                            <td>********</td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" ng-model="user.first_name" /></td>
-                            <td><input type="text" ng-model="user.last_name" /></td>
-                            <td><input type="text" ng-model="user.username" /></td>
-                            <td><input type="password" ng-model="user.password" /></td>
-                        </tr>
-                    </table>
-                    <button ng-click="addRow(user)" value="Add" class="button small"><strong>+</strong></button><br><br>
-                    <button ng-click="submitCohort(cohort, user)" class="button special">CREATE CLASS</button>
-                    <p ng-show="sent">Your class was successfully added!<p>
+    <h2>ADD NEW CLASS</h2>
+        <div>
+            <form action="selectedAddClass">
+                <input type="radio" ng-model="selectedMethod" value="upload">ADD CLASS VIA UPLOAD
+                <input type="radio" ng-model="selectedMethod" value="manual">ADD CLASS MANUALLY<br>
+            </form>
+
+        </div><br>
+
+        <div ng-show="selectedMethod === 'upload'">
+            <h3>UPLOAD FILE OF STUDENTS</h3>
+                <form action="/upload2/" method="POST" enctype="multipart/form-data">
+                    <input type="text" name="class_name" class="form-field" placeholder="ENTER CLASS NAME"><br><br>
+                    <input type="file" name="studentfile" class="form-field"> <br><br>
+
+                    <input type="submit" name="submit" value="CREATE CLASS" class="button special">
                 </form>
-            </td>
-            <td class="border-column">
-                <ul class="list-of-links" ng-repeat="cohort in cohorts">
-                    <li>{{cohort.name}}</li>
+        </div>
+        <div ng-show="selectedMethod === 'manual'">
+            <h3>ADD CLASS</h3>
+            <form name="class">
+                <input type="text" class="form-field" placeholder="ENTER CLASS NAME" ng-model="cohort.name" /><br><br>
+
+                <h3>ADD STUDENTS</h3>
+
+                <table id="add-student-table">
+                    <tr>
+                        <th>FIRST NAME</th>
+                        <th>LAST NAME</th>
+                        <th>USERNAME</th>
+                        <th>PASSWORD</th>
+                    </tr>
+                    <tr ng-repeat="student in students">
+                        <td>{{student.first_name}}</td>
+                        <td>{{student.last_name}}</td>
+                        <td>{{student.username}}</td>
+                        <td>********</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" ng-model="user.first_name" /></td>
+                        <td><input type="text" ng-model="user.last_name" /></td>
+                        <td><input type="text" ng-model="user.username" /></td>
+                        <td><input type="password" ng-model="user.password" /></td>
+                    </tr>
+                </table>
+                <button ng-click="addRow(user)" value="Add" class="button small"><strong>+</strong></button><br><br>
+                <button ng-click="submitCohort(cohort, user)" class="button special">CREATE CLASS</button>
+                <p ng-show="sent">Your class was successfully added!<p>
+            </form>
+        </div>
+    <hr>
+    <h2>MY CLASSES</h2>
+        <table class="big-table">
+            <tr>
+                <td ng-repeat="cohort in cohorts">
                     <ul>
-                        <li ng-repeat="student in cohort.students">{{student.name}}</li>
-                    </ul>
-                </ul>
-            </td>
-        </tr>
+                        <li>{{cohort.name}}</li>
+                        <ul>
+                            <li ng-repeat="student in cohort.students">{{student.name}}</li>
+                        </ul>
+                </td>
+            </tr>
+        <!-- <ul class="list-of-links" ng-repeat="cohort in cohorts">
+            <li>{{cohort.name}}</li>
+            <ul>
+                <li ng-repeat="student in cohort.students">{{student.name}}</li>
+            </ul>
+        </ul> -->
     </table>
 </div>
 

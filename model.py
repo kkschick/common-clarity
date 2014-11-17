@@ -5,7 +5,6 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 
-
 engine = create_engine("postgresql://localhost:5432/loop", echo=False)
 session = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
 
@@ -19,7 +18,7 @@ class User(Base):
     id = Column(Integer, primary_key = True)
     user_type = Column(String(64))
     username = Column(String(64))
-    password = Column(String(64))
+    password = Column(String(128))
     first_name = Column(String(64))
     last_name = Column(String(64))
     email = Column(String(128), nullable = True)
