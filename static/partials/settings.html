@@ -98,9 +98,9 @@
             <tr>
                 <td ng-repeat="cohort in cohorts">
                     <ul class="list-of-links">
-                        <li>{{cohort.name}}</li>
+                        <li><div ng-show="!collapsed" ng-class="{'inline arrow-right' : !collapsed}"></div><div ng-show="collapsed" ng-class="{'inline arrow-down' : collapsed}"></div>&nbsp;&nbsp;<div class="inline"><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="class-link">{{cohort.name}}</a></div></li>
                         <ul>
-                            <li ng-repeat="student in cohort.students">{{student.name}}</li>
+                            <li ng-repeat="student in cohort.students" ng-show="collapsed">{{student.name}}</li>
                         </ul>
                 </td>
             </tr>
