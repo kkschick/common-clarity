@@ -46,11 +46,36 @@ loopControllers.controller('LogoutController', ['$scope', '$location', '$http', 
     };
 }]);
 
-loopControllers.controller('SettingsController', ['$scope', '$http', function($scope, $http){
+loopControllers.controller('SettingsController', ['$scope', '$http', 'ModalService', function($scope, $http, ModalService){
 
     $scope.new_cohort = {};
     $scope.students = [];
     $scope.new_cohort.students = $scope.students;
+
+    $scope.display = false;
+
+    $scope.showModal = function() {
+        $scope.display = true;
+    };
+
+
+    $scope.close = function() {
+        $scope.display = false;
+        close();
+    };
+
+    $scope.showCustom = function() {
+
+        ModalService.showModal({
+          templateUrl: "custom/custom.html",
+          controller: "CustomController"
+        }).then(function(modal) {
+          modal.close.then(function(result) {
+            $scope.customResult = "All good!";
+          });
+        });
+
+    };
 
     $scope.addRow = function(user) {
         $scope.students.push(user);

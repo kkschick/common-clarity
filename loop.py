@@ -44,8 +44,8 @@ def upload_class_file():
     class_name = request.form.get("class_name")
     teacher_id = session['user']
     cohort_id = api.add_new_cohort(class_name, teacher_id)
-
-    api.create_student_from_csv(file_path, 10)
+    user_type = "student"
+    api.create_student_from_csv(file_path, cohort_id, user_type)
 
     return redirect("/#/settings/")
 
@@ -129,8 +129,6 @@ def add_user():
     email = new_user.get("email")
     username = new_user.get("username")
     password = new_user.get("password")
-    if model.User.query.filter_by(username=username).first() is not None:
-        return "This username already exists."
     api.create_teacher_user(user_type, first_name, last_name, email, username, password)
     return "Success"
 

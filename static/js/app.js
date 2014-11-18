@@ -3,9 +3,8 @@
 var loopApp = angular.module('loopApp', [
   'ngRoute',
   'loopControllers',
-  'loopDirectives'
-  // 'loopFilters',
-  // 'loopServices',
+  'loopDirectives',
+  'angularModalService',
 ]);
 
 loopApp.config(['$routeProvider',
@@ -37,7 +36,7 @@ loopApp.config(['$routeProvider',
       }).
       when('/reports', {
         templateUrl: '../static/partials/reports.html',
-        // controller: 'ReportsCtrl'
+        controller: 'ReportsController'
       }).
       otherwise({
         redirectTo: '/'

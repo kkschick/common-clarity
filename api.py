@@ -90,21 +90,21 @@ def add_student_to_cohort(student_id, cohort_id):
     model.session.add(studentcohort)
     model.session.commit()
 
-def create_student_from_csv(csv_path, cohort_id):
+def create_student_from_csv(csv_path, cohort_id, user_type):
     """Parse CSV of new students and add each to users table in database."""
-
-    user_type = "student"
 
     with open(csv_path, 'rb') as f:
         reader = csv.reader(f, delimiter=',')
+        headers = reader.next()
         for row in reader:
-            user = model.User(user_type=user_type, first_name=row[0], last_name=row[1], username=row[2], password=row[3])
-            model.session.add(user)
-            model.session.commit()
-            student_id = (model.User.query.filter_by(username=row[2]).first()).id
-            studentcohort = model.StudentCohort(student_id=student_id, cohort_id=cohort_id)
-            model.session.add(studentcohort)
-            model.session.commit()
+            if row:
+                user = model.User(user_type=user_type, first_name=row[0], last_name=row[1], username=row[2], password=row[3])
+                model.session.add(user)
+                model.session.commit()
+                student_id = (model.User.query.filter_by(username=row[2]).first()).id
+                studentcohort = model.StudentCohort(student_id=student_id, cohort_id=cohort_id)
+                model.session.add(studentcohort)
+                model.session.commit()
 
 
 """Reports"""

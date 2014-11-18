@@ -25,20 +25,47 @@
         </div><br>
 
         <div ng-show="selectedMethod === 'upload'">
+
             <h3>UPLOAD FILE OF STUDENTS</h3>
                 <form action="/upload2/" method="POST" enctype="multipart/form-data">
                     <input type="text" name="class_name" class="form-field" placeholder="ENTER CLASS NAME"><br><br>
-                    <input type="file" name="studentfile" class="form-field"> <br><br>
+                    <input type="file" name="studentfile" class="form-field"> <br>
+                    <a class="special-link" ng-click="showModal()">CLICK FOR INSTRUCTIONS</a><br><br>
+                    <div id="overlay" ng-show="display">
+                        <h2>UPLOAD INSTRUCTIONS</h2>
+                        <hr>
+                        <h3>TO UPLOAD STUDENTS USING A CSV FILE:</h3>
+                        <ul>
+                            <li>Make sure your file is in the CSV (comma-separated values) file format.</li>
+                            <li>Your file should have four column headers in this order:<br><br>
+                                <table class="mini-table">
+                                    <tr>
+                                        <td>FIRST NAME</td>
+                                        <td>LAST NAME</td>
+                                        <td>USERNAME</td>
+                                        <td>PASSWORD</td>
+                                    </tr>
+                                    <tr><td>  </td>  <td>  </td>  <td>  </td>  <td>  </td>  </tr>
+                                    <tr><td>  </td>  <td>  </td>  <td>  </td>  <td>  </td>  </tr>
+                                    <tr><td>  </td>  <td>  </td>  <td>  </td>  <td>  </td>  </tr>
+                                </table>
+                            </li>
+                        </ul><br>
+                        <a href class="button special" ng-click="close()">CLOSE</a>
+                    </div>
+                    <div id="fade" ng-show="display"></div>
 
-                    <input type="submit" name="submit" value="CREATE CLASS" class="button special">
+
+                    <input type="submit" name="submit" value="CREATE CLASS" class="button special" ng-click="sentClass === true">
                 </form>
+        <p ng-show="sentClass">Your class was successfully added!<p>
         </div>
         <div ng-show="selectedMethod === 'manual'">
-            <h3>ADD CLASS</h3>
+            <h3>ENTER CLASS</h3>
             <form name="class">
                 <input type="text" class="form-field" placeholder="ENTER CLASS NAME" ng-model="cohort.name" /><br><br>
 
-                <h3>ADD STUDENTS</h3>
+                <h3>ENTER STUDENTS</h3>
 
                 <table id="add-student-table">
                     <tr>
@@ -70,25 +97,12 @@
         <table class="big-table">
             <tr>
                 <td ng-repeat="cohort in cohorts">
-                    <ul>
+                    <ul class="list-of-links">
                         <li>{{cohort.name}}</li>
                         <ul>
                             <li ng-repeat="student in cohort.students">{{student.name}}</li>
                         </ul>
                 </td>
             </tr>
-        <!-- <ul class="list-of-links" ng-repeat="cohort in cohorts">
-            <li>{{cohort.name}}</li>
-            <ul>
-                <li ng-repeat="student in cohort.students">{{student.name}}</li>
-            </ul>
-        </ul> -->
     </table>
 </div>
-
-
-
-
-
-
-
