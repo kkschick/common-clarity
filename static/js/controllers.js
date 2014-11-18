@@ -141,6 +141,7 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         $scope.studentSelected = false;
         $scope.cohortSelected = false;
         $scope.allSelected = false;
+        $scope.showByStudent = false;
 
         $scope.viewReportClicked = true;
 
@@ -160,6 +161,7 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         }
 
         else if ($scope.selectedCohort > 0) {
+            $scope.showByStudent = true;
             $scope.selectedUser = $scope.cohorts[$scope.selectedCohort - 1].name;
             $scope.selectedSubReport = "overall";
             $scope.studentSelected = false;
@@ -177,7 +179,6 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         }
 
         else {
-
             $scope.selectedSubReport = "overall";
             $scope.studentSelected = false;
             $scope.cohortSelected = false;
