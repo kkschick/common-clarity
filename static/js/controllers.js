@@ -48,6 +48,8 @@ loopControllers.controller('LogoutController', ['$scope', '$location', '$http', 
 
 loopControllers.controller('SettingsController', ['$scope', '$http', 'ModalService', function($scope, $http, ModalService){
 
+    $scope.selectedMethod = 'upload';
+
     $scope.new_cohort = {};
     $scope.students = [];
     $scope.new_cohort.students = $scope.students;

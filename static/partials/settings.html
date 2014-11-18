@@ -18,7 +18,7 @@
     <h2>ADD NEW CLASS</h2>
         <div>
             <form action="selectedAddClass">
-                <input type="radio" ng-model="selectedMethod" value="upload">&nbsp;ADD CLASS VIA UPLOAD&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" ng-model="selectedMethod" value="upload" ng-checked="true">&nbsp;ADD CLASS VIA UPLOAD&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="radio" ng-model="selectedMethod" value="manual">&nbsp;ADD CLASS MANUALLY<br>
             </form>
 
@@ -88,7 +88,6 @@
                         <td><button ng-click="addRow(user)" value="Add" class="button small"><strong>+</strong></button></td>
                     </tr>
                 </table><br>
-                <!-- <button ng-click="addRow(user)" value="Add" class="button small"><strong>+</strong></button><br><br> -->
                 <button ng-click="submitCohort(cohort, user)" class="button special">CREATE CLASS</button>
                 <p ng-show="sent">Your class was successfully added!<p>
             </form>
