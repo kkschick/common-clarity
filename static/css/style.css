@@ -173,6 +173,10 @@ td {
     vertical-align: top;
 }
 
+#add-student-table {
+  text-align: left;
+}
+
 hr {
     height: 2px;
     margin-top: 30px;
