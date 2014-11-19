@@ -73,9 +73,7 @@ def addclass():
         user_type = "student"
         first_name = student.get("first_name")
         last_name = student.get("last_name")
-        username = student.get("username")
-        password = student.get("password")
-        student_id = api.create_student(user_type, first_name, last_name, username, password)
+        student_id = api.create_student(user_type, first_name, last_name)
         api.add_student_to_cohort(student_id, cohort_id)
     return "Success"
 
@@ -132,7 +130,6 @@ def add_user():
     first_name = new_user.get("first_name")
     last_name = new_user.get("last_name")
     email = new_user.get("email")
-    # username = new_user.get("username")
     password = new_user.get("password")
     api.create_teacher_user(user_type, first_name, last_name, email, password)
     return "Success"

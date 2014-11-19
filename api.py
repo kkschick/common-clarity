@@ -22,7 +22,7 @@ def logout():
 
 """Sign-up"""
 
-def create_teacher_user(user_type, first_name, last_name, email, username, password):
+def create_teacher_user(user_type, email, password, first_name, last_name):
     """Get form data and add new user to users table"""
 
     user = model.User(user_type=user_type, email=email, password=password, first_name=first_name, last_name=last_name)
@@ -74,13 +74,13 @@ def add_new_cohort(name, teacher_id):
     new_cohort = model.Cohort.query.filter_by(name=name).first()
     return new_cohort.id
 
-def create_student(user_type, first_name, last_name, username, password):
+def create_student(user_type, first_name, last_name):
     """Create new student user in users table. Return cohort_id."""
 
-    user = model.User(user_type=user_type, first_name=first_name, last_name=last_name, username=username, password=password)
+    user = model.User(user_type=user_type, first_name=first_name, last_name=last_name)
     model.session.add(user)
     model.session.commit()
-    new_user = model.User.query.filter_by(username=username).first()
+    new_user = model.User.query.filter_by(first_name=first_name, last_name=last_name).first()
     return new_user.id
 
 def add_student_to_cohort(student_id, cohort_id):
@@ -98,10 +98,10 @@ def create_student_from_csv(csv_path, cohort_id, user_type):
         headers = reader.next()
         for row in reader:
             if row:
-                user = model.User(user_type=user_type, first_name=row[0], last_name=row[1], username=row[2], password=row[3])
+                user = model.User(user_type=user_type, first_name=row[0], last_name=row[1])
                 model.session.add(user)
                 model.session.commit()
-                student_id = (model.User.query.filter_by(username=row[2]).first()).id
+                student_id = (model.User.query.filter_by(first_name=row[0], last_name=row[1]).first()).id
                 studentcohort = model.StudentCohort(student_id=student_id, cohort_id=cohort_id)
                 model.session.add(studentcohort)
                 model.session.commit()

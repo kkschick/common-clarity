@@ -26,6 +26,11 @@ a {
     height: 80px;
 }
 
+.header-small {
+    width: 100%;
+    height: 50px;
+}
+
 #fl-left {
     float: left;
     position: relative;
@@ -198,8 +203,8 @@ td {
 
 hr {
     height: 2px;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     background-color: white;
 }
 
@@ -309,6 +314,17 @@ hr {
 }
 
 .no-margin {
-  margin-top: 5px;
+  margin: 5px;
   margin-bottom: 0px;
 }
+
+.tab:hover a {
+  background-color: #83d3c9;
+  border: solid #83d3c9 1px;
+}
+
+.active a {
+  background-color: #83d3c9;
+  border: solid #83d3c9 1px;
+}
+

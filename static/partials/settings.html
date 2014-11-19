@@ -5,8 +5,6 @@
         </div>
         <div class="col-md-6" id="fl-right" ng-controller="LogoutController">
             <ul>
-                <li><a href="/#/reports">REPORTS</a></li>
-                <li><a href="/#/settings">SETTINGS</a></li>
                 <li><a href="/#/logout" class="button special" ng-click="logoutUser()">LOG OUT</a></li>
             </ul>
         </div>
@@ -92,17 +90,17 @@
                 <p ng-show="sent">Your class was successfully added!<p>
             </form>
         </div>
-    <hr>
-    <h2>MY CLASSES</h2>
-        <table class="big-table">
-            <tr>
-                <td ng-repeat="cohort in cohorts">
-                    <ul class="list-of-links">
-                        <li><div ng-show="!collapsed" ng-class="{'inline arrow-right' : !collapsed}"></div><div ng-show="collapsed" ng-class="{'inline arrow-down' : collapsed}"></div>&nbsp;&nbsp;<div class="inline"><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="class-link">{{cohort.name}}</a></div></li>
-                        <ul>
-                            <li ng-repeat="student in cohort.students" ng-show="collapsed">{{student.name}}</li>
-                        </ul>
-                </td>
-            </tr>
-    </table>
+        <hr>
+        <h2>MY CLASSES</h2>
+            <table class="big-table">
+                <tr>
+                    <td ng-repeat="cohort in cohorts">
+                        <ul class="list-of-links">
+                            <li><div ng-show="!collapsed" ng-class="{'inline arrow-right' : !collapsed}"></div><div ng-show="collapsed" ng-class="{'inline arrow-down' : collapsed}"></div>&nbsp;&nbsp;<div class="inline"><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="class-link">{{cohort.name}}</a></div></li>
+                            <ul>
+                                <li ng-repeat="student in cohort.students" ng-show="collapsed">{{student.name}}</li>
+                            </ul>
+                    </td>
+                </tr>
+            </table>
 </div>
