@@ -98,6 +98,16 @@ a {
     box-shadow: inset 0 0 100px rgba(0,0,0,.5);
     position: relative;
     text-align: center;
+    margin-left: 18%;
+    margin-right: 18%;
+    padding: 30px;
+    margin-top: 80px;
+}
+
+.under-nav-login-box {
+    box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+    position: relative;
+    text-align: center;
     margin-left: 25%;
     margin-right: 25%;
     padding: 30px;
@@ -116,6 +126,14 @@ a {
 .sign-in-box {
     margin-left: 10%;
     margin-right: 10%;
+}
+
+.teal-text {
+  color: #83d3c9;
+}
+
+.lead {
+  text-transform: uppercase;
 }
 
 label {
@@ -281,10 +299,16 @@ hr {
   display: inline-block;
 }
 
-#left {
+.left {
   float: left;
 }
-/*
-#right {
+
+.right-align {
+  vertical-align: right;
   float: right;
-}*/
+}
+
+.no-margin {
+  margin-top: 5px;
+  margin-bottom: 0px;
+}

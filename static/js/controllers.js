@@ -116,23 +116,10 @@ loopControllers.controller('SettingsController', ['$scope', '$http', 'ModalServi
 
 loopControllers.controller('ReportsController', ['$scope', '$http', function($scope, $http){
 
-    $scope.importClickedButton = true;
-
     $http.get("/api/getclasses/").success(function(data) {
         $scope.cohorts = data;
 
     });
-
-    $scope.changeClick = function() {
-        if ($scope.importClicked === true) {
-            $scope.importClicked = false;
-            $scope.importClickedButton = true;
-        }
-        else {
-            $scope.importClicked = true;
-            $scope.importClickedButton = false;
-        }
-    };
 
     $scope.viewReport = function() {
 

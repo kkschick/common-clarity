@@ -7,10 +7,10 @@ from sqlalchemy import desc
 
 """Log-in"""
 
-def get_user(username, password):
+def get_user(email, password):
     """Check if user exists; if exists, authenticate pw and return success msg"""
 
-    user = model.User.query.filter_by(username=username).first()
+    user = model.User.query.filter_by(email=email).first()
     return user
 
 """Log-out"""
@@ -25,7 +25,7 @@ def logout():
 def create_teacher_user(user_type, first_name, last_name, email, username, password):
     """Get form data and add new user to users table"""
 
-    user = model.User(user_type=user_type, first_name=first_name, last_name=last_name, email=email, username=username, password=password)
+    user = model.User(user_type=user_type, email=email, password=password, first_name=first_name, last_name=last_name)
     model.session.add(user)
     model.session.commit()
 

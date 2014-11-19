@@ -17,11 +17,11 @@ class User(Base):
 
     id = Column(Integer, primary_key = True)
     user_type = Column(String(64))
-    username = Column(String(64))
-    password = Column(String(128))
+    # username = Column(String(64))
+    email = Column(String(128), nullable = True)
+    password = Column(String(128), nullable = True)
     first_name = Column(String(64))
     last_name = Column(String(64))
-    email = Column(String(128), nullable = True)
 
 class Cohort(Base):
     __tablename__ = "cohorts"
@@ -31,7 +31,6 @@ class Cohort(Base):
     teacher_id = Column(Integer, ForeignKey('users.id'))
 
     teacher = relationship("User", backref=backref("cohorts", order_by=id))
-
 
 class StudentCohort(Base):
     __tablename__ = "studentcohorts"

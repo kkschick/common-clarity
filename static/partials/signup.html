@@ -1,7 +1,7 @@
 <div class="container header">
 	<div class="navbar-header">
 		<div class="col-md-6" id="fl-left">
-			<h1><a href="/">LOOP</a></h1>
+			<h1><a href="/">DATA DASH</a></h1>
 		</div>
 		<div class="col-md-6" id="fl-right">
 			<ul>
@@ -14,10 +14,10 @@
 </div>
 
 <!-- Sign-up form -->
-<div class="container under-nav" ng-controller="SignupController">
+<div class="container under-nav-login-box" ng-controller="SignupController">
 	<div class="sign-in-box">
 	<form class="form-signin" name="newuser" method="POST">
-		<h1 class="form-signin-heading">PLEASE SIGN UP</h1>
+		<h1 class="form-signin-heading">SIGN UP</h1>
 
 		<p><label>FIRST NAME: </label>
 		<input type="text" name="first_name" class="form-control form-field" ng-model="user.first_name" autofocus /></p>
@@ -28,10 +28,10 @@
 		<p><label>EMAIL ADDRESS: </label>
 		<input type="email" name="email" class="form-control form-field" ng-model="user.email" /></p>
 
-		<p><label>USERNAME: </label>
-		<input type="text" name="username" class="form-control form-field" ng-model="user.username" /></p>
-
 		<p><label>PASSWORD: </label>
+		<input type="password" name="password" class="form-control form-field" ng-model="user.password" /></p>
+
+		<p><label>RETYPE PASSWORD: </label>
 		<input type="password" name="password" class="form-control form-field" ng-model="user.password" /></p><br><br>
 
 		<button class="button special" ng-click="addUser(user)">SIGN UP</button>

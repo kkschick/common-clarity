@@ -1,24 +1,23 @@
 <div class="container header">
     <div class="navbar-header">
         <div class="col-md-6" id="fl-left">
-            <h1><a href="/">LOOP</a></h1>
+            <h1><a href="/">DATA DASH</a></h1>
         </div>
         <div class="col-md-6" id="fl-right" ng-controller="LogoutController">
             <ul>
-                <li><a href="/#/reports">REPORTS</a></li>
-                <li><a href="/#/settings">SETTINGS</a></li>
                 <li><a href="/#/logout" class="button special" ng-click="logoutUser()">LOG OUT</a></li>
             </ul>
         </div>
     </div>
 </div>
 <div class="large-under-nav" ng-controller="ReportsController">
-    <h2>REPORTS</h2>
+    <div class="inline"><h2 class="no-margin">DATA DASHBOARD</h2></div>
 
-    <button ng-click="changeClick()" ng-show="importClickedButton" class="button special">IMPORT TEST DATA</button>
-
-    <div ng-show="importClicked">
+    <div class="inline right-align"><button ng-model="importCollapsed" ng-click="importCollapsed=!importCollapsed" class="button special">IMPORT TEST DATA</button></div>
+    <hr>
+    <div ng-show="importCollapsed">
         <form action="/upload/" method="POST" enctype="multipart/form-data">
+            <h2>IMPORT TEST DATA</h2>
             <h4>SELECT A CLASS:</h4>
                 <select ng-model="cohort_select" name="cohort" id="cohort" required="required" class="form-field">
                     <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
@@ -30,89 +29,89 @@
             <input type="submit" name="submit" value="IMPORT TEST" ng-show="importClickedButton = true" class="button special">
         </form>
     </div>
-    <hr>
-    <div>
-        <h3>VIEW REPORTS BY:</h3>
-        <form name="reportCohort">
+    <div ng-hide="importCollapsed">
+        <div>
+            <h3>VIEW REPORTS BY:</h3>
+            <form name="reportCohort">
 
-            SELECT A CLASS: <select ng-model="selectedCohort" name="cohort" id="cohort" required="required" class="form-field">
-                <option value="0">All Classes</option>
-                <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
-            </select><br><br>
+                SELECT A CLASS: <select ng-model="selectedCohort" name="cohort" id="cohort" required="required" class="form-field">
+                    <option value="0">All Classes</option>
+                    <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
+                </select><br><br>
 
-            <div ng-disabled="!selectedCohort" ng-show="selectedCohort > 0">
-            SELECT A STUDENT (optional): <select ng-model="selectedStudent" name="student" id="student" class="form-field">
-                <option ng-repeat="student in cohorts[selectedCohort - 1].students" value="{{student}}">{{student.name}}</option>
-            </select><br><br>
+                <div ng-disabled="!selectedCohort" ng-show="selectedCohort > 0">
+                SELECT A STUDENT (optional): <select ng-model="selectedStudent" name="student" id="student" class="form-field">
+                    <option ng-repeat="student in cohorts[selectedCohort - 1].students" value="{{student}}">{{student.name}}</option>
+                </select><br><br>
+                </div>
+                <button ng-click="viewReport()" class="button special" id="update">VIEW REPORT</button>
+            </form>
+
+            <h2 ng-show="allSelected">REPORTS FOR ALL CLASSES:</h2>
+            <h2 ng-model="selectedUser" ng-show="cohortSelected">REPORTS FOR {{selectedUser | uppercase}}:</h2>
+            <h2 ng-model="selectedUser" ng-show="studentSelected">REPORTS FOR {{selectedUser | uppercase}}:</h2>
+
+        </div>
+
+        <div ng-show="viewReportClicked">
+            <form action="selectedReport">
+                <input type="radio" ng-model="selectedSubReport" value="overall" ng-checked="true">VIEW OVERALL&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" ng-model="selectedSubReport" value="byStandard">VIEW BY STANDARD&nbsp;&nbsp;&nbsp;&nbsp;
+                <span ng-show="showByStudent"><input type="radio" ng-model="selectedSubReport" value="byStudent">VIEW BY STUDENT</span><br>
+            </form>
+
+        </div>
+
+        <div class="chart" ng-show="allSelected">
+            <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="allCohortsData"></d3-stacked-bars>
+
+            <div ng-show="selectedSubReport === 'byStandard'">
+                <div class="inline" id="left">
+                    <d3-stacked-bars-wide data="allStandard"></d3-stacked-bars-wide>
+                </div>
+
+                <div class="inline">
+                    <table class="standard-table">
+                        <tr ng-repeat="item in tableStandard">
+                            <td><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="special-link">{{item.Name}}</a><br>
+                            <span ng-show="collapsed">{{item.Description}}</span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
             </div>
-            <button ng-click="viewReport()" class="button special" id="update">VIEW REPORT</button>
-        </form>
 
-        <h2 ng-show="allSelected">REPORTS FOR ALL CLASSES:</h2>
-        <h2 ng-model="selectedUser" ng-show="cohortSelected">REPORTS FOR {{selectedUser | uppercase}}:</h2>
-        <h2 ng-model="selectedUser" ng-show="studentSelected">REPORTS FOR {{selectedUser | uppercase}}:</h2>
+        </div>
 
-    </div>
 
-    <div ng-show="viewReportClicked">
-        <form action="selectedReport">
-            <input type="radio" ng-model="selectedSubReport" value="overall" ng-checked="true">VIEW OVERALL&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="radio" ng-model="selectedSubReport" value="byStandard">VIEW BY STANDARD&nbsp;&nbsp;&nbsp;&nbsp;
-            <span ng-show="showByStudent"><input type="radio" ng-model="selectedSubReport" value="byStudent">VIEW BY STUDENT</span><br>
-        </form>
 
-    </div>
+        <div class="chart" ng-show="cohortSelected">
+            <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="oneCohortData"></d3-stacked-bars>
 
-    <div class="chart" ng-show="allSelected">
-        <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="allCohortsData"></d3-stacked-bars>
+            <div ng-show="selectedSubReport === 'byStandard'">
+                <div class="inline left">
+                    <d3-stacked-bars-wide data="cohortStandard"></d3-stacked-bars-wide>
+                </div>
 
-        <div ng-show="selectedSubReport === 'byStandard'">
-            <div class="inline" id="left">
-                <d3-stacked-bars-wide data="allStandard"></d3-stacked-bars-wide>
-            </div>
-
-            <div class="inline">
-                <table class="standard-table">
-                    <tr ng-repeat="item in tableStandard">
-                        <td><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="special-link">{{item.Name}}</a><br>
-                        <span ng-show="collapsed">{{item.Description}}</span>
-                        </td>
-                    </tr>
-                </table>
+                <div class="inline">
+                    <table class="standard-table">
+                        <tr ng-repeat="item in tableCohortStandard">
+                            <td><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="special-link">{{item.Name}}</a><br>
+                            <span ng-show="collapsed">{{item.Description}}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
             </div>
         </div>
 
-    </div>
-
-
-
-    <div class="chart" ng-show="cohortSelected">
-        <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="oneCohortData"></d3-stacked-bars>
-
-        <div ng-show="selectedSubReport === 'byStandard'">
-            <div class="inline" id="left">
-                <d3-stacked-bars-wide data="cohortStandard"></d3-stacked-bars-wide>
-            </div>
-
-            <div class="inline">
-                <table class="standard-table">
-                    <tr ng-repeat="item in tableCohortStandard">
-                        <td><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="special-link">{{item.Name}}</a><br>
-                        <span ng-show="collapsed">{{item.Description}}</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+        <div class="chart" ng-show="studentSelected">
+            <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="oneStudentData"></d3-stacked-bars>
 
         </div>
     </div>
-
-    <div class="chart" ng-show="studentSelected">
-        <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="oneStudentData"></d3-stacked-bars>
-
-    </div>
-
 
 </div>
 

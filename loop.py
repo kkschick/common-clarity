@@ -132,17 +132,17 @@ def add_user():
     first_name = new_user.get("first_name")
     last_name = new_user.get("last_name")
     email = new_user.get("email")
-    username = new_user.get("username")
+    # username = new_user.get("username")
     password = new_user.get("password")
-    api.create_teacher_user(user_type, first_name, last_name, email, username, password)
+    api.create_teacher_user(user_type, first_name, last_name, email, password)
     return "Success"
 
 @app.route("/api/login/", methods=['POST'])
 def login_user():
     user_to_login = json.loads(request.data)
-    username = user_to_login.get("username")
+    email = user_to_login.get("email")
     password = user_to_login.get("password")
-    user = api.get_user(username, password)
+    user = api.get_user(email, password)
     session['user'] = user.id
     return "Success"
 
