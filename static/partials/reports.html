@@ -67,17 +67,20 @@
         <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="allCohortsData"></d3-stacked-bars>
 
         <div ng-show="selectedSubReport === 'byStandard'">
-            <d3-stacked-bars-wide data="allStandard"></d3-stacked-bars-wide>
-            <table class="standard-table">
-                <tr>
-                    <td>CODE</td>
-                    <td>DESCRIPTION</td>
-                </tr>
-                <tr ng-repeat="item in tableStandard">
-                    <td>{{item.Name}}</td>
-                    <td>{{item.Description}}</td>
-                </tr>
-            </table>
+            <div class="inline" id="left">
+                <d3-stacked-bars-wide data="allStandard"></d3-stacked-bars-wide>
+            </div>
+
+            <div class="inline">
+                <table class="standard-table">
+                    <tr ng-repeat="item in tableStandard">
+                        <td><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="special-link">{{item.Name}}</a><br>
+                        <span ng-show="collapsed">{{item.Description}}</span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
         </div>
 
     </div>
@@ -88,20 +91,22 @@
         <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="oneCohortData"></d3-stacked-bars>
 
         <div ng-show="selectedSubReport === 'byStandard'">
-            <d3-stacked-bars-wide data="cohortStandard"></d3-stacked-bars-wide>
-            <table class="standard-table">
-                <tr>
-                    <td>CODE</td>
-                    <td>DESCRIPTION</td>
-                </tr>
-                <tr ng-repeat="item in tableCohortStandard">
-                    <td>{{item.Name}}</td>
-                    <td>{{item.Description}}</td>
-                </tr>
-            </table>
+            <div class="inline" id="left">
+                <d3-stacked-bars-wide data="cohortStandard"></d3-stacked-bars-wide>
+            </div>
+
+            <div class="inline">
+                <table class="standard-table">
+                    <tr ng-repeat="item in tableCohortStandard">
+                        <td><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="special-link">{{item.Name}}</a><br>
+                        <span ng-show="collapsed">{{item.Description}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
         </div>
     </div>
-
 
     <div class="chart" ng-show="studentSelected">
         <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="oneStudentData"></d3-stacked-bars>
@@ -111,13 +116,3 @@
 
 </div>
 
-
-
-
-
-
-
-
-
-
-</div>

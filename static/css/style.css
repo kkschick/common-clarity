@@ -160,9 +160,10 @@ form p input {
 }
 
 .standard-table {
-    width: 650px;
+    width: 500px;
     text-transform: none;
-    font-size: 11px;
+    font-size: 12px;
+    margin-left: 30px;
 }
 
 th {
@@ -279,3 +280,11 @@ hr {
 .inline {
   display: inline-block;
 }
+
+#left {
+  float: left;
+}
+/*
+#right {
+  float: right;
+}*/
