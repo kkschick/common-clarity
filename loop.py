@@ -52,7 +52,7 @@ def upload_class_file():
     user_type = "student"
     api.create_student_from_csv(file_path, cohort_id, user_type)
 
-    return redirect("/#/settings/")
+    return redirect("/#/reports/")
 
 def _convert_to_JSON(result):
     """Convert result object to a JSON web request."""
@@ -80,17 +80,8 @@ def addclass():
 @app.route("/api/getclasses/")
 def get_cohorts():
     teacher_id = session['user']
-    cohorts = api.get_teacher_cohorts(teacher_id)
-    all_cohorts = []
-    for cohort in cohorts:
-        full_class = {}
-        cohort_id = cohort.id
-        students = api.get_students_in_cohort(cohort_id)
-        full_class["cohort_id"] = cohort_id
-        full_class["name"] = cohort.name
-        full_class["students"] = students
-        all_cohorts.append(full_class)
-    return _convert_to_JSON(all_cohorts)
+    response = api.get_teacher_cohorts(teacher_id)
+    return _convert_to_JSON(response)
 
 @app.route("/api/allcohortcounts/")
 def all_cohort_data():
@@ -131,7 +122,7 @@ def add_user():
     last_name = new_user.get("last_name")
     email = new_user.get("email")
     password = new_user.get("password")
-    api.create_teacher_user(user_type, first_name, last_name, email, password)
+    api.create_teacher_user(user_type, email, password, first_name, last_name)
     return "Success"
 
 @app.route("/api/login/", methods=['POST'])

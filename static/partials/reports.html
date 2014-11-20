@@ -50,17 +50,15 @@
                             <h3>TO UPLOAD STUDENTS USING A CSV FILE:</h3>
                             <ul>
                                 <li>Make sure your file is in the CSV (comma-separated values) file format.</li>
-                                <li>Your file should have four column headers in this order:<br><br>
+                                <li>Your file should have two column headers in this order:<br><br>
                                     <table class="mini-table">
                                         <tr>
                                             <td>FIRST NAME</td>
                                             <td>LAST NAME</td>
-                                            <td>USERNAME</td>
-                                            <td>PASSWORD</td>
                                         </tr>
-                                        <tr><td>  </td>  <td>  </td>  <td>  </td>  <td>  </td>  </tr>
-                                        <tr><td>  </td>  <td>  </td>  <td>  </td>  <td>  </td>  </tr>
-                                        <tr><td>  </td>  <td>  </td>  <td>  </td>  <td>  </td>  </tr>
+                                        <tr><td>  </td>  <td>  </td></tr>
+                                        <tr><td>  </td>  <td>  </td></tr>
+                                        <tr><td>  </td>  <td>  </td></tr>
                                     </table>
                                 </li>
                             </ul><br>
@@ -84,20 +82,14 @@
                         <tr>
                             <th>FIRST NAME</th>
                             <th>LAST NAME</th>
-                            <th>USERNAME</th>
-                            <th>PASSWORD</th>
                         </tr>
                         <tr ng-repeat="student in students">
                             <td>{{student.first_name}}</td>
                             <td>{{student.last_name}}</td>
-                            <td>{{student.username}}</td>
-                            <td>********</td>
                         </tr>
                         <tr>
                             <td><input type="text" ng-model="user.first_name" /></td>
                             <td><input type="text" ng-model="user.last_name" /></td>
-                            <td><input type="text" ng-model="user.username" /></td>
-                            <td><input type="password" ng-model="user.password" /></td>
                             <td><button ng-click="addRow(user)" value="Add" class="button small"><strong>+</strong></button></td>
                         </tr>
                     </table><br>

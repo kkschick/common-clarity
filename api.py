@@ -5,6 +5,22 @@ from sqlalchemy.sql import func
 from datetime import datetime
 from sqlalchemy import desc
 
+
+"""Error Handler"""
+
+def dash_error(error):
+    """Handle API errors.
+
+        error: (string) error message
+
+        returns: dictionary error object.
+    """
+
+    return {
+        "result": error,
+    }
+
+
 """Log-in"""
 
 def get_user(email, password):
@@ -38,7 +54,16 @@ def get_teacher_cohorts(teacher_id):
     return them. If none, return False."""
 
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
-    return cohorts
+    all_cohorts = []
+    for cohort in cohorts:
+        full_class = {}
+        cohort_id = cohort.id
+        students = get_students_in_cohort(cohort_id)
+        full_class["cohort_id"] = cohort_id
+        full_class["name"] = cohort.name
+        full_class["students"] = students
+        all_cohorts.append(full_class)
+    return all_cohorts
 
 def get_students_in_cohort(cohort_id):
     """Use cohort_ids associated with teacher_id to query studentcohorts
@@ -119,7 +144,7 @@ def parse_CSV(csv_path, name, date, cohort_id):
 
     with open(csv_path, 'rb') as f:
 
-    # Create new test in tests database
+        # Create new test in tests database
         test = model.Test(name=name, test_date=date, cohort_id=cohort_id)
         model.session.add(test)
         model.session.commit()
@@ -128,14 +153,17 @@ def parse_CSV(csv_path, name, date, cohort_id):
 
         # Create list with the headers and filter it to be just student names
         headers = reader.next()
-        students = headers[1:-5]
+        students = headers[1:-2]
+        norms = headers[-2:]
 
         # Read through the rest of the file and add the standards and scores to lists
         standards = []
         scores = []
-        for row in reader:
-            standards.append(row[0])
-            scores.append(row[1:-5])
+        norm_scores = []
+        for rows in reader:
+            standards.append(rows[0])
+            scores.append(rows[1:-2])
+            norm_scores.append(rows[-2:])
 
         # Create list of standard IDs
         standard_ids = []
@@ -178,8 +206,17 @@ def parse_CSV(csv_path, name, date, cohort_id):
             last_name = student[0].strip()
             first_name = student[1].strip()
 
-            # Query the DB matching on the first and last name and return the ID
-            student_id = (model.User.query.filter_by(last_name=last_name, first_name=first_name).first()).id
+            # Query the DB matching on the first and last name
+            student = model.User.query.filter_by(last_name=last_name, first_name=first_name).first()
+
+            # If student doesn't exist, add student and get ID
+            if student == None:
+                student = model.User(user_type="student", first_name=first_name, last_name=last_name)
+                model.session.add(student)
+                model.session.commit()
+                student.id = (model.User.query.filter_by(last_name=last_name, first_name=first_name).first()).id
+            else:
+                student_id = student.id
 
             # Add the ID to the student IDs list
             student_ids.append(student_id)
@@ -195,6 +232,16 @@ def parse_CSV(csv_path, name, date, cohort_id):
                 score = scores[i][j]
                 new_score = model.Score(student_id=student, test_id=test_id, standard_id=standard, score=score)
                 model.session.add(new_score)
+                i += 1
+            j += 1
+
+        j = 0
+        for item in norms:
+            i = 0
+            for standard in standard_ids:
+                norm_score = norm_scores[i][j]
+                new_norm_score = model.NormScore(cohort_name=item, test_id=test_id, standard_id=standard, score=float(norm_score))
+                model.session.add(new_norm_score)
                 i += 1
             j += 1
 

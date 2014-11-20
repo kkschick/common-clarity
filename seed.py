@@ -15,5 +15,4 @@ def main(session):
     load_standards(session)
 
 if __name__ == "__main__":
-    # s = model.connect()
     main(model.session)
