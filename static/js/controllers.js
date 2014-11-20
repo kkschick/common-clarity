@@ -116,72 +116,73 @@ loopControllers.controller('SettingsController', ['$scope', '$http', 'ModalServi
 
 loopControllers.controller('ReportsController', ['$scope', '$http', function($scope, $http){
 
+    $scope.allSelected = true;
+
     $http.get("/api/getclasses/").success(function(data) {
         $scope.cohorts = data;
 
-
     });
 
-    $scope.viewReport = function() {
+    // $scope.viewReport = function() {
 
-        $scope.selectedUser = null;
+    //     $scope.selectedUser = null;
 
-        $scope.studentSelected = false;
-        $scope.cohortSelected = false;
-        $scope.allSelected = false;
-        $scope.showByStudent = false;
+    //     $scope.studentSelected = false;
+    //     $scope.cohortSelected = false;
+    //     $scope.allSelected = false;
+    //     $scope.showByStudent = false;
 
-        $scope.viewReportClicked = true;
+    //     $scope.viewReportClicked = true;
 
-        if ($scope.selectedStudent) {
-            $scope.selectedSubReport = "overall";
-            $scope.viewReportClicked = false;
-            var student = JSON.parse($scope.selectedStudent);
-            $scope.selectedUser = student.name;
-            $scope.studentSelected = true;
-            $scope.cohortSelected = false;
-            $scope.allSelected = false;
+    //     if ($scope.selectedStudent) {
+    //         $scope.selectedSubReport = "overall";
+    //         $scope.viewReportClicked = false;
+    //         var student = JSON.parse($scope.selectedStudent);
+    //         $scope.selectedUser = student.name;
+    //         $scope.studentSelected = true;
+    //         $scope.cohortSelected = false;
+    //         $scope.allSelected = false;
 
-            $http.get("/api/singlestudentcounts/", { params: {id: student.id }}).success(function(data){
-                $scope.oneStudentData = data;
-            });
-            $scope.selectedStudent = null;
-        }
+    //         $http.get("/api/singlestudentcounts/", { params: {id: student.id }}).success(function(data){
+    //             $scope.oneStudentData = data;
+    //         });
+    //         $scope.selectedStudent = null;
+    //     }
 
-        else if ($scope.selectedCohort > 0) {
-            $scope.showByStudent = true;
-            $scope.selectedUser = $scope.cohorts[$scope.selectedCohort - 1].name;
-            $scope.selectedSubReport = "overall";
-            $scope.studentSelected = false;
-            $scope.cohortSelected = true;
-            $scope.allSelected = false;
+    //     else if ($scope.selectedCohort > 0) {
+    //         $scope.showByStudent = true;
+    //         $scope.selectedUser = $scope.cohorts[$scope.selectedCohort - 1].name;
+    //         $scope.selectedSubReport = "overall";
+    //         $scope.studentSelected = false;
+    //         $scope.cohortSelected = true;
+    //         $scope.allSelected = false;
 
-            $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-                $scope.oneCohortData = data;
-            });
+    //         $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+    //             $scope.oneCohortData = data;
+    //         });
 
-            $http.get("/api/mostrecentcohort/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-                $scope.cohortStandard = data;
-                $scope.tableCohortStandard = angular.copy(data);
-            });
-        }
+    //         $http.get("/api/mostrecentcohort/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+    //             $scope.cohortStandard = data;
+    //             $scope.tableCohortStandard = angular.copy(data);
+    //         });
+    //     }
 
-        else {
-            $scope.selectedSubReport = "overall";
-            $scope.studentSelected = false;
-            $scope.cohortSelected = false;
-            $scope.allSelected = true;
+    //     else {
+    //         $scope.selectedSubReport = "overall";
+    //         $scope.studentSelected = false;
+    //         $scope.cohortSelected = false;
+    //         $scope.allSelected = true;
 
-            $http.get("/api/allcohortcounts/").success(function(data) {
-                $scope.allCohortsData = data;
-            });
+    //         $http.get("/api/allcohortcounts/").success(function(data) {
+    //             $scope.allCohortsData = data;
+    //         });
 
-            $http.get("/api/mostrecentall/").success(function(data) {
-                $scope.allStandard = data;
-                $scope.tableStandard = angular.copy(data);
-            });
-        }
+    //         $http.get("/api/mostrecentall/").success(function(data) {
+    //             $scope.allStandard = data;
+    //             $scope.tableStandard = angular.copy(data);
+    //         });
+    //     }
 
-    };
+    // };
 
 }]);
