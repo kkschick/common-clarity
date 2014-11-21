@@ -247,6 +247,123 @@ def parse_CSV(csv_path, name, date, cohort_id):
 
         model.session.commit()
 
+def aggregate_most_recent_overall_cohort(teacher_id):
+    """Aggregate M/A/FB scores from most recent test."""
+
+    # Create empty list to hold the score aggregation
+    summed_scores = []
+
+    # Get all cohorts associated with the teacher
+    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+
+    # Create an empty list to hold the most recent test for each cohort
+    most_recent_tests = []
+
+    # Query the tests database to retrieve the test ID of the most recent test for each cohort
+    for cohort in cohorts:
+        test = model.Test.query.filter_by(cohort_id=cohort.id).order_by(model.Test.test_date.desc()).first()
+        most_recent_tests.append(test.id)
+
+    m_total = 0
+    a_total = 0
+    fb_total = 0
+
+    # Loop through the most recent tests and get scores
+    for test_id in most_recent_tests:
+        scores = model.Score.query.filter_by(test_id=test_id).all()
+
+        # Initialize counters at zero and make empty dict to hold final scores
+        m_count = 0
+        a_count = 0
+        fb_count = 0
+
+        # Loop through score objects and get score value, append to list
+        for score in scores:
+            if score.score == 'M':
+                m_count +=1
+            elif score.score == 'A':
+                a_count +=1
+            elif score.score == 'FB':
+                fb_count += 1
+
+        m_total += m_count
+        a_total += a_count
+        fb_total += fb_count
+
+    total = m_total + a_total + fb_total
+    m_perc = (float(m_total) / float(total)) * 100
+    a_perc = (float(a_total) / float(total)) * 100
+    fb_perc = (float(fb_total) / float(total)) * 100
+
+    m_dict = {"Score": "M", "Value": m_perc}
+    a_dict = {"Score": "A", "Value": a_perc}
+    fb_dict = {"Score": "FB", "Value": fb_perc}
+
+    summed_scores.append(m_dict)
+    summed_scores.append(a_dict)
+    summed_scores.append(fb_dict)
+
+    return summed_scores
+
+def top_struggle_standards_all_cohorts(teacher_id):
+
+    """Identify the top standards students are struggling with, defined as
+    standards where <25% of students have met standard."""
+
+    scores_list = []
+
+    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+
+    most_recent_tests = []
+    for cohort in cohorts:
+        test = model.Test.query.filter_by(cohort_id=cohort.id).order_by(model.Test.test_date.desc()).first()
+        most_recent_tests.append(test.id)
+
+    student_ids = []
+    standards_list = []
+    for cohort in cohorts:
+        students = cohort.studentcohorts
+        for student in students:
+            student_ids.append(student.student.id)
+    for test_id in most_recent_tests:
+        scores = model.Score.query.filter_by(test_id=test_id, student_id=student_ids[0]).all()
+        for score in scores:
+            standards = model.Standard.query.filter_by(id=score.standard_id).all()
+            for standard in standards:
+                standards_list.append(standard)
+
+    for standard in standards_list:
+        scores_by_standard = {}
+
+        for test_id in most_recent_tests:
+            m_count = 0
+            a_count = 0
+            fb_count = 0
+            total_scores = 0
+            for student_id in student_ids:
+                scores = model.Score.query.filter_by(student_id=student_id, test_id=test_id, standard_id=standard.id).all()
+                total_scores +=1
+                for score in scores:
+                    if score.score == "M":
+                        m_count += 1
+                    elif score.score == "A":
+                        a_count += 1
+                    elif score.score == "FB":
+                        fb_count += 1
+
+                m_percent = float(m_count) / float(total_scores)
+
+                if m_percent <= .25:
+                    scores_by_standard["Name"] = standard.code
+                    scores_by_standard["Description"] = standard.description
+                    scores_by_standard["ID"] = standard.id
+                    scores_by_standard["Percent"] = m_percent * 100
+
+        scores_list.append(scores_by_standard)
+
+    return scores_list
+
+
 def get_all_cohort_data_by_test(teacher_id):
     """Use teacher id to get all student scores by test and aggregate counts of
     M/A/FB by test."""
@@ -505,64 +622,6 @@ def aggregate_most_recent_by_standard_single_cohort(cohort_id):
     return scores_list
 
 
-def top_struggle_standards_all_cohorts(teacher_id):
-
-    """Identify the top standards students are struggling with, defined as
-    standards where <25% of students have met standard."""
-
-    scores_list = []
-
-    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
-
-    most_recent_tests = []
-    for cohort in cohorts:
-        test = model.Test.query.filter_by(cohort_id=cohort.id).order_by(model.Test.test_date.desc()).first()
-        most_recent_tests.append(test.id)
-
-    student_ids = []
-    standards_list = []
-    for cohort in cohorts:
-        students = cohort.studentcohorts
-        for student in students:
-            student_ids.append(student.student.id)
-    for test_id in most_recent_tests:
-        scores = model.Score.query.filter_by(test_id=test_id, student_id=student_ids[0]).all()
-        for score in scores:
-            standards = model.Standard.query.filter_by(id=score.standard_id).all()
-            for standard in standards:
-                standards_list.append(standard)
-
-    for standard in standards_list:
-        scores_by_standard = {}
-
-        for test_id in most_recent_tests:
-            m_count = 0
-            a_count = 0
-            fb_count = 0
-            total_scores = 0
-            for student_id in student_ids:
-                scores = model.Score.query.filter_by(student_id=student_id, test_id=test_id, standard_id=standard.id).all()
-                total_scores +=1
-                for score in scores:
-                    if score.score == "M":
-                        m_count += 1
-                    elif score.score == "A":
-                        a_count += 1
-                    elif score.score == "FB":
-                        fb_count += 1
-
-                m_percent = float(m_count) / float(total_scores)
-
-                if m_percent <= .25:
-                    scores_by_standard["Name"] = standard.code
-                    scores_by_standard["Description"] = standard.description
-                    scores_by_standard["ID"] = standard.id
-                    scores_by_standard["Percent"] = m_percent
-
-        scores_list.append(scores_by_standard)
-
-    return scores_list
-
 # def aggregate_all_tests_by_standard_overall_cohort(teacher_id):
 #     """Take in data returned by get_overall_cohort_data and filter it by the
 #     standard. Add up counts of M, A, and FB scores and return counts and
@@ -598,62 +657,4 @@ def top_struggle_standards_all_cohorts(teacher_id):
 #         scores_by_standard[standard_id] = get_counts_and_percents(scores_by_standard[standard_id])
 
 #     return scores_by_standard
-
-# def get_single_cohort_data(cohort_id):
-#     """Query scores using cohort_id to get the student_ids. Get all scores for all
-#     students in the cohort."""
-#     pass
-
-# def filter_single_by_most_recent_test(single_cohort_data):
-#     """Take in data returned by get_single_cohort_data. Filter by most recent
-#     test_id. Return filtered data."""
-#     pass
-
-# def aggregate_most_recent_for_single_cohort(single_cohort_filtered_data):
-#     """Add up counts of M, A, and FB scores and return counts and percentages."""
-#     pass
-
-# def aggregate_all_tests_for_single_cohort(single_cohort_data):
-#     """Take in data returned by get_single_cohort_data. Add up counts of M, A,
-#     and FB scores and return counts and percentages for each test_id."""
-#     pass
-
-# def aggregate_most_recent_by_standard_single_cohort(single_cohort_filtered_data):
-#     """Break out filtered data by standard. Aggregate M/A/FB scores by standard
-#     and return counts and percentages for each standard."""
-#     pass
-
-# def aggregate_all_tests_by_standard_single_cohort(single_cohort_data, standard):
-#     """Take in data returned by get_single_cohort_data and filter it by the
-#     standard. Add up counts of M, A, and FB scores and return counts and
-#     percentages for each test_id."""
-#     pass
-
-# def get_student_scores(student_id):
-#     """Use student_id to get all scores for that student. Return score data."""
-
-#     scores = model.Score.query.filter_by(student_id=student_id).all()
-#     score_list = []
-#     for score in scores:
-#         score_list.append(score.score)
-#     return score_list
-
-# def aggregate_most_recent_for_student(student_data):
-#     """Filter data from get_student_scores by most recent test. Add up counts of
-#     M, A, and FB scores and return counts and percentages."""
-#     pass
-
-# def aggregate_all_tests_for_student(student_data):
-#     """Add up counts of M, A, and FB scores by test_id and return counts and
-#     percentages."""
-#     pass
-
-# def show_all_student_scores(student_data):
-#     """Take data from get_student_scores and display it in a table, by test and
-#     by standard."""
-#     pass
-
-
-
-
 

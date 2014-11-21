@@ -72,6 +72,7 @@ a {
     letter-spacing: 0.1em;
     cursor: pointer;
     text-transform: uppercase;
+    padding: 0.6em 0.75em;
 }
 
 .button.special {
@@ -183,10 +184,16 @@ form p input {
 }
 
 .standard-table {
-    width: 500px;
+    width: auto;
     text-transform: none;
-    font-size: 12px;
-    margin-left: 30px;
+    margin: 15px;
+    text-align: left;
+}
+
+.standard-table, .standard-table tr, .standard-table tr td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    padding: 5px;
 }
 
 th {
@@ -229,6 +236,7 @@ hr {
   box-shadow: inset 0 0 100px rgba(0,0,0,.95);
   color: #fff;
   border-radius: 2px;
+  z-index: 10000;
 }
 
 .d3-tip:after {
@@ -241,12 +249,14 @@ hr {
   content: "\25BC";
   position: absolute;
   text-align: center;
+  z-index: 10000;
 }
 
 .d3-tip.n:after {
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
+  z-index: 10000;
 }
 
 #overlay {
@@ -327,3 +337,24 @@ hr {
   border: solid #83d3c9 1px;
 }
 
+.lower {
+  text-transform: none;
+}
+
+.gridster-content ul li {
+  box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+  text-align: center;
+  /*border: 2px solid #83d3c9;*/
+}
+
+.border-text {
+    border: solid 1px;
+    display: inline-block;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: white;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6em 0.75em;
+}

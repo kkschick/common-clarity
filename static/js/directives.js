@@ -4,6 +4,92 @@
 
 var loopDirectives = angular.module('loopDirectives', []);
 
+loopDirectives.directive( 'd3Pie', [
+  function () {
+    return {
+      restrict: 'E',
+      scope: {
+        data: '='
+      },
+      link: function (scope, element) {
+
+        var margin = {top: 50, right: 30, bottom: 30, left: 30},
+          width = 400 - margin.left - margin.right,
+          height = 360 - margin.top - margin.bottom,
+          radius = Math.min(width, height) / 2;
+
+        var color = d3.scale.ordinal()
+          .range(["#547980", "#45ADA8", "#9DE0AD"]);
+
+        var arc = d3.svg.arc()
+          .outerRadius(radius - 10)
+          .innerRadius(0);
+
+        var pie = d3.layout.pie()
+          .sort(null)
+          .value(function(d){
+            return d.Value;
+            });
+
+        var svg = d3.select(element[0]).append("svg")
+            .attr("width", width)
+            .attr("height", height)
+          .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        scope.render = function(data) {
+
+          svg.selectAll("*").remove();
+
+          var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([60, 0])
+            .html(function(d) {
+              if (d.data.Score === "M") {
+                return "Meets Standard";
+              }
+              else if (d.data.Score === "A") {
+                return "Approaches Standard";
+              }
+              else if (d.data.Score === "FB") {
+                return "Falls Below Standard";
+              }
+            });
+
+          svg.call(tip);
+
+
+          data.forEach(function(d) {
+            d.Value = +d.Value;
+          });
+
+          var g = svg.selectAll(".arc")
+              .data(pie(data))
+            .enter().append("g")
+              .attr("class", "arc");
+
+          g.append("path")
+            .attr("d", arc)
+            .style("fill", function(d) { return color(d.data.Score); })
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
+
+          g.append("text")
+            .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+            .attr("dy", ".35em")
+            .style("text-anchor", "middle")
+            .text(function(d) { return d.data.Value.toFixed() + "%"; });
+
+        };
+
+          scope.$watch('data', function(){
+              scope.render(scope.data);
+          });
+        }
+    };
+  }
+]);
+
 loopDirectives.directive( 'd3StackedBars', [
   function () {
     return {
@@ -13,7 +99,7 @@ loopDirectives.directive( 'd3StackedBars', [
       },
       link: function (scope, element) {
         var margin = {top: 30, right: 60, bottom: 60, left: 70},
-          width = 600 - margin.left - margin.right,
+          width = 560 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom;
 
         var svg = d3.select(element[0])
@@ -38,6 +124,7 @@ loopDirectives.directive( 'd3StackedBars', [
             .scale(y)
             .orient("left")
             .tickFormat(d3.format(".0%"));
+
 
         scope.render = function(data) {
 
@@ -180,7 +267,7 @@ loopDirectives.directive( 'd3StackedBarsWide', [
       },
       link: function (scope, element) {
         var margin = {top: 30, right: 60, bottom: 60, left: 70},
-          width = 650 - margin.left - margin.right,
+          width = 560 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom;
 
         var svg = d3.select(element[0])
@@ -257,15 +344,15 @@ loopDirectives.directive( 'd3StackedBarsWide', [
               .attr("fill", "white")
               .text("% of students");
 
-          var barTip = d3.tip()
-            .attr('class', 'd3-tip')
-            .offset([-10, 0])
-            .html(function(d) {
-              if (d.name != "values") {
-                  return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
-              }});
+          // var barTip = d3.tip()
+          //   .attr('class', 'd3-tip')
+          //   .offset([-10, 0])
+          //   .html(function(d) {
+          //     if (d.name != "values") {
+          //         return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
+          //     }});
 
-          svg.call(barTip);
+          // svg.call(barTip);
 
           var bars = svg.selectAll(".bar").data(data);
           bars.enter()
@@ -280,9 +367,9 @@ loopDirectives.directive( 'd3StackedBarsWide', [
               .attr("class", "rect")
               .attr("y", function(d) { return y(d.y1); })
               .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-              .style("fill", function(d) { return color(d.name); })
-              .on('mouseover', barTip.show)
-              .on('mouseout', barTip.hide);
+              .style("fill", function(d) { return color(d.name); });
+              // .on('mouseover', barTip.show)
+              // .on('mouseout', barTip.hide);
 
           bars.selectAll("text")
             .data(function(d) {return d.values;})
@@ -290,7 +377,13 @@ loopDirectives.directive( 'd3StackedBarsWide', [
             .append("text")
             .attr("x", x.rangeBand() / 2)
             .attr("y", function(d, i) { return y(d.y1) + (y(d.y0) - y(d.y1))/2; })
-            .style("text-anchor", "middle");
+            .style("text-anchor", "middle")
+            .style("font-size", "10px")
+            .text(function(d) {
+              if (d.name != "values") {
+                  return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
+              }});
+
 
           var legendTip = d3.tip()
             .attr('class', 'd3-tip')

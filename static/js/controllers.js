@@ -123,6 +123,23 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
 
     });
 
+    $http.get("/api/allcohortstopfb/").success(function(data) {
+        $scope.allCohortsTopFB = data;
+    });
+
+    $http.get("/api/allcohortspie/").success(function(data) {
+        $scope.allCohortsPie = data;
+    });
+
+    $http.get("/api/allcohortcounts/").success(function(data) {
+        $scope.allCohortsData = data;
+    });
+
+    $http.get("/api/mostrecentall/").success(function(data) {
+        $scope.allStandard = data;
+        $scope.tableStandard = angular.copy(data);
+    });
+
     // $scope.viewReport = function() {
 
     //     $scope.selectedUser = null;

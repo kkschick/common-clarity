@@ -5,6 +5,7 @@ var loopApp = angular.module('loopApp', [
   'loopControllers',
   'loopDirectives',
   'angularModalService',
+  'gridster',
 ]);
 
 loopApp.config(['$routeProvider',
