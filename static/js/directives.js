@@ -497,7 +497,7 @@ loopDirectives.directive( 'd3Bars', [
               .call(xAxis)
               .selectAll("text")
                 .style("text-anchor", "end")
-                .style("font-size","11px")
+                .style("font-size","12px")
                 .attr("dx", "2em")
                 .attr("dy", ".7em")
                 .attr("transform", function(d) {
@@ -511,13 +511,13 @@ loopDirectives.directive( 'd3Bars', [
             .append("text")
               .attr("transform", "rotate(-90)")
               .attr("y", -70)
-              .attr("x", -40)
+              .attr("x", -30)
               .attr("dy", ".6em")
               .style("text-anchor", "end")
               .attr("fill", "white")
-              .text("% of students");
+              .text("% of standards met");
 
-          svg.selectAll("bar")
+          var bars = svg.selectAll(".bar")
               .data(data)
             .enter().append("rect")
               .style("fill", "#45ADA8")
@@ -526,14 +526,31 @@ loopDirectives.directive( 'd3Bars', [
               .attr("y", function(d) { return y(d.value); })
               .attr("height", function(d) { return height - y(d.value); });
 
-          svg.append("text")
-            .attr("x", parseFloat(shape.attr("x")) + width / 2 - 15)
-            .attr("y", parseFloat(shape.attr("y")) - height / 2)
+
+          svg.selectAll("rect")
+            .data(data)
+            .enter()
+            .append("text")
+            .attr("x", x.rangeBand() / 2)
+            .attr("y", function(d) { return (d.value * 100); })
             .style("text-anchor", "middle")
             .style("font-size", "10px")
-            .style("font-family", "sans-serif")
-            .style("opacity", 0.7)
-            .text(d3.format(",.1f")(d.value / 1000) + "k");
+            .text(function(d) {return (d.value * 100); });
+
+          svg.selectAll(".label")
+              .data(data)
+              .enter().append("svg:text")
+                  .attr("class", "label")
+                  .attr("x", function(d) {
+                      return x(d.cohortName) + (x.rangeBand() / 3) - 5;
+                  })
+                  .attr("y", function(d) {
+                      return y(d.value) + 40;
+                  })
+                  .text(function(d) {
+                      return (d.value * 100).toFixed() + "%";
+                  });
+
 
       };
 
