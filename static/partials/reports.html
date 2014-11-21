@@ -193,7 +193,9 @@
                                 </td>
                             </tr>
                             <tr ng-repeat="item in allCohortsTopFB | orderBy:orderByField:reverse">
-                                <td style="font-size:16px">{{item.Name}}</td><td style="font-size:11px">{{item.Description}}</td><td style="font-size:16px">{{item.Percent | number:0}}%</td>
+                                <td style="font-size:16px">{{item.Name}}</td>
+                                <td style="font-size:11.5px">{{item.Description}}</td>
+                                <td style="font-size:16px">{{item.Percent | number:0}}%</td>
                             </tr>
                         </table>
                     </li>
