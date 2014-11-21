@@ -1,9 +1,10 @@
 import model
-from flask import session
+# from flask import session
 import csv
-from sqlalchemy.sql import func
+# from sqlalchemy.sql import func
 from datetime import datetime
-from sqlalchemy import desc
+# from sqlalchemy import desc
+from operator import itemgetter
 
 
 """Error Handler"""
@@ -248,7 +249,7 @@ def parse_CSV(csv_path, name, date, cohort_id):
         model.session.commit()
 
 def aggregate_most_recent_overall_cohort(teacher_id):
-    """Aggregate M/A/FB scores from most recent test."""
+    """Aggregate M/A/FB scores from most recent test for pie chart."""
 
     # Create empty list to hold the score aggregation
     summed_scores = []
@@ -321,12 +322,14 @@ def top_struggle_standards_all_cohorts(teacher_id):
 
     student_ids = []
     standards_list = []
+
     for cohort in cohorts:
         students = cohort.studentcohorts
         for student in students:
-            student_ids.append(student.student.id)
+            student_ids.append(student)
+
     for test_id in most_recent_tests:
-        scores = model.Score.query.filter_by(test_id=test_id, student_id=student_ids[0]).all()
+        scores = model.Score.query.filter_by(test_id=test_id, student_id=student_ids[0].student.id).all()
         for score in scores:
             standards = model.Standard.query.filter_by(id=score.standard_id).all()
             for standard in standards:
@@ -334,35 +337,80 @@ def top_struggle_standards_all_cohorts(teacher_id):
 
     for standard in standards_list:
         scores_by_standard = {}
+        scores_by_standard["Name"] = standard.code
+        scores_by_standard["Description"] = standard.description
+        scores_by_standard["ID"] = standard.id
+        scores_by_standard["Students"] = []
+        total_scores = len(student_ids)
 
         for test_id in most_recent_tests:
             m_count = 0
             a_count = 0
             fb_count = 0
-            total_scores = 0
-            for student_id in student_ids:
-                scores = model.Score.query.filter_by(student_id=student_id, test_id=test_id, standard_id=standard.id).all()
-                total_scores +=1
+
+            for student in student_ids:
+                scores = model.Score.query.filter_by(student_id=student.student.id, test_id=test_id, standard_id=standard.id).all()
+
                 for score in scores:
                     if score.score == "M":
                         m_count += 1
                     elif score.score == "A":
                         a_count += 1
+                        # scores_by_standard["Students"].append(student.student.first_name + " " + student.student.last_name)
                     elif score.score == "FB":
                         fb_count += 1
+                        scores_by_standard["Students"].append(student.student.first_name + " " + student.student.last_name)
 
-                m_percent = float(m_count) / float(total_scores)
-
-                if m_percent <= .25:
-                    scores_by_standard["Name"] = standard.code
-                    scores_by_standard["Description"] = standard.description
-                    scores_by_standard["ID"] = standard.id
-                    scores_by_standard["Percent"] = m_percent * 100
-
+        m_percent = (float(m_count) / float(total_scores)) * 100
+        scores_by_standard["Percent"] = m_percent
         scores_list.append(scores_by_standard)
+        scores_by_standard["Students"].sort()
+
+    scores_list.sort(key=itemgetter("Percent"))
 
     return scores_list
 
+def most_recent_comp_to_normscores_all_cohorts(teacher_id):
+
+    final_scores = []
+
+    # Get most recent % of standards met by calling other function
+    summed_scores = (aggregate_most_recent_overall_cohort(teacher_id))[0]
+    print summed_scores
+    summed_reformatted = {"cohortName": "My Students", "value": summed_scores["Value"]}
+    final_scores.append(summed_reformatted)
+
+    # Get most recent test IDs for teacher's cohorts
+    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+
+    most_recent_tests = []
+    for cohort in cohorts:
+        test = model.Test.query.filter_by(cohort_id=cohort.id).order_by(model.Test.test_date.desc()).first()
+        most_recent_tests.append(test.id)
+
+    # Get norm scores for those test IDs
+    cohort_names = []
+
+    for test_id in most_recent_tests:
+        normscores = model.NormScore.query.filter_by(test_id=test_id).all()
+        for normscore in normscores:
+            if normscore.cohort_name not in cohort_names:
+                cohort_names.append(normscore.cohort_name)
+
+        for item in cohort_names:
+            final_dict = {}
+            final_dict["cohortName"] = item
+            final_dict["value"] = 0
+            # final_dict[item] = 0
+            item_total = 0
+            for normscore in normscores:
+                if normscore.cohort_name == item:
+                    final_dict["value"] += normscore.score
+                    item_total += 1
+            final_dict["value"] = final_dict["value"] / float(item_total)
+            final_scores.append(final_dict)
+
+    return final_scores
 
 def get_all_cohort_data_by_test(teacher_id):
     """Use teacher id to get all student scores by test and aggregate counts of

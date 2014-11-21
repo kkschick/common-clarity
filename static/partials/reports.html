@@ -158,8 +158,10 @@
 
             <div gridster>
                 <ul>
-                    <li gridster-item row="0" col="0" size-x="3" size-y="5">
-                        <p class="border-text">Top standards needing improvement.</p>
+                    <li gridster-item row="0" col="0" size-x="4" size-y="2">
+                        <p class="border-text">Top standards needing improvement<br>
+                        <a href="" ng-click="show=!show" class="special-link">Click to show more</a><span class="special-text"> / Hover to see students who did not meet standard</span>
+                        </p>
                         <table class="standard-table">
                             <tr style="font-size:14px">
                                 <td style="width:120px">
@@ -169,8 +171,6 @@
                                             <div ng-show="!reverse" class="inline arrow-up"></div>
                                             <div ng-show="reverse" class="inline arrow-down"></div>
                                         </span>
-                                       <!--  <div ng-show="!reverse" ng-class="{'inline arrow-up' : !reverse}"></div>
-                                        <div ng-show="reverse" ng-class="{'inline arrow-down' : reverse}"></div> -->
                                     </a>
                                 </td>
                                 <td>
@@ -192,15 +192,20 @@
                                     </a>
                                 </td>
                             </tr>
-                            <tr ng-repeat="item in allCohortsTopFB | orderBy:orderByField:reverse">
+                            <tr ng-show="!show" ng-repeat="item in allCohortsTopFB | orderBy:orderByField:reverse">
                                 <td style="font-size:16px">{{item.Name}}</td>
-                                <td style="font-size:11.5px">{{item.Description}}</td>
+                                <td style="font-size:11.5px"><a class="tooltips">{{item.Description}}<span>Students who did not meet standard: {{item.Students}}</span></a></td>
+                                <td style="font-size:16px">{{item.Percent | number:0}}%</td>
+                            </tr>
+                            <tr ng-show="show" ng-repeat="item in allCohortsTopFBAll | orderBy:orderByField:reverse">
+                                <td style="font-size:16px">{{item.Name}}</td>
+                                <td style="font-size:11.5px"><a class="tooltips">{{item.Description}}<span>STUDENTS WHO DID NOT MEET STANDARD:<br>{{item.Students}}</span></a></td>
                                 <td style="font-size:16px">{{item.Percent | number:0}}%</td>
                             </tr>
                         </table>
                     </li>
                     <li gridster-item row="0" col="4" size-x="2" size-y="2">
-                        <p class="border-text" ng-model="allCohortsPie">Only {{allCohortsPie[0].Value | number:0}}% of standards were<br>met on the last test.</p>
+                        <p class="border-text" ng-model="allCohortsPie">Only {{allCohortsPie[0].Value | number:0}}% of standards were<br>met on the last test</p>
                         <d3-pie data="allCohortsPie"></d3-pie>
                     </li>
 

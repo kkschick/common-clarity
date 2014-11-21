@@ -117,6 +117,7 @@ loopControllers.controller('SettingsController', ['$scope', '$http', 'ModalServi
 loopControllers.controller('ReportsController', ['$scope', '$http', function($scope, $http){
 
     $scope.allSelected = true;
+    $scope.display = false;
 
     $http.get("/api/getclasses/").success(function(data) {
         $scope.cohorts = data;
@@ -124,7 +125,8 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
     });
 
     $http.get("/api/allcohortstopfb/").success(function(data) {
-        $scope.allCohortsTopFB = data;
+        $scope.allCohortsTopFB = data.slice(0, 5);
+        $scope.allCohortsTopFBAll = data;
         $scope.orderByField = 'Percent';
     });
 
