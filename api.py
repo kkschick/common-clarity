@@ -377,7 +377,7 @@ def most_recent_comp_to_normscores_all_cohorts(teacher_id):
     # Get most recent % of standards met by calling other function
     summed_scores = (aggregate_most_recent_overall_cohort(teacher_id))[0]
     print summed_scores
-    summed_reformatted = {"cohortName": "My Students", "value": summed_scores["Value"]}
+    summed_reformatted = {"cohortName": "My Students", "value": ((summed_scores["Value"])/100)}
     final_scores.append(summed_reformatted)
 
     # Get most recent test IDs for teacher's cohorts
@@ -407,8 +407,10 @@ def most_recent_comp_to_normscores_all_cohorts(teacher_id):
                 if normscore.cohort_name == item:
                     final_dict["value"] += normscore.score
                     item_total += 1
-            final_dict["value"] = (final_dict["value"] / float(item_total)) * 100
+            final_dict["value"] = final_dict["value"] / float(item_total)
             final_scores.append(final_dict)
+
+    final_scores.sort(key=itemgetter("cohortName"))
 
     return final_scores
 

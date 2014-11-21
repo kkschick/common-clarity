@@ -454,10 +454,8 @@ loopDirectives.directive( 'd3Bars', [
         data: '='
       },
       link: function (scope, element) {
-
-
-        var margin = {top: 30, right: 60, bottom: 60, left: 70},
-          width = 560 - margin.left - margin.right,
+        var margin = {top: 15, right: 60, bottom: 150, left: 100},
+          width = 400 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom;
 
         var svg = d3.select(element[0])
@@ -471,9 +469,6 @@ loopDirectives.directive( 'd3Bars', [
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .2);
         var y = d3.scale.linear().rangeRound([height, 0]);
 
-        var color = d3.scale.ordinal()
-          .range(["#547980", "#45ADA8", "#9DE0AD"]);
-
         var xAxis = d3.svg.axis()
             .scale(x)
             .orient("bottom");
@@ -483,81 +478,16 @@ loopDirectives.directive( 'd3Bars', [
             .orient("left")
             .tickFormat(d3.format(".0%"));
 
-
         scope.render = function(data) {
+
           svg.selectAll("*").remove();
 
+          data.forEach(function(d) {
+            d.value = +d.value;
+          });
+
           x.domain(data.map(function(d) { return d.cohortName; }));
-          y.domain([0, d3.max(100)]);
-          // color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Name" && key !== "values" && key !== "Description" && key !== "ID"; }));
-
-          // data.forEach(function(d) {
-          //   var y0 = 0;
-          //   d.values = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
-          //   d.values.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
-          //   });
-
-          // svg.selectAll('g.axis').remove();
-          // svg.append("g")
-          //     .attr("class", "x axis")
-          //     .attr("transform", "translate(0," + height + ")")
-          //     .attr("fill", "white")
-          //     .call(xAxis)
-          //     .selectAll("text")
-          //       .style("text-anchor", "end")
-          //       .style("font-size","12px")
-          //       .attr("dx", "-.8em")
-          //       .attr("dy", ".15em")
-          //       .attr("transform", function(d) {
-          //           return "rotate(-40)";
-          //           });
-
-          // svg.append("g")
-          //     .attr("class", "y axis")
-          //     .attr("fill", "white")
-          //     .call(yAxis)
-          //   .append("text")
-          //     .attr("transform", "rotate(-90)")
-          //     .attr("y", -60)
-          //     .attr("x", -90)
-          //     .attr("dy", ".6em")
-          //     .style("text-anchor", "end")
-          //     .attr("fill", "white")
-          //     .text("% of students");
-
-          // var bars = svg.selectAll(".bar").data(data);
-          // bars.enter()
-          //   .append("g")
-          //   .attr("class", "bar")
-          //   .attr("transform", function(d) { return "translate(" + x(d.Name) + ",0)"; });
-
-          // bars.selectAll("rect")
-          //     .data(function(d) { return d.values; })
-          //   .enter().append("rect")
-          //     .attr("width", x.rangeBand())
-          //     .attr("class", "rect")
-          //     .attr("y", function(d) { return y(d.y1); })
-          //     .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-          //     .style("fill", function(d) { return color(d.name); });
-
-          // bars.selectAll("text")
-          //   .data(function(d) {return d.values;})
-          //   .enter()
-          //   .append("text")
-          //   .attr("x", x.rangeBand() / 2)
-          //   .attr("y", function(d, i) { return y(d.y1) + (y(d.y0) - y(d.y1))/2; })
-          //   .style("text-anchor", "middle")
-          //   .style("font-size", "10px")
-          //   .text(function(d) {
-          //     if (d.name != "values") {
-          //         return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
-          //     }});
-
-
-
-
-
-
+          y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
           svg.selectAll('g.axis').remove();
           svg.append("g")
@@ -567,13 +497,12 @@ loopDirectives.directive( 'd3Bars', [
               .call(xAxis)
               .selectAll("text")
                 .style("text-anchor", "end")
-                .style("font-size","12px")
-                .attr("dx", "-.8em")
-                .attr("dy", ".15em")
+                .style("font-size","11px")
+                .attr("dx", "2em")
+                .attr("dy", ".7em")
                 .attr("transform", function(d) {
-                    return "rotate(-40)";
+                    return "rotate(-15)";
                     });
-
 
           svg.append("g")
               .attr("class", "y axis")
@@ -581,30 +510,38 @@ loopDirectives.directive( 'd3Bars', [
               .call(yAxis)
             .append("text")
               .attr("transform", "rotate(-90)")
-              .attr("y", 6)
-              .attr("dy", ".71em")
+              .attr("y", -70)
+              .attr("x", -40)
+              .attr("dy", ".6em")
               .style("text-anchor", "end")
-              .style("fill", "white")
+              .attr("fill", "white")
               .text("% of students");
 
-          var bars = svg.selectAll(".bar").data(data);
-          bars.enter()
-            .append("rect")
-            .attr("class", "bar")
-            .attr("x", function(d) { return x(d.cohortName); })
-            .attr("width", x.rangeBand());
+          svg.selectAll("bar")
+              .data(data)
+            .enter().append("rect")
+              .style("fill", "#45ADA8")
+              .attr("x", function(d) { return x(d.cohortName); })
+              .attr("width", x.rangeBand())
+              .attr("y", function(d) { return y(d.value); })
+              .attr("height", function(d) { return height - y(d.value); });
 
-          bars
-            .transition()
-            .duration(1000)
-            .attr('height', function(d) { return height - y(d.value); })
-            .attr("y", function(d) { return y(d.value); })
-        };
+          svg.append("text")
+            .attr("x", parseFloat(shape.attr("x")) + width / 2 - 15)
+            .attr("y", parseFloat(shape.attr("y")) - height / 2)
+            .style("text-anchor", "middle")
+            .style("font-size", "10px")
+            .style("font-family", "sans-serif")
+            .style("opacity", 0.7)
+            .text(d3.format(",.1f")(d.value / 1000) + "k");
 
-          scope.$watch('data', function(){
-              scope.render(scope.data);
-          }, true);
-        }
+      };
+
+
+        scope.$watch('data', function(){
+            scope.render(scope.data);
+        });
+      }
     };
   }
 ]);
