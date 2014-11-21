@@ -134,6 +134,10 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         $scope.allCohortsPie = data;
     });
 
+    $http.get("/api/allcohortsnorm/").success(function(data) {
+        $scope.allCohortsNorm = data;
+    });
+
     $http.get("/api/allcohortcounts/").success(function(data) {
         $scope.allCohortsData = data;
     });

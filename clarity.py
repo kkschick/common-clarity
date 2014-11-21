@@ -83,7 +83,6 @@ def get_cohorts():
     response = api.get_teacher_cohorts(teacher_id)
     return _convert_to_JSON(response)
 
-
 @app.route("/api/allcohortspie/")
 def all_cohorts_data_pie_chart():
     teacher_id = session['user']
@@ -94,6 +93,12 @@ def all_cohorts_data_pie_chart():
 def all_cohorts_top_struggle_standards():
     teacher_id = session['user']
     response = api.top_struggle_standards_all_cohorts(teacher_id)
+    return _convert_to_JSON(response)
+
+@app.route("/api/allcohortsnorm/")
+def all_cohorts_comp_to_norm():
+    teacher_id = session['user']
+    response = api.most_recent_comp_to_normscores_all_cohorts(teacher_id)
     return _convert_to_JSON(response)
 
 @app.route("/api/allcohortcounts/")

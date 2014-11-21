@@ -407,7 +407,7 @@ def most_recent_comp_to_normscores_all_cohorts(teacher_id):
                 if normscore.cohort_name == item:
                     final_dict["value"] += normscore.score
                     item_total += 1
-            final_dict["value"] = final_dict["value"] / float(item_total)
+            final_dict["value"] = (final_dict["value"] / float(item_total)) * 100
             final_scores.append(final_dict)
 
     return final_scores
