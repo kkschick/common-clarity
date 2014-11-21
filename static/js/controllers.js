@@ -125,7 +125,7 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
 
     $http.get("/api/allcohortstopfb/").success(function(data) {
         $scope.allCohortsTopFB = data;
-        $scope.predicate = 'Percent';
+        $scope.orderByField = 'Percent';
     });
 
     $http.get("/api/allcohortspie/").success(function(data) {
