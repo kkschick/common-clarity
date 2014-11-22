@@ -353,12 +353,12 @@
                         </table>
                     </li>
                     <li gridster-item row="0" col="4" size-x="2" size-y="2">
-                        <p class="border-text" ng-model="allCohortsPie">Only {{allCohortsPie[0].Value | number:0}}% of standards were<br>met on the last test</p>
-                        <d3-pie data="allCohortsPie"></d3-pie>
+                        <p class="border-text" ng-model="oneCohortPie">Only {{oneCohortPie[0].Value | number:0}}% of standards were<br>met on the last test</p>
+                        <d3-pie data="oneCohortPie"></d3-pie>
                     </li>
                     <li gridster-item row="3" col="0" size-x="2" size-y="2">
-                        <p class="border-text" style="font-size:14px" ng-model="allCohortsNorm">Students met {{(allCohortsNorm[4].value * 100) | number:0}}% of standards,<br>compared to {{(allCohortsNorm[0].value * 100) | number:0}}% of standards at<br>{{allCohortsNorm[0].cohortName}} overall</p>
-                        <d3-bars data="allCohortsNorm"></d3-bars>
+                        <p class="border-text" style="font-size:14px" ng-model="oneCohortNorm">Students met {{(oneCohortNorm[33].value * 100) | number:0}}% of standards,<br>compared to {{(oneCohortNorm[0].value * 100) | number:0}}% of standards at<br>{{oneCohortNorm[0].cohortName}} overall</p>
+                        <d3-bars data="oneCohortNorm"></d3-bars>
                     </li>
                     <li gridster-item row="3" col="2" size-x="4" size-y="2">
                         <p class="border-text" ng-model="allCohortsData">Student performance on all tests this year</p>

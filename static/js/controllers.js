@@ -198,6 +198,15 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
                 $scope.orderByField = 'Percent';
             });
 
+            // Overall pie chart data of most recent test
+            $http.get("/api/singlecohortpie/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+                $scope.oneCohortPie = data;
+            });
+
+            // Bar graph data comparing students to school/district
+            $http.get("/api/singlecohortnorm/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+                $scope.oneCohortNorm = data;
+            });
             // $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
             //     $scope.oneCohortData = data;
             // });
