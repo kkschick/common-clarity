@@ -147,6 +147,11 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
         $scope.tableStandard = angular.copy(data);
     });
 
+    $http.get("/api/allcohortstudents/").success(function(data) {
+        $scope.allCohortsStudents = data.slice(0,10);
+        $scope.orderByValue = '-total';
+    });
+
     // $scope.viewReport = function() {
 
     //     $scope.selectedUser = null;

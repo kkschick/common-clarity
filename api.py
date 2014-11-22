@@ -379,58 +379,38 @@ def top_students_struggling(teacher_id):
 
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
 
-    most_recent_tests = []
-    for cohort in cohorts:
-        test = model.Test.query.filter_by(cohort_id=cohort.id).order_by(model.Test.test_date.desc()).first()
-        most_recent_tests.append(test.id)
-
-    student_ids = []
-    standards_list = []
-
+    student_list = []
     for cohort in cohorts:
         students = cohort.studentcohorts
         for student in students:
-            student_ids.append(student)
+            student_list.append(student)
 
-    for test_id in most_recent_tests:
-        scores = model.Score.query.filter_by(test_id=test_id, student_id=student_ids[0].student.id).all()
+    for student in student_list:
+        scores = model.Score.query.filter_by(student_id=student.student.id).all()
+        total_scores = len(scores)
+        m_count = 0
+        a_count = 0
+        fb_count = 0
         for score in scores:
-            standards = model.Standard.query.filter_by(id=score.standard_id).all()
-            for standard in standards:
-                standards_list.append(standard)
+            if score.score == "M":
+                m_count += 1
+            elif score.score == "A":
+                a_count += 1
+            elif score.score == "FB":
+                fb_count += 1
 
-    for standard in standards_list:
-        scores_by_standard = {}
-        scores_by_standard["Name"] = standard.code
-        scores_by_standard["Description"] = standard.description
-        scores_by_standard["ID"] = standard.id
-        scores_by_standard["Students"] = []
-        total_scores = len(student_ids)
+        a_percent = (float(a_count) / float(total_scores)) * 100
+        fb_percent = (float(fb_count) / float(total_scores)) * 100
 
-        for test_id in most_recent_tests:
-            m_count = 0
-            a_count = 0
-            fb_count = 0
+        scores_by_student = {}
+        scores_by_student["name"] = student.student.first_name + " " + student.student.last_name
+        scores_by_student["A"] = a_percent
+        scores_by_student["FB"] = fb_percent
+        scores_by_student["total"] = a_percent + fb_percent
+        scores_list.append(scores_by_student)
 
-            for student in student_ids:
-                scores = model.Score.query.filter_by(student_id=student.student.id, test_id=test_id, standard_id=standard.id).all()
-
-                for score in scores:
-                    if score.score == "M":
-                        m_count += 1
-                    elif score.score == "A":
-                        a_count += 1
-                        # scores_by_standard["Students"].append(student.student.first_name + " " + student.student.last_name)
-                    elif score.score == "FB":
-                        fb_count += 1
-                        scores_by_standard["Students"].append(student.student.first_name + " " + student.student.last_name)
-
-        m_percent = (float(m_count) / float(total_scores)) * 100
-        scores_by_standard["Percent"] = m_percent
-        scores_list.append(scores_by_standard)
-        scores_by_standard["Students"].sort()
-
-    scores_list.sort(key=itemgetter("Percent"))
+    scores_list.sort(key=itemgetter("total"))
+    scores_list.reverse()
 
     return scores_list
 
@@ -591,6 +571,7 @@ def aggregate_most_recent_by_standard_overall_cohort(teacher_id):
         scores_list.append(scores_by_standard)
 
     scores_list.sort(key=itemgetter("percent"))
+    scores_list.reverse()
 
     for dict in scores_list:
         if 'percent' in dict:

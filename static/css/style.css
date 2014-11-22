@@ -385,6 +385,10 @@ hr {
     padding: 0.6em 0.75em;
 }
 
+.student-box {
+  padding: 0px 20px 0px 20px;
+}
+
 a.tooltips {
   position: relative;
   display: inline;

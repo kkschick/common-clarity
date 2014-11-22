@@ -13,7 +13,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/test")
 def test():
-    return _convert_to_JSON(api.most_recent_comp_to_normscores_all_cohorts(1))
+    return _convert_to_JSON(api.top_students_struggling(1))
 
 
 @app.route("/")
@@ -105,6 +105,12 @@ def all_cohorts_comp_to_norm():
 def all_cohort_data():
     teacher_id = session['user']
     response = api.get_all_cohort_data_by_test(teacher_id)
+    return _convert_to_JSON(response)
+
+@app.route("/api/allcohortstudents/")
+def all_cohorts_top_struggle_students():
+    teacher_id = session['user']
+    response = api.top_students_struggling(teacher_id)
     return _convert_to_JSON(response)
 
 # @app.route("/api/singlecohortcounts/")

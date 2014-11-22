@@ -248,8 +248,55 @@
                                 <td style="font-size:11.5px">{{item.Description}}</td>
                             </tr>
                         </table>
+                    </li>
+                    <li gridster-item row="8" col="0" size-x="4" size-y="2">
+                        <p class="border-text" ng-model="allCohortsStudents">Students requiring the most help</p><br>
 
-
+                        <table class="standard-table">
+                            <tr>
+                                <td>
+                                    <a href="" ng-click="orderByValue='name'; reverse = !reverse">
+                                        STUDENT
+                                        <span ng-show="orderByValue=='name'">
+                                            <div ng-show="!reverse" class="inline arrow-up"></div>
+                                            <div ng-show="reverse" class="inline arrow-down"></div>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="" ng-click="orderByValue='A'; reverse = !reverse">
+                                        % APPROACHING
+                                        <span ng-show="orderByValue=='A'">
+                                            <div ng-show="!reverse" class="inline arrow-up"></div>
+                                            <div ng-show="reverse" class="inline arrow-down"></div>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="" ng-click="orderByValue='FB'; reverse = !reverse">
+                                        % FALLING BEHIND
+                                        <span ng-show="orderByValue=='FB'">
+                                            <div ng-show="!reverse" class="inline arrow-up"></div>
+                                            <div ng-show="reverse" class="inline arrow-down"></div>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="" ng-click="orderByValue='total'; reverse = !reverse">
+                                        % OVERALL
+                                        <span ng-show="orderByValue=='total'">
+                                            <div ng-show="!reverse" class="inline arrow-up"></div>
+                                            <div ng-show="reverse" class="inline arrow-down"></div>
+                                        </span>
+                                    </a>
+                                </td>
+                            <tr ng-repeat="item in allCohortsStudents | orderBy:orderByValue:reverse">
+                                <td>{{item.name}}</td>
+                                <td>{{item.A | number:0}}%</td>
+                                <td>{{item.FB | number:0}}%</td>
+                                <td>{{item.total | number:0}}%</td>
+                            </tr>
+                        </table>
                     </li>
                 </ul>
             </div>
