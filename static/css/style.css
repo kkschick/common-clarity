@@ -58,7 +58,11 @@ a {
     text-decoration: none;
 }
 
-#fl-right ul li.active a, #fl-right ul li:hover a {
+#fl-right ul li.active a {
+  border: solid 1px #83d3c9;
+}
+
+#fl-right ul li:hover a {
     border: solid 1px;
 }
 
@@ -186,7 +190,7 @@ form p input {
 .standard-table {
     width: auto;
     text-transform: none;
-    margin: 15px;
+    margin: 10px;
     text-align: left;
 }
 
@@ -425,4 +429,17 @@ a:hover.tooltips span {
   left: 50%;
   margin-left: -76px;
   z-index: 999;
+}
+
+.settings-table {
+  width: auto;
+}
+
+.settings-table tr td {
+  width: 50%;
+}
+
+.white-left {
+  border-left: 3px solid white;
+  padding-left: 30px;
 }

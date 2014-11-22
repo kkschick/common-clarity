@@ -17,9 +17,9 @@
 
         <div class="right-align inline" id="fl-right">
             <ul ng-init="tab = 1">
-                <li class="tab" ng-class="{active:tab===1}"><a ng-click="tab = 1">VIEW DASHBOARD</a></li>
-                <li class="tab" ng-class="{active:tab===2}"><a ng-click="tab = 2">SET UP STUDENTS</a></li>
-                <li class="tab" ng-class="{active:tab===3}"><a ng-click="tab = 3">IMPORT TEST DATA</a></li>
+                <li ng-class="{active:tab===1}"><a ng-click="tab = 1">VIEW DASHBOARD</a></li>
+                <li ng-class="{active:tab===2}"><a ng-click="tab = 2">SET UP STUDENTS</a></li>
+                <li ng-class="{active:tab===3}"><a ng-click="tab = 3">IMPORT TEST DATA</a></li>
             </ul>
         </div>
     </div>
@@ -27,6 +27,9 @@
     <hr>
 
     <div ng-controller="SettingsController" ng-show="tab === 2">
+        <table class="settings-table">
+        <tr>
+        <td>
         <h2>SET UP STUDENTS</h2>
         <h3>ADD NEW CLASS</h3>
             <div>
@@ -97,8 +100,9 @@
                     <p ng-show="sent">Your class was successfully added!<p>
                 </form>
             </div>
-            <hr>
-            <h3>MY CLASSES</h3>
+            </td>
+            <td class="white-left">
+            <h2>MY CLASSES</h2>
                 <table class="big-table">
                     <tr>
                         <td ng-repeat="cohort in cohorts">
@@ -110,6 +114,7 @@
                         </td>
                     </tr>
                 </table>
+            </td></tr></table>
         </div>
 
 
@@ -135,27 +140,24 @@
             <div class="header-small">
                 <div class="no-margin inline left">
                     <h2 class="no-margin" ng-show="allSelected">REPORTS FOR ALL CLASSES:</h2>
-                    <h2 ng-model="selectedUser" ng-show="cohortSelected">REPORTS FOR {{selectedUser | uppercase}}:</h2>
-                    <h2 ng-model="selectedUser" ng-show="studentSelected">REPORTS FOR {{selectedUser | uppercase}}:</h2>
+                    <h2 class="no-margin" ng-model="selectedUser" ng-show="cohortSelected">REPORTS FOR {{selectedUser | uppercase}}:</h2>
+                    <h2 class="no-margin" ng-model="selectedUser" ng-show="studentSelected">REPORTS FOR {{selectedUser | uppercase}}:</h2>
                 </div>
                 <div class="inline right-align">
                         <form name="reportCohort">
-                            FILTER BY CLASS: <select ng-model="selectedCohort" name="cohort" id="cohort" required="required" class="form-field">
-                                <option value="0">All Classes</option>
+                            DRILL DOWN: <select ng-model="selectedCohort" name="cohort" id="cohort" required="required" class="form-field">
+                                <option value="0" selected="selected">All Classes</option>
                                 <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
-                            </select>
-
-                            <div ng-disabled="!selectedCohort" ng-show="selectedCohort > 0">
-                            STUDENT (optional): <select ng-model="selectedStudent" name="student" id="student" class="form-field">
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;<select ng-disabled="!selectedCohort" ng-show="selectedCohort > 0" ng-model="selectedStudent" name="student" id="student" class="form-field">
+                                <option selected="selected" value="0" disabled="disabled">Student (optional)</option>
                                 <option ng-repeat="student in cohorts[selectedCohort - 1].students" value="{{student}}">{{student.name}}</option>
-                            </select>
-                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;
                             <button ng-click="viewReport()" class="button special" id="update">REFRESH</button>
                         </form>
                 </div>
             </div>
 
-            <div gridster>
+            <div gridster ng-show="allSelected">
                 <ul>
                     <li gridster-item row="0" col="0" size-x="4" size-y="2">
                         <p class="border-text">Top standards needing improvement<br>
@@ -245,7 +247,7 @@
                             </tr>
                             <tr ng-repeat="standard in tableStandard | orderBy:orderByField:switch">
                                 <td style="font-size:16px">{{standard.Name}}</td>
-                                <td style="font-size:11.5px">{{standard.Description}}</td>
+                                <td style="font-size:11px">{{standard.Description}}</td>
                             </tr>
                         </table>
                     </li>
@@ -302,6 +304,152 @@
                 </ul>
             </div>
 
+            <div gridster ng-show="cohortSelected">
+                <ul>
+                    <li gridster-item row="0" col="0" size-x="4" size-y="2">
+                        <p class="border-text">Top standards needing improvement<br>
+                        <a href="" ng-click="show=!show" class="special-link">Click to show more</a><span class="special-text"> / Hover to see students who did not meet standard</span>
+                        </p>
+                        <table class="standard-table">
+                            <tr style="font-size:14px">
+                                <td style="width:120px">
+                                    <a href="" ng-click="orderByField='Name'; reverse = !reverse">
+                                        STANDARD
+                                        <span ng-show="orderByField=='Name'">
+                                            <div ng-show="!reverse" class="inline arrow-up"></div>
+                                            <div ng-show="reverse" class="inline arrow-down"></div>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="" ng-click="orderByField='Description'; reverse = !reverse">
+                                        DESCRIPTION
+                                        <span ng-show="orderByField=='Description'">
+                                            <div ng-show="!reverse" class="inline arrow-up"></div>
+                                            <div ng-show="reverse" class="inline arrow-down"></div>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td style="width:75px">
+                                    <a href="" ng-click="orderByField='Percent'; reverse = !reverse">
+                                        % MET
+                                        <span ng-show="orderByField=='Percent'">
+                                            <div ng-show="!reverse" class="inline arrow-up"></div>
+                                            <div ng-show="reverse" class="inline arrow-down"></div>
+                                        </span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr ng-show="!show" ng-repeat="item in allCohortsTopFB | orderBy:orderByField:reverse">
+                                <td style="font-size:16px">{{item.Name}}</td>
+                                <td style="font-size:11.5px"><a class="tooltips">{{item.Description}}<span>Students who did not meet standard: {{item.Students}}</span></a></td>
+                                <td style="font-size:16px">{{item.Percent | number:0}}%</td>
+                            </tr>
+                            <tr ng-show="show" ng-repeat="item in allCohortsTopFBAll | orderBy:orderByField:reverse">
+                                <td style="font-size:16px">{{item.Name}}</td>
+                                <td style="font-size:11.5px"><a class="tooltips">{{item.Description}}<span>STUDENTS WHO DID NOT MEET STANDARD:<br>{{item.Students}}</span></a></td>
+                                <td style="font-size:16px">{{item.Percent | number:0}}%</td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li gridster-item row="0" col="4" size-x="2" size-y="2">
+                        <p class="border-text" ng-model="allCohortsPie">Only {{allCohortsPie[0].Value | number:0}}% of standards were<br>met on the last test</p>
+                        <d3-pie data="allCohortsPie"></d3-pie>
+                    </li>
+                    <li gridster-item row="3" col="0" size-x="2" size-y="2">
+                        <p class="border-text" style="font-size:14px" ng-model="allCohortsNorm">Students met {{(allCohortsNorm[4].value * 100) | number:0}}% of standards,<br>compared to {{(allCohortsNorm[0].value * 100) | number:0}}% of standards at<br>{{allCohortsNorm[0].cohortName}} overall</p>
+                        <d3-bars data="allCohortsNorm"></d3-bars>
+                    </li>
+                    <li gridster-item row="3" col="2" size-x="4" size-y="2">
+                        <p class="border-text" ng-model="allCohortsData">Student performance on all tests this year</p>
+                        <d3-stacked-bars data="allCohortsData"></d3-stacked-bars>
+                    </li>
+                    <li gridster-item row="5" col="0" size-x="4" size-y="3">
+                        <p class="border-text" ng-model="allStandard">Student performance on the most recent test<br>broken out by Common Core State Standard</p>
+                        <d3-stacked-bars-wide data="allStandard"></d3-stacked-bars-wide>
+                    </li>
+                    <li gridster-item row="5" col="4" size-x="2" size-y="5">
+                        <p class="border-text" ng-model="tableStandard">Standards tested on most<br>recent test</p>
+
+                        <table class="standard-table">
+                            <tr style="font-size:12px">
+                                <td>
+                                    <a href="" ng-click="orderByField='Name'; switch = !switch">
+                                        CODE
+                                        <span ng-show="orderByField=='Name'">
+                                            <div ng-show="!switch" class="inline arrow-up"></div>
+                                            <div ng-show="switch" class="inline arrow-down"></div>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="" ng-click="orderByField='Description'; switch = !switch">
+                                        DESCRIPTION
+                                        <span ng-show="orderByField=='Description'">
+                                            <div ng-show="!switch" class="inline arrow-up"></div>
+                                            <div ng-show="switch" class="inline arrow-down"></div>
+                                        </span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="standard in tableStandard | orderBy:orderByField:switch">
+                                <td style="font-size:16px">{{standard.Name}}</td>
+                                <td style="font-size:11px">{{standard.Description}}</td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li gridster-item row="8" col="0" size-x="4" size-y="2">
+                        <p class="border-text" ng-model="allCohortsStudents">Students requiring the most help</p><br>
+                        <div>
+                            <table class="standard-table">
+                                <tr>
+                                    <td>
+                                        <a href="" ng-click="orderByValue='name'; sort = !sort">
+                                            STUDENT
+                                            <span ng-show="orderByValue=='name'">
+                                                <div ng-show="!sort" class="inline arrow-up"></div>
+                                                <div ng-show="sort" class="inline arrow-down"></div>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td style="width:180px">
+                                        <a href="" ng-click="orderByValue='A'; sort = !sort">
+                                            % APPROACHING
+                                            <span ng-show="orderByValue=='A'">
+                                                <div ng-show="!sort" class="inline arrow-up"></div>
+                                                <div ng-show="sort" class="inline arrow-down"></div>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td style="width:190px">
+                                        <a href="" ng-click="orderByValue='FB'; sort = !sort">
+                                            % FALLING BEHIND
+                                            <span ng-show="orderByValue=='FB'">
+                                                <div ng-show="!sort" class="inline arrow-up"></div>
+                                                <div ng-show="sort" class="inline arrow-down"></div>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td style="width:130px">
+                                        <a href="" ng-click="orderByValue='total'; sort = !sort">
+                                            % OVERALL
+                                            <span ng-show="orderByValue=='-total'">
+                                                <div ng-show="sort" class="inline arrow-up"></div>
+                                                <div ng-show="!sort" class="inline arrow-down"></div>
+                                            </span>
+                                        </a>
+                                    </td>
+                                <tr ng-repeat="item in allCohortsStudents | orderBy:orderByValue:sort" style="font-size:12px">
+                                    <td>{{item.name | uppercase}}</td>
+                                    <td>{{item.A | number:0}}%</td>
+                                    <td>{{item.FB | number:0}}%</td>
+                                    <td>{{item.total | number:0}}%</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </li>
+                </ul>
+            </div>
 
 
 <!--             <div class="chart" ng-show="allSelected">
