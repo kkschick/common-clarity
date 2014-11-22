@@ -98,9 +98,9 @@ loopDirectives.directive( 'd3StackedBars', [
         data: '='
       },
       link: function (scope, element) {
-        var margin = {top: 30, right: 60, bottom: 60, left: 70},
-          width = 560 - margin.left - margin.right,
-          height = 360 - margin.top - margin.bottom;
+        var margin = {top: 20, right: 60, bottom: 50, left: 80},
+          width = 600 - margin.left - margin.right,
+          height = 300 - margin.top - margin.bottom;
 
         var svg = d3.select(element[0])
           .append("svg")
@@ -149,10 +149,10 @@ loopDirectives.directive( 'd3StackedBars', [
               .selectAll("text")
                 .style("text-anchor", "end")
                 .style("font-size","12px")
-                .attr("dx", "-.8em")
-                .attr("dy", ".15em")
+                .attr("dx", "1.5em")
+                .attr("dy", ".7em")
                 .attr("transform", function(d) {
-                    return "rotate(-20)";
+                    return "rotate(-15)";
                     });
 
           svg.append("g")
@@ -161,8 +161,8 @@ loopDirectives.directive( 'd3StackedBars', [
               .call(yAxis)
             .append("text")
               .attr("transform", "rotate(-90)")
-              .attr("y", -60)
-              .attr("x", -90)
+              .attr("y", -70)
+              .attr("x", -60)
               .attr("dy", ".6em")
               .style("text-anchor", "end")
               .attr("fill", "white")
@@ -267,8 +267,8 @@ loopDirectives.directive( 'd3StackedBarsWide', [
       },
       link: function (scope, element) {
         var margin = {top: 30, right: 60, bottom: 60, left: 70},
-          width = 560 - margin.left - margin.right,
-          height = 360 - margin.top - margin.bottom;
+          width = 700 - margin.left - margin.right,
+          height = 460 - margin.top - margin.bottom;
 
         var svg = d3.select(element[0])
           .append("svg")
@@ -323,8 +323,6 @@ loopDirectives.directive( 'd3StackedBarsWide', [
               .selectAll("text")
                 .style("text-anchor", "end")
                 .style("font-size","12px")
-                // .on('mouseover', axisTip.show)
-                // .on('mouseout', axisTip.hide)
                 .attr("dx", "-.8em")
                 .attr("dy", ".15em")
                 .attr("transform", function(d) {
@@ -337,22 +335,12 @@ loopDirectives.directive( 'd3StackedBarsWide', [
               .call(yAxis)
             .append("text")
               .attr("transform", "rotate(-90)")
-              .attr("y", -60)
-              .attr("x", -90)
+              .attr("y", -70)
+              .attr("x", -110)
               .attr("dy", ".6em")
               .style("text-anchor", "end")
               .attr("fill", "white")
               .text("% of students");
-
-          // var barTip = d3.tip()
-          //   .attr('class', 'd3-tip')
-          //   .offset([-10, 0])
-          //   .html(function(d) {
-          //     if (d.name != "values") {
-          //         return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
-          //     }});
-
-          // svg.call(barTip);
 
           var bars = svg.selectAll(".bar").data(data);
           bars.enter()
@@ -368,8 +356,6 @@ loopDirectives.directive( 'd3StackedBarsWide', [
               .attr("y", function(d) { return y(d.y1); })
               .attr("height", function(d) { return y(d.y0) - y(d.y1); })
               .style("fill", function(d) { return color(d.name); });
-              // .on('mouseover', barTip.show)
-              // .on('mouseout', barTip.hide);
 
           bars.selectAll("text")
             .data(function(d) {return d.values;})
@@ -378,7 +364,7 @@ loopDirectives.directive( 'd3StackedBarsWide', [
             .attr("x", x.rangeBand() / 2)
             .attr("y", function(d, i) { return y(d.y1) + (y(d.y0) - y(d.y1))/2; })
             .style("text-anchor", "middle")
-            .style("font-size", "10px")
+            .style("font-size", "12px")
             .text(function(d) {
               if (d.name != "values") {
                   return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
