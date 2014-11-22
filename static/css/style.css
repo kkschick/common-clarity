@@ -370,7 +370,8 @@ hr {
 .gridster-content ul li {
   box-shadow: inset 0 0 100px rgba(0,0,0,.5);
   text-align: center;
-  /*border: 2px solid #83d3c9;*/
+  /*border: 2px solid #547980;*/
+  border: 1px solid white;
 }
 
 .border-text {
@@ -383,6 +384,7 @@ hr {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     padding: 0.6em 0.75em;
+    /*background-color: #45ADA8;*/
 }
 
 .student-box {

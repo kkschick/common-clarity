@@ -297,13 +297,6 @@ loopDirectives.directive( 'd3StackedBarsWide', [
 
           svg.selectAll("*").remove();
 
-          // var axisTip = d3.tip()
-          //   .attr('class', 'd3-tip')
-          //   .offset([-10, 0])
-          //   .html(function(d) { return '<a ng-model="collapsed" ng-click="collapsed=!collapsed">' + d.Description + '</a>';});
-
-          // svg.call(axisTip);
-
           x.domain(data.map(function(d) { return d.Name; }));
 
           color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Name" && key !== "values" && key !== "Description" && key !== "ID"; }));
