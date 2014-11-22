@@ -207,14 +207,23 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
             $http.get("/api/singlecohortnorm/", {params: { id: $scope.selectedCohort }}).success(function(data) {
                 $scope.oneCohortNorm = data;
             });
-            // $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-            //     $scope.oneCohortData = data;
-            // });
 
-            // $http.get("/api/mostrecentcohort/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-            //     $scope.cohortStandard = data;
-            //     $scope.tableCohortStandard = angular.copy(data);
-            // });
+            // All data from all tests for stacked bar graph
+            $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+                $scope.oneCohortData = data;
+            });
+
+            // Most recent test broken out by standard
+            $http.get("/api/singlecohortbystandard/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+                $scope.oneCohortStandard = data;
+                $scope.tableOneCohortStandard = angular.copy(data);
+            });
+
+            // Top students who are struggling to meet standards
+            $http.get("/api/singlecohortstudents/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+                $scope.oneCohortStudents = data.slice(0,10);
+                $scope.orderByValue = '-total';
+            });
         }
 
         else {

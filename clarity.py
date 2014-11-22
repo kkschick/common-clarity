@@ -13,7 +13,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/test")
 def test():
-    return _convert_to_JSON(api.single_cohort_most_recent_comp_to_normscores(1))
+    return _convert_to_JSON(api.single_cohort_top_struggle_students(1))
 
 
 @app.route("/")
@@ -125,10 +125,22 @@ def all_cohorts_data():
     response = api.all_cohorts_data_by_test(teacher_id)
     return _convert_to_JSON(response)
 
+@app.route("/api/singlecohortcounts/")
+def single_cohort_data():
+    cohort_id = request.args.get("id")
+    response = api.single_cohort_data_by_test(cohort_id)
+    return _convert_to_JSON(response)
+
 @app.route("/api/allcohortsbystandard/")
 def all_cohorts_by_standard():
     teacher_id = session['user']
     response = api.all_cohorts_data_most_recent_by_standard(teacher_id)
+    return _convert_to_JSON(response)
+
+@app.route("/api/singlecohortbystandard/")
+def single_cohort_by_standard():
+    cohort_id = request.args.get("id")
+    response = api.single_cohort_data_most_recent_by_standard(cohort_id)
     return _convert_to_JSON(response)
 
 @app.route("/api/allcohortsstudents/")
@@ -137,11 +149,11 @@ def all_cohorts_top_struggle_students():
     response = api.all_cohorts_top_struggle_students(teacher_id)
     return _convert_to_JSON(response)
 
-# @app.route("/api/singlecohortcounts/")
-# def single_cohort_data():
-#     cohort_id = request.args.get("id")
-#     response = api.get_one_cohort_data_by_test(cohort_id)
-#     return _convert_to_JSON(response)
+@app.route("/api/singlecohortstudents/")
+def single_cohort_top_struggle_students():
+    cohort_id = request.args.get("id")
+    response = api.single_cohort_top_struggle_students(cohort_id)
+    return _convert_to_JSON(response)
 
 # @app.route("/api/singlestudentcounts/")
 # def single_student_data():
@@ -151,11 +163,7 @@ def all_cohorts_top_struggle_students():
 
 
 
-# @app.route("/api/mostrecentcohort/")
-# def most_recent_single_cohort_by_standard():
-#     cohort_id = request.args.get("id")
-#     response = api.aggregate_most_recent_by_standard_single_cohort(cohort_id)
-#     return _convert_to_JSON(response)
+
 
 
 @app.route("/api/signup/", methods=['POST'])

@@ -361,15 +361,15 @@
                         <d3-bars data="oneCohortNorm"></d3-bars>
                     </li>
                     <li gridster-item row="3" col="2" size-x="4" size-y="2">
-                        <p class="border-text" ng-model="allCohortsData">Student performance on all tests this year</p>
-                        <d3-stacked-bars data="allCohortsData"></d3-stacked-bars>
+                        <p class="border-text" ng-model="oneCohortData">Student performance on all tests this year</p>
+                        <d3-stacked-bars data="oneCohortData"></d3-stacked-bars>
                     </li>
                     <li gridster-item row="5" col="0" size-x="4" size-y="3">
-                        <p class="border-text" ng-model="allStandard">Student performance on the most recent test<br>broken out by Common Core State Standard</p>
-                        <d3-stacked-bars-wide data="allStandard"></d3-stacked-bars-wide>
+                        <p class="border-text" ng-model="oneCohortStandard">Student performance on the most recent test<br>broken out by Common Core State Standard</p>
+                        <d3-stacked-bars-wide data="oneCohortStandard"></d3-stacked-bars-wide>
                     </li>
                     <li gridster-item row="5" col="4" size-x="2" size-y="5">
-                        <p class="border-text" ng-model="tableStandard">Standards tested on most<br>recent test</p>
+                        <p class="border-text" ng-model="tableOneCohortStandard">Standards tested on most<br>recent test</p>
 
                         <table class="standard-table">
                             <tr style="font-size:12px">
@@ -392,14 +392,14 @@
                                     </a>
                                 </td>
                             </tr>
-                            <tr ng-repeat="standard in tableStandard | orderBy:orderByField:switch">
+                            <tr ng-repeat="standard in tableOneCohortStandard | orderBy:orderByField:switch">
                                 <td style="font-size:16px">{{standard.Name}}</td>
                                 <td style="font-size:11px">{{standard.Description}}</td>
                             </tr>
                         </table>
                     </li>
                     <li gridster-item row="8" col="0" size-x="4" size-y="2">
-                        <p class="border-text" ng-model="allCohortsStudents">Students requiring the most help</p><br>
+                        <p class="border-text" ng-model="oneCohortStudents">Students requiring the most help</p><br>
                         <div>
                             <table class="standard-table">
                                 <tr>
@@ -439,7 +439,7 @@
                                             </span>
                                         </a>
                                     </td>
-                                <tr ng-repeat="item in allCohortsStudents | orderBy:orderByValue:sort" style="font-size:12px">
+                                <tr ng-repeat="item in oneCohortStudents | orderBy:orderByValue:sort" style="font-size:12px">
                                     <td>{{item.name | uppercase}}</td>
                                     <td>{{item.A | number:0}}%</td>
                                     <td>{{item.FB | number:0}}%</td>
