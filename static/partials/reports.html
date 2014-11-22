@@ -342,7 +342,7 @@
                             </tr>
                             <tr ng-show="!show" ng-repeat="item in oneCohortTopFB | orderBy:orderByField:reverse">
                                 <td style="font-size:16px">{{item.Name}}</td>
-                                <td style="font-size:11.5px"><a class="tooltips">{{item.Description}}<span>Students who did not meet standard: {{item.Students}}</span></a></td>
+                                <td style="font-size:10.5px"><a class="tooltips">{{item.Description}}<span>Students who did not meet standard: {{item.Students}}</span></a></td>
                                 <td style="font-size:16px">{{item.Percent | number:0}}%</td>
                             </tr>
                             <tr ng-show="show" ng-repeat="item in oneCohortTopFBAll | orderBy:orderByField:reverse">
@@ -356,19 +356,23 @@
                         <p class="border-text" ng-model="oneCohortPie">Only {{oneCohortPie[0].Value | number:0}}% of standards were<br>met on the last test</p>
                         <d3-pie data="oneCohortPie"></d3-pie>
                     </li>
-                    <li gridster-item row="3" col="0" size-x="2" size-y="2">
+                    <li gridster-item row="3" col="0" size-x="6" size-y="3">
+                        <p class="border-text" ng-model="oneCohortByStudent">Student performance broken out by student</p>
+                        <d3-stacked-bars-wide-student data="oneCohortByStudent"></d3-stacked-bars-wide-student>
+                    </li>
+                    <li gridster-item row="6" col="0" size-x="2" size-y="2">
                         <p class="border-text" style="font-size:14px" ng-model="oneCohortNorm">Students met {{(oneCohortNorm[33].value * 100) | number:0}}% of standards,<br>compared to {{(oneCohortNorm[0].value * 100) | number:0}}% of standards at<br>{{oneCohortNorm[0].cohortName}} overall</p>
                         <d3-bars data="oneCohortNorm"></d3-bars>
                     </li>
-                    <li gridster-item row="3" col="2" size-x="4" size-y="2">
+                    <li gridster-item row="6" col="2" size-x="4" size-y="2">
                         <p class="border-text" ng-model="oneCohortData">Student performance on all tests this year</p>
                         <d3-stacked-bars data="oneCohortData"></d3-stacked-bars>
                     </li>
-                    <li gridster-item row="5" col="0" size-x="4" size-y="3">
+                    <li gridster-item row="8" col="0" size-x="4" size-y="3">
                         <p class="border-text" ng-model="oneCohortStandard">Student performance on the most recent test<br>broken out by Common Core State Standard</p>
                         <d3-stacked-bars-wide data="oneCohortStandard"></d3-stacked-bars-wide>
                     </li>
-                    <li gridster-item row="5" col="4" size-x="2" size-y="5">
+                    <li gridster-item row="8" col="4" size-x="2" size-y="5">
                         <p class="border-text" ng-model="tableOneCohortStandard">Standards tested on most<br>recent test</p>
 
                         <table class="standard-table">
@@ -398,7 +402,7 @@
                             </tr>
                         </table>
                     </li>
-                    <li gridster-item row="8" col="0" size-x="4" size-y="2">
+                    <li gridster-item row="11" col="0" size-x="4" size-y="2">
                         <p class="border-text" ng-model="oneCohortStudents">Students requiring the most help</p><br>
                         <div>
                             <table class="standard-table">
@@ -448,68 +452,10 @@
                             </table>
                         </div>
                     </li>
+
                 </ul>
             </div>
 
-
-<!--             <div class="chart" ng-show="allSelected">
-                <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="allCohortsData"></d3-stacked-bars>
-
-                <div ng-show="selectedSubReport === 'byStandard'">
-                    <div class="inline" id="left">
-                        <d3-stacked-bars-wide data="allStandard"></d3-stacked-bars-wide>
-                    </div>
-
-                    <div class="inline">
-                        <table class="standard-table">
-                            <tr ng-repeat="item in tableStandard">
-                                <td><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="special-link">{{item.Name}}</a><br>
-                                <span ng-show="collapsed">{{item.Description}}</span>
-                                </td>
-                            </tr>
-                        </table>
-
-                    </div>
-                </div>
-
-            </div>
- -->
-
-<!--
-            <div class="chart" ng-show="cohortSelected">
-                <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="oneCohortData"></d3-stacked-bars>
-
-                <div ng-show="selectedSubReport === 'byStandard'">
-                    <div class="inline left">
-                        <d3-stacked-bars-wide data="cohortStandard"></d3-stacked-bars-wide>
-                    </div>
-
-                    <div class="inline">
-                        <table class="standard-table">
-                            <tr ng-repeat="item in tableCohortStandard">
-                                <td><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="special-link">{{item.Name}}</a><br>
-                                <span ng-show="collapsed">{{item.Description}}</span>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="chart" ng-show="studentSelected">
-                <d3-stacked-bars ng-show="selectedSubReport === 'overall'" data="oneStudentData"></d3-stacked-bars>
-
-            </div>  -->
-
-            <!--             <div ng-show="viewReportClicked">
-                <form action="selectedReport">
-                    <input type="radio" ng-model="selectedSubReport" value="overall" ng-checked="true">VIEW OVERALL&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" ng-model="selectedSubReport" value="byStandard">VIEW BY STANDARD&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span ng-show="showByStudent"><input type="radio" ng-model="selectedSubReport" value="byStudent">VIEW BY STUDENT</span><br>
-                </form>
-
-            </div> -->
         </div>
     </div>
 </div>

@@ -224,6 +224,11 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
                 $scope.oneCohortStudents = data.slice(0,10);
                 $scope.orderByValue = '-total';
             });
+
+            // Scores broken out by student
+            $http.get("/api/singlecohortbystudent/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+                $scope.oneCohortByStudent = data;
+            });
         }
 
         else {

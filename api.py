@@ -764,17 +764,13 @@ def single_cohort_data_most_recent_by_standard(cohort_id):
 
     scores_list = []
 
-    cohort = model.Cohort.query.filter_by(id=cohort_id).first()
+    # cohort = model.Cohort.query.filter_by(id=cohort_id).first()
     test = model.Test.query.filter_by(cohort_id=cohort_id).order_by(model.Test.test_date.desc()).first()
+    students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
 
-    student_ids = []
     standards_list = []
 
-    students = cohort.studentcohorts
-    for student in students:
-        student_ids.append(student.student.id)
-
-    scores = model.Score.query.filter_by(test_id=test.id, student_id=student_ids[0]).all()
+    scores = model.Score.query.filter_by(test_id=test.id, student_id=students[0].student.id).all()
     for score in scores:
         standards = model.Standard.query.filter_by(id=score.standard_id).all()
         for standard in standards:
@@ -789,8 +785,8 @@ def single_cohort_data_most_recent_by_standard(cohort_id):
         m_count = 0
         a_count = 0
         fb_count = 0
-        for student_id in student_ids:
-            scores = model.Score.query.filter_by(student_id=student_id, test_id=test.id, standard_id=standard.id).all()
+        for student in students:
+            scores = model.Score.query.filter_by(student_id=student.student.id, test_id=test.id, standard_id=standard.id).all()
 
             for score in scores:
 
@@ -854,6 +850,40 @@ def single_cohort_top_struggle_students(cohort_id):
 
     return scores_list
 
+def single_cohort_scores_by_student(cohort_id):
+
+    students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
+
+    student_scores_list = []
+
+    for student in students:
+
+        student_score_dict = {}
+
+        scores = model.Score.query.filter_by(student_id=student.student.id).all()
+
+        m_count = 0
+        a_count = 0
+        fb_count = 0
+
+        for score in scores:
+            if score.score == "M":
+                m_count += 1
+            elif score.score == "A":
+                a_count += 1
+            elif score.score == "FB":
+                fb_count += 1
+
+        student_score_dict["studentName"] = student.student.first_name + " " + student.student.last_name
+        student_score_dict["3"] = m_count
+        student_score_dict["2"] = a_count
+        student_score_dict["1"] = fb_count
+        student_scores_list.append(student_score_dict)
+
+    student_scores_list.sort(key=itemgetter("studentName"))
+
+    return student_scores_list
+
 def get_one_student_data_by_test(student_id):
 
     cohorts = model.StudentCohort.query.filter_by(student_id=student_id).all()
@@ -898,45 +928,3 @@ def get_one_student_data_by_test(student_id):
     total_dict["1"] = fb_total
 
     return scores_list
-
-
-
-
-
-
-# def aggregate_all_tests_by_standard_overall_cohort(teacher_id):
-#     """Take in data returned by get_overall_cohort_data and filter it by the
-#     standard. Add up counts of M, A, and FB scores and return counts and
-#     percentages for each test_id."""
-
-#     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
-#     test_ids = []
-#     student_ids = []
-#     standard_ids = []
-#     for cohort in cohorts:
-#         students = cohort.studentcohorts
-#         tests = model.Test.query.all()
-#         for student in students:
-#             student_ids.append(student.student.id)
-#     for test in tests:
-#         test_ids.append(test.id)
-#         standards = model.Score.query.filter_by(test_id=test.id, student_id=student_ids[0]).all()
-#         for standard in standards:
-#             standard_ids.append(standard.standard_id)
-
-#     scores_by_standard = {}
-#     for standard in standard_ids:
-#         scores_by_standard[standard] = []
-
-#     for test_id in test_ids:
-#         for student_id in student_ids:
-#             for standard_id in standard_ids:
-#                 scores = model.Score.query.filter_by(student_id=student_id, test_id=test_id, standard_id=standard_id).all()
-#                 for score in scores:
-#                     scores_by_standard[standard_id].append(score.score)
-
-#     for standard_id in standard_ids:
-#         scores_by_standard[standard_id] = get_counts_and_percents(scores_by_standard[standard_id])
-
-#     return scores_by_standard
-

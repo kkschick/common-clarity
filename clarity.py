@@ -13,7 +13,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/test")
 def test():
-    return _convert_to_JSON(api.single_cohort_top_struggle_students(1))
+    return _convert_to_JSON(api.single_cohort_scores_by_student(1))
 
 
 @app.route("/")
@@ -153,6 +153,12 @@ def all_cohorts_top_struggle_students():
 def single_cohort_top_struggle_students():
     cohort_id = request.args.get("id")
     response = api.single_cohort_top_struggle_students(cohort_id)
+    return _convert_to_JSON(response)
+
+@app.route("/api/singlecohortbystudent/")
+def single_cohort_scores_by_student():
+    cohort_id = request.args.get("id")
+    response = api.single_cohort_scores_by_student(cohort_id)
     return _convert_to_JSON(response)
 
 # @app.route("/api/singlestudentcounts/")
