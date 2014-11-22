@@ -13,7 +13,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/test")
 def test():
-    return _convert_to_JSON(api.top_students_struggling(1))
+    return _convert_to_JSON(api.single_cohort_top_struggle_standards(1))
 
 
 @app.route("/")
@@ -83,34 +83,46 @@ def get_cohorts():
     response = api.get_teacher_cohorts(teacher_id)
     return _convert_to_JSON(response)
 
-@app.route("/api/allcohortspie/")
-def all_cohorts_data_pie_chart():
-    teacher_id = session['user']
-    response = api.aggregate_most_recent_overall_cohort(teacher_id)
-    return _convert_to_JSON(response)
-
 @app.route("/api/allcohortstopfb/")
 def all_cohorts_top_struggle_standards():
     teacher_id = session['user']
-    response = api.top_struggle_standards_all_cohorts(teacher_id)
+    response = api.all_cohorts_top_struggle_standards(teacher_id)
+    return _convert_to_JSON(response)
+
+@app.route("/api/singlecohorttopfb/")
+def single_cohort_top_struggle_standards():
+    cohort_id = request.args.get("id")
+    response = api.single_cohort_top_struggle_standards(cohort_id)
+    return _convert_to_JSON(response)
+
+@app.route("/api/allcohortspie/")
+def all_cohorts_data_pie_chart():
+    teacher_id = session['user']
+    response = api.all_cohorts_pie_chart(teacher_id)
     return _convert_to_JSON(response)
 
 @app.route("/api/allcohortsnorm/")
 def all_cohorts_comp_to_norm():
     teacher_id = session['user']
-    response = api.most_recent_comp_to_normscores_all_cohorts(teacher_id)
+    response = api.all_cohorts_most_recent_comp_to_normscores(teacher_id)
     return _convert_to_JSON(response)
 
-@app.route("/api/allcohortcounts/")
-def all_cohort_data():
+@app.route("/api/allcohortscounts/")
+def all_cohorts_data():
     teacher_id = session['user']
-    response = api.get_all_cohort_data_by_test(teacher_id)
+    response = api.all_cohorts_data_by_test(teacher_id)
     return _convert_to_JSON(response)
 
-@app.route("/api/allcohortstudents/")
+@app.route("/api/allcohortsbystandard/")
+def all_cohorts_by_standard():
+    teacher_id = session['user']
+    response = api.all_cohorts_data_most_recent_by_standard(teacher_id)
+    return _convert_to_JSON(response)
+
+@app.route("/api/allcohortsstudents/")
 def all_cohorts_top_struggle_students():
     teacher_id = session['user']
-    response = api.top_students_struggling(teacher_id)
+    response = api.all_cohorts_top_struggle_students(teacher_id)
     return _convert_to_JSON(response)
 
 # @app.route("/api/singlecohortcounts/")
@@ -125,11 +137,7 @@ def all_cohorts_top_struggle_students():
 #     response = api.get_one_student_data_by_test(student_id)
 #     return _convert_to_JSON(response)
 
-@app.route("/api/mostrecentall/")
-def most_recent_all_by_standard():
-    teacher_id = session['user']
-    response = api.aggregate_most_recent_by_standard_overall_cohort(teacher_id)
-    return _convert_to_JSON(response)
+
 
 # @app.route("/api/mostrecentcohort/")
 # def most_recent_single_cohort_by_standard():

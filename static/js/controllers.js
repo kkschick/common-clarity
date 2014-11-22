@@ -142,18 +142,18 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
     });
 
     // All data from all tests for stacked bar graph
-    $http.get("/api/allcohortcounts/").success(function(data) {
+    $http.get("/api/allcohortscounts/").success(function(data) {
         $scope.allCohortsData = data;
     });
 
     // Most recent test broken out by standard
-    $http.get("/api/mostrecentall/").success(function(data) {
+    $http.get("/api/allcohortsbystandard/").success(function(data) {
         $scope.allStandard = data;
         $scope.tableStandard = angular.copy(data);
     });
 
     // Top students who are struggling to meet standards
-    $http.get("/api/allcohortstudents/").success(function(data) {
+    $http.get("/api/allcohortsstudents/").success(function(data) {
         $scope.allCohortsStudents = data.slice(0,10);
         $scope.orderByValue = '-total';
     });
@@ -190,6 +190,13 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
             $scope.studentSelected = false;
             $scope.cohortSelected = true;
             $scope.allSelected = false;
+
+            // Top standards students are struggling with
+            $http.get("/api/singlecohorttopfb/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+                $scope.oneCohortTopFB = data.slice(0, 5);
+                $scope.oneCohortTopFBAll = data;
+                $scope.orderByField = 'Percent';
+            });
 
             // $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
             //     $scope.oneCohortData = data;
