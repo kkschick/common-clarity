@@ -456,6 +456,19 @@
                 </ul>
             </div>
 
+            <div gridster ng-show="studentSelected">
+                <ul>
+                    <li gridster-item row="0" col="0" size-x="2" size-y="2">
+                        <p class="border-text" ng-model="studentPie">{{selectedUser}} met {{studentPie[0].Value | number:0}}% of<br>standards on the last test</p>
+                        <d3-pie data="studentPie"></d3-pie>
+                    </li>
+
+                    <li gridster-item row="0" col="4" size-x="2" size-y="2">
+                        <p class="border-text" style="font-size:14px" ng-model="studentNorm">{{selectedUser}} met {{(studentNorm[3].value * 100) | number:0}}% of standards,<br>compared to {{(studentNorm[0].value * 100) | number:0}}% of standards met at<br>{{studentNorm[0].cohortName}} overall</p>
+                        <d3-bars data="studentNorm"></d3-bars>
+                    </li>
+            </div>
+
         </div>
     </div>
 </div>

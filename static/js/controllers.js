@@ -177,9 +177,20 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
             $scope.cohortSelected = false;
             $scope.allSelected = false;
 
+            // Overall pie chart data of most recent test
+            $http.get("/api/studentpie/", {params: { id: student.id }}).success(function(data) {
+                $scope.studentPie = data;
+            });
+
+            // Bar chart of % met compared to norms
+            $http.get("/api/studentnorm/", {params: { id: student.id }}).success(function(data) {
+                $scope.studentNorm = data;
+            });
+
             // $http.get("/api/singlestudentcounts/", { params: {id: student.id }}).success(function(data){
             //     $scope.oneStudentData = data;
             // });
+
             $scope.selectedStudent = null;
         }
 

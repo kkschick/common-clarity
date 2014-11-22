@@ -13,7 +13,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/test")
 def test():
-    return _convert_to_JSON(api.single_cohort_scores_by_student(1))
+    return _convert_to_JSON(api.student_most_recent_comp_to_normscores(2))
 
 
 @app.route("/")
@@ -107,6 +107,12 @@ def single_cohort_data_pie_chart():
     response = api.single_cohort_pie_chart(cohort_id)
     return _convert_to_JSON(response)
 
+@app.route("/api/studentpie/")
+def student_data_pie_chart():
+    student_id = request.args.get("id")
+    response = api.student_pie_chart(student_id)
+    return _convert_to_JSON(response)
+
 @app.route("/api/allcohortsnorm/")
 def all_cohorts_comp_to_norm():
     teacher_id = session['user']
@@ -117,6 +123,12 @@ def all_cohorts_comp_to_norm():
 def single_cohort_comp_to_norm():
     cohort_id = request.args.get("id")
     response = api.single_cohort_most_recent_comp_to_normscores(cohort_id)
+    return _convert_to_JSON(response)
+
+@app.route("/api/studentnorm/")
+def student_comp_to_norm():
+    student_id = request.args.get("id")
+    response = api.student_most_recent_comp_to_normscores(student_id)
     return _convert_to_JSON(response)
 
 @app.route("/api/allcohortscounts/")
