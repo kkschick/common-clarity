@@ -939,8 +939,7 @@ def student_pie_chart(student_id):
 
 def student_top_struggle_standards(student_id):
 
-    """Identify the top standards students in a cohort are struggling with
-    and which students have not met those standards."""
+    """Identify the top standards students are struggling with."""
 
     scores_list = []
 
@@ -948,44 +947,19 @@ def student_top_struggle_standards(student_id):
     cohort_id = (model.StudentCohort.query.filter_by(student_id=student_id).first()).cohort_id
     test = model.Test.query.filter_by(cohort_id=cohort_id).order_by(model.Test.test_date.desc()).first()
 
-    # Get all the students in that cohort
-    students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
-
-    standards_list = []
-
-    # Get the standards students were tested on in most recent test
+    # Get student scores for most recent test
     scores = model.Score.query.filter_by(test_id=test.id, student_id=student_id).all()
+
     for score in scores:
-        standards = model.Standard.query.filter_by(id=score.standard_id).all()
-        for standard in standards:
-            standards_list.append(standard)
+        if score.score == "A" or score.score == "FB":
+            score_dict = {}
+            score_dict["Name"] = score.standard.code
+            score_dict["Description"] = score.standard.description
+            score_dict["Score"] = score.score
+            scores_list.append(score_dict)
 
-    # Go through standards and add metadata about each to dictionary
-    for standard in standards_list:
-        scores_by_standard = {}
-        scores_by_standard["Name"] = standard.code
-        scores_by_standard["Description"] = standard.description
-        scores_by_standard["ID"] = standard.id
-
-        m_count = 0
-        a_count = 0
-        fb_count = 0
-
-        scores = model.Score.query.filter_by(student_id=student_id, test_id=test.id, standard_id=standard.id).all()
-
-        for score in scores:
-            if score.score == "M":
-                m_count += 1
-            elif score.score == "A":
-                a_count += 1
-            elif score.score == "FB":
-                fb_count += 1
-
-        m_percent = (float(m_count) / float(total_scores)) * 100
-        scores_by_standard["Percent"] = m_percent
-        scores_list.append(scores_by_standard)
-
-    scores_list.sort(key=itemgetter("Percent"))
+    scores_list.sort(key=itemgetter("Score"))
+    scores_list.reverse()
 
     return scores_list
 
@@ -1034,11 +1008,7 @@ def student_most_recent_comp_to_normscores(student_id):
 
     return final_scores
 
-
-
-
-
-def get_one_student_data_by_test(student_id):
+def student_data_by_test(student_id):
 
     cohorts = model.StudentCohort.query.filter_by(student_id=student_id).all()
 
@@ -1082,3 +1052,37 @@ def get_one_student_data_by_test(student_id):
     total_dict["1"] = fb_total
 
     return scores_list
+
+def student_improvement(student_id):
+
+    """Get student scores for all tests and compare # of standards met
+    from most recent test to prior test."""
+
+    student_scores = student_data_by_test(student_id)
+
+    most_recent_test = student_scores[-1]
+    one_prior_test = student_scores[-2]
+
+    recent_num_m = most_recent_test["3"]
+    prior_num_m = one_prior_test["3"]
+
+    if recent_num_m < prior_num_m:
+        response = "scores decreased on the most recent test, from " + str(prior_num_m) + " standards met to only " + str(recent_num_m) + "."
+    elif difference > 0:
+        response = "scores improved on the most recent test, from " + str(prior_num_m) + " standards met to " + str(recent_num_m) + "."
+    else:
+        response = "scores remained the same on the most recent test, with " + str(recent_num_m) + " standards met."
+
+    return {"message": response}
+
+
+def student_falling_behind_score_count(student_id):
+
+    """Get the number of standards the student is falling behind on."""
+
+    student_scores = student_data_by_test(student_id)
+
+    fb_count = student_scores[-1]["1"]
+
+    return {"count": fb_count}
+

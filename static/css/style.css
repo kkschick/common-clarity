@@ -391,6 +391,18 @@ hr {
     /*background-color: #45ADA8;*/
 }
 
+.text-no-border {
+    display: inline-block;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: white;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6em 0.75em;
+    /*background-color: #45ADA8;*/
+}
+
 .student-box {
   padding: 0px 20px 0px 20px;
 }

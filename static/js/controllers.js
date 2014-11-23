@@ -173,6 +173,7 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
             $scope.viewReportClicked = false;
             var student = JSON.parse($scope.selectedStudent);
             $scope.selectedUser = student.name;
+            $scope.firstName = ((student.name).split(" "))[0];
             $scope.studentSelected = true;
             $scope.cohortSelected = false;
             $scope.allSelected = false;
@@ -182,14 +183,31 @@ loopControllers.controller('ReportsController', ['$scope', '$http', function($sc
                 $scope.studentPie = data;
             });
 
+            // Top standards student is struggling with
+            $http.get("/api/studenttopfb/", {params: { id: student.id }}).success(function(data) {
+                $scope.studentTopFB = data.slice(0,5);
+                $scope.orderByField = '-Score';
+            });
+
             // Bar chart of % met compared to norms
             $http.get("/api/studentnorm/", {params: { id: student.id }}).success(function(data) {
                 $scope.studentNorm = data;
             });
 
-            // $http.get("/api/singlestudentcounts/", { params: {id: student.id }}).success(function(data){
-            //     $scope.oneStudentData = data;
-            // });
+            // Stacked bar chart of scores on all tests over time
+            $http.get("/api/studentcounts/", { params: {id: student.id }}).success(function(data){
+                $scope.oneStudentData = data;
+            });
+
+            // Student improvement message
+            $http.get("/api/studentimprovement/", { params: {id: student.id }}).success(function(data){
+                $scope.studentImprovementMsg = data;
+            });
+
+            // Number of standards student is falling behind on
+            $http.get("/api/studentbehind/", { params: {id: student.id }}).success(function(data){
+                $scope.studentBehind = data;
+            });
 
             $scope.selectedStudent = null;
         }

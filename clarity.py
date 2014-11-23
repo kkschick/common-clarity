@@ -13,7 +13,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/test")
 def test():
-    return _convert_to_JSON(api.student_most_recent_comp_to_normscores(2))
+    return _convert_to_JSON(api.student_improvement(2))
 
 
 @app.route("/")
@@ -95,6 +95,12 @@ def single_cohort_top_struggle_standards():
     response = api.single_cohort_top_struggle_standards(cohort_id)
     return _convert_to_JSON(response)
 
+@app.route("/api/studenttopfb/")
+def student_top_struggle_standards():
+    student_id = request.args.get("id")
+    response = api.student_top_struggle_standards(student_id)
+    return _convert_to_JSON(response)
+
 @app.route("/api/allcohortspie/")
 def all_cohorts_data_pie_chart():
     teacher_id = session['user']
@@ -143,6 +149,12 @@ def single_cohort_data():
     response = api.single_cohort_data_by_test(cohort_id)
     return _convert_to_JSON(response)
 
+@app.route("/api/studentcounts/")
+def single_student_data():
+    student_id = request.args.get("id")
+    response = api.student_data_by_test(student_id)
+    return _convert_to_JSON(response)
+
 @app.route("/api/allcohortsbystandard/")
 def all_cohorts_by_standard():
     teacher_id = session['user']
@@ -173,12 +185,17 @@ def single_cohort_scores_by_student():
     response = api.single_cohort_scores_by_student(cohort_id)
     return _convert_to_JSON(response)
 
-# @app.route("/api/singlestudentcounts/")
-# def single_student_data():
-#     student_id = request.args.get("id")
-#     response = api.get_one_student_data_by_test(student_id)
-#     return _convert_to_JSON(response)
+@app.route("/api/studentimprovement/")
+def student_improvement_on_test():
+    student_id = request.args.get("id")
+    response = api.student_improvement(student_id)
+    return _convert_to_JSON(response)
 
+@app.route("/api/studentbehind/")
+def student_falling_behind():
+    student_id = request.args.get("id")
+    response = api.student_falling_behind_score_count(student_id)
+    return _convert_to_JSON(response)
 
 
 
