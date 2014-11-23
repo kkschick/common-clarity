@@ -44,7 +44,7 @@ t/k
 
 t/k
 
-####Product features
+###Product features
 
 ####Student set-up
 
@@ -58,14 +58,14 @@ t/k
 
 t/k
 
-###Overall view
+#####Overall view
 
 t/k
 
-###Single class view
+#####Single class view
 
 t/k
 
-###Student view
+#####Student view
 
 t/k
