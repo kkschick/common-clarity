@@ -197,10 +197,6 @@ def student_falling_behind():
     response = api.student_falling_behind_score_count(student_id)
     return _convert_to_JSON(response)
 
-
-
-
-
 @app.route("/api/signup/", methods=['POST'])
 def add_user():
     new_user = json.loads(request.data)

@@ -64,6 +64,9 @@ def get_teacher_cohorts(teacher_id):
         full_class["name"] = cohort.name
         full_class["students"] = students
         all_cohorts.append(full_class)
+
+    all_cohorts.sort(key=itemgetter("name"))
+
     return all_cohorts
 
 def get_students_in_cohort(cohort_id):
@@ -77,6 +80,9 @@ def get_students_in_cohort(cohort_id):
         student_dict["name"] = student.student.first_name + ' ' + student.student.last_name
         student_dict["id"] = student.student.id
         student_names.append(student_dict)
+
+    student_names.sort(key=itemgetter("name"))
+
     return student_names
 
 def add_new_cohort(name, teacher_id):
@@ -385,18 +391,17 @@ def all_cohorts_most_recent_comp_to_normscores(teacher_id):
             if normscore.cohort_name not in cohort_names:
                 cohort_names.append(normscore.cohort_name)
 
-        for item in cohort_names:
-            final_dict = {}
-            final_dict["cohortName"] = item
-            final_dict["value"] = 0
-            # final_dict[item] = 0
-            item_total = 0
-            for normscore in normscores:
-                if normscore.cohort_name == item:
-                    final_dict["value"] += normscore.score
-                    item_total += 1
-            final_dict["value"] = final_dict["value"] / float(item_total)
-            final_scores.append(final_dict)
+    for item in cohort_names:
+        final_dict = {}
+        final_dict["cohortName"] = item
+        final_dict["value"] = 0
+        item_total = 0
+        for normscore in normscores:
+            if normscore.cohort_name == item:
+                final_dict["value"] += normscore.score
+                item_total += 1
+        final_dict["value"] = final_dict["value"] / float(item_total)
+        final_scores.append(final_dict)
 
     final_scores.sort(key=itemgetter("cohortName"))
 
@@ -694,18 +699,18 @@ def single_cohort_most_recent_comp_to_normscores(cohort_id):
         if normscore.cohort_name not in cohort_names:
             cohort_names.append(normscore.cohort_name)
 
-        for item in cohort_names:
-            final_dict = {}
-            final_dict["cohortName"] = item
-            final_dict["value"] = 0
-            # final_dict[item] = 0
-            item_total = 0
-            for normscore in normscores:
-                if normscore.cohort_name == item:
-                    final_dict["value"] += normscore.score
-                    item_total += 1
-            final_dict["value"] = final_dict["value"] / float(item_total)
-            final_scores.append(final_dict)
+    for item in cohort_names:
+        final_dict = {}
+        final_dict["cohortName"] = item
+        final_dict["value"] = 0
+        # final_dict[item] = 0
+        item_total = 0
+        for normscore in normscores:
+            if normscore.cohort_name == item:
+                final_dict["value"] += normscore.score
+                item_total += 1
+        final_dict["value"] = final_dict["value"] / float(item_total)
+        final_scores.append(final_dict)
 
     final_scores.sort(key=itemgetter("cohortName"))
 
@@ -1074,7 +1079,6 @@ def student_improvement(student_id):
         response = "scores remained the same on the most recent test, with " + str(recent_num_m) + " standards met."
 
     return {"message": response}
-
 
 def student_falling_behind_score_count(student_id):
 

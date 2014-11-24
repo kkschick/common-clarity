@@ -210,7 +210,7 @@
                         <d3-pie data="allCohortsPie"></d3-pie>
                     </li>
                     <li gridster-item row="3" col="0" size-x="2" size-y="2">
-                        <p class="border-text" style="font-size:14px" ng-model="allCohortsNorm">Students met {{(allCohortsNorm[4].value * 100) | number:0}}% of standards,<br>compared to {{(allCohortsNorm[0].value * 100) | number:0}}% of standards at<br>{{allCohortsNorm[0].cohortName}} overall</p>
+                        <p class="border-text" style="font-size:14px" ng-model="allCohortsNorm">Students met {{(allCohortsNorm[2].value * 100) | number:0}}% of standards,<br>compared to {{(allCohortsNorm[0].value * 100) | number:0}}% of standards at<br>{{allCohortsNorm[0].cohortName}} overall</p>
                         <d3-bars data="allCohortsNorm"></d3-bars>
                     </li>
                     <li gridster-item row="3" col="2" size-x="4" size-y="2">
@@ -361,7 +361,7 @@
                         <d3-stacked-bars-wide-student data="oneCohortByStudent"></d3-stacked-bars-wide-student>
                     </li>
                     <li gridster-item row="6" col="0" size-x="2" size-y="2">
-                        <p class="border-text" style="font-size:14px" ng-model="oneCohortNorm">Students met {{(oneCohortNorm[33].value * 100) | number:0}}% of standards,<br>compared to {{(oneCohortNorm[0].value * 100) | number:0}}% of standards at<br>{{oneCohortNorm[0].cohortName}} overall</p>
+                        <p class="border-text" style="font-size:14px" ng-model="oneCohortNorm">Students met {{(oneCohortNorm[2].value * 100) | number:0}}% of standards,<br>compared to {{(oneCohortNorm[0].value * 100) | number:0}}% of standards at<br>{{oneCohortNorm[0].cohortName}} overall</p>
                         <d3-bars data="oneCohortNorm"></d3-bars>
                     </li>
                     <li gridster-item row="6" col="2" size-x="4" size-y="2">
