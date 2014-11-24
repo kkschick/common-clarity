@@ -1,13 +1,32 @@
 CommonClarity
 =============
 
-Helping teachers transform Common Core test data into actionable insights to inform and target instruction.
+CommonClarity transforms standardized test data into a visual, interactive reporting dashboard for teachers, to help inform and target instruction.
 
-####The Project
+####The project
 
-CommonClarity transforms standardized test data into visual, interactive reports for teachers, to help inform and target instruction. Teachers are inundated with data from standardized tests but lack the tools and time to make sense of it. CommonClarity makes it easy for teachers to upload their data and instantly generate a dashboard of reports, showing their students' strengths and weaknesses according to Common Core State Standards. Data are grouped in useful ways to expose patterns and track progress, so that teachers can better help students improve.
+Teachers are inundated with data from standardized tests but lack the tools and time to make sense of it. CommonClarity makes it easy for teachers to upload their data and instantly generate a dashboard of reports, showing their students' strengths and weaknesses according to Common Core State Standards. Data are grouped in useful ways to expose patterns and track progress, so that teachers can better help students improve.
 
 CommonClarity was written using AngularJS, D3, JavaScript, Python, Flask, HTML5, CSS3, jQuery, Sass, SQLAlchemy, and Postgresql.
+
+### Getting started
+
+1. Clone the repository:
+
+    <code>$ git clone https://github.com/kkschick/CommonClarity.git</code>
+
+2. Install Python packages:
+
+    <code>$ pip install -r requirements.txt</code>
+
+3. Run the app:
+
+    <code>$ python app.py</code>
+
+4. Point your browser to:
+
+    <code>http://localhost:5000/</code>
+
 
 ###Contents
 - [Data cleaning](#data-cleaning)
