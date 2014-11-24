@@ -1,8 +1,8 @@
 'use strict';
 
-var loopControllers = angular.module('loopControllers', []);
+var clarityControllers = angular.module('clarityControllers', []);
 
-loopControllers.controller('SignupController', ['$scope', '$location', '$http', function($scope, $location, $http) {
+clarityControllers.controller('SignupController', ['$scope', '$location', '$http', function($scope, $location, $http) {
     $scope.new_user = {};
 
     $scope.addUser = function(user) {
@@ -18,7 +18,7 @@ loopControllers.controller('SignupController', ['$scope', '$location', '$http', 
     };
 }]);
 
-loopControllers.controller('LoginController', ['$scope', '$location', '$http', function($scope, $location, $http) {
+clarityControllers.controller('LoginController', ['$scope', '$location', '$http', function($scope, $location, $http) {
     $scope.user_to_login = {};
 
     $scope.loginUser = function(user) {
@@ -34,7 +34,7 @@ loopControllers.controller('LoginController', ['$scope', '$location', '$http', f
     };
 }]);
 
-loopControllers.controller('LogoutController', ['$scope', '$location', '$http', function($scope, $location, $http) {
+clarityControllers.controller('LogoutController', ['$scope', '$location', '$http', function($scope, $location, $http) {
 
     $scope.logoutUser = function() {
         $http({
@@ -46,7 +46,7 @@ loopControllers.controller('LogoutController', ['$scope', '$location', '$http', 
     };
 }]);
 
-loopControllers.controller('SettingsController', ['$scope', '$http', 'ModalService', function($scope, $http, ModalService){
+clarityControllers.controller('SettingsController', ['$scope', '$http', 'ModalService', function($scope, $http, ModalService){
 
     $scope.selectedMethod = 'upload';
 
@@ -114,7 +114,7 @@ loopControllers.controller('SettingsController', ['$scope', '$http', 'ModalServi
 }]);
 
 
-loopControllers.controller('ReportsController', ['$scope', '$http', function($scope, $http){
+clarityControllers.controller('ReportsController', ['$scope', '$http', function($scope, $http){
 
     $scope.allSelected = true;
     $scope.selectedCohort = 0;

@@ -2,9 +2,9 @@
 
 /* Directives */
 
-var loopDirectives = angular.module('loopDirectives', []);
+var clarityDirectives = angular.module('clarityDirectives', []);
 
-loopDirectives.directive( 'd3Pie', [
+clarityDirectives.directive( 'd3Pie', [
   function () {
     return {
       restrict: 'E',
@@ -90,7 +90,7 @@ loopDirectives.directive( 'd3Pie', [
   }
 ]);
 
-loopDirectives.directive( 'd3StackedBars', [
+clarityDirectives.directive( 'd3StackedBars', [
   function () {
     return {
       restrict: 'E',
@@ -257,7 +257,7 @@ loopDirectives.directive( 'd3StackedBars', [
   }
 ]);
 
-loopDirectives.directive( 'd3StackedBarsSmall', [
+clarityDirectives.directive( 'd3StackedBarsSmall', [
   function () {
     return {
       restrict: 'E',
@@ -424,7 +424,7 @@ loopDirectives.directive( 'd3StackedBarsSmall', [
   }
 ]);
 
-loopDirectives.directive( 'd3StackedBarsWide', [
+clarityDirectives.directive( 'd3StackedBarsWide', [
   function () {
     return {
       restrict: 'E',
@@ -591,7 +591,7 @@ loopDirectives.directive( 'd3StackedBarsWide', [
   }
 ]);
 
-loopDirectives.directive( 'd3StackedBarsWideStudent', [
+clarityDirectives.directive( 'd3StackedBarsWideStudent', [
   function () {
     return {
       restrict: 'E',
@@ -758,7 +758,7 @@ loopDirectives.directive( 'd3StackedBarsWideStudent', [
   }
 ]);
 
-loopDirectives.directive( 'd3Bars', [
+clarityDirectives.directive( 'd3Bars', [
   function () {
     return {
       restrict: 'E',
@@ -875,7 +875,7 @@ loopDirectives.directive( 'd3Bars', [
   }
 ]);
 
-loopDirectives.directive( 'd3BarsWide', [
+clarityDirectives.directive( 'd3BarsWide', [
   function () {
     return {
       restrict: 'E',

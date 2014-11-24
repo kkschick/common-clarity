@@ -1,14 +1,14 @@
 'use strict';
 
-var loopApp = angular.module('loopApp', [
+var clarityApp = angular.module('clarityApp', [
   'ngRoute',
-  'loopControllers',
-  'loopDirectives',
+  'clarityControllers',
+  'clarityDirectives',
   'angularModalService',
   'gridster',
 ]);
 
-loopApp.config(['$routeProvider',
+clarityApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/', {
