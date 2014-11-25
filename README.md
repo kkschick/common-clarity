@@ -71,13 +71,13 @@ The reports are drawn using D3 and a custom Angular directive [(directives.js)](
 
 Quickly set up your classes of students, either by uploading a CSV file or by manually entering each name.
 
-![Student set-up](/static/screenshots/set_up_students.png =600x)
+![Student set-up](/static/screenshots/set_up_students.png)
 
 #####Easy Data Import
 
 Easily import your standardized test data into the system.
 
-![Data import](/static/screenshots/import_test_data.png =600x)
+![Data import](/static/screenshots/import_test_data.png)
 
 #####Reporting Dashboard
 
