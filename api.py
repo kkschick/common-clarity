@@ -1,9 +1,6 @@
 import model
-# from flask import session
 import csv
-# from sqlalchemy.sql import func
 from datetime import datetime
-# from sqlalchemy import desc
 from operator import itemgetter
 
 

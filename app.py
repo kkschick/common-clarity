@@ -3,7 +3,6 @@ import api
 import json
 import os
 from werkzeug import secure_filename
-from flask.ext.sqlalchemy import get_debug_queries
 
 UPLOAD_FOLDER = "./static/uploads/"
 ALLOWED_EXTENSIONS = set(['csv'])
@@ -11,18 +10,6 @@ ALLOWED_EXTENSIONS = set(['csv'])
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['SQLALCHEMY_RECORD_QUERIES'] = True
-
-@app.after_request
-def after_request(response):
-    for query in get_debug_queries():
-        # app.logger.warning("SLOW QUERY: %s\nParameters: %s\nDuration: %fs\nContext: %s\n" % (query.statement, query.parameters, query.duration, query.context))
-        print query
-    return response
-
-@app.route("/test")
-def test():
-    return _convert_to_JSON(api.student_improvement(2))
 
 
 @app.route("/")
