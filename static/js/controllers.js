@@ -128,7 +128,7 @@ clarityControllers.controller('ReportsController', ['$scope', '$http', 'ModalSer
     $http.get("/api/allcohortstopfb/").success(function(data) {
         $scope.allCohortsTopFB = data.slice(0, 5);
         $scope.allCohortsTopFBAll = data;
-        $scope.orderByField = 'Percent';
+        $scope.orderByField = 'percent';
     });
 
     // Overall pie chart data of most recent test
@@ -186,7 +186,7 @@ clarityControllers.controller('ReportsController', ['$scope', '$http', 'ModalSer
             // Top standards student is struggling with
             $http.get("/api/studenttopfb/", {params: { id: student.id }}).success(function(data) {
                 $scope.studentTopFB = data.slice(0,5);
-                $scope.orderByField = '-Score';
+                $scope.orderByField = '-score';
             });
 
             // Bar chart of % met compared to norms
@@ -224,7 +224,7 @@ clarityControllers.controller('ReportsController', ['$scope', '$http', 'ModalSer
             $http.get("/api/singlecohorttopfb/", {params: { id: $scope.selectedCohort }}).success(function(data) {
                 $scope.oneCohortTopFB = data.slice(0, 5);
                 $scope.oneCohortTopFBAll = data;
-                $scope.orderByField = 'Percent';
+                $scope.orderByField = 'percent';
             });
 
             // Overall pie chart data of most recent test

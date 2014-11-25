@@ -28,7 +28,7 @@ clarityDirectives.directive( 'd3Pie', [
         var pie = d3.layout.pie()
           .sort(null)
           .value(function(d){
-            return d.Value;
+            return d.value;
             });
 
         var svg = d3.select(element[0]).append("svg")
@@ -49,13 +49,13 @@ clarityDirectives.directive( 'd3Pie', [
             .attr('class', 'd3-tip')
             .offset([60, 0])
             .html(function(d) {
-              if (d.data.Score === "M") {
+              if (d.data.score === "M") {
                 return "Meets Standard";
               }
-              else if (d.data.Score === "A") {
+              else if (d.data.score === "A") {
                 return "Approaches Standard";
               }
-              else if (d.data.Score === "FB") {
+              else if (d.data.score === "FB") {
                 return "Falls Below Standard";
               }
             });
@@ -64,7 +64,7 @@ clarityDirectives.directive( 'd3Pie', [
 
 
           data.forEach(function(d) {
-            d.Value = +d.Value;
+            d.value = +d.value;
           });
 
           var g = svg.selectAll(".arc")
@@ -74,7 +74,7 @@ clarityDirectives.directive( 'd3Pie', [
 
           g.append("path")
             .attr("d", arc)
-            .style("fill", function(d) { return color(d.data.Score); })
+            .style("fill", function(d) { return color(d.data.score); })
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide);
 
@@ -82,7 +82,7 @@ clarityDirectives.directive( 'd3Pie', [
             .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
             .attr("dy", ".35em")
             .style("text-anchor", "middle")
-            .text(function(d) { return d.data.Value.toFixed() + "%"; });
+            .text(function(d) { return d.data.value.toFixed() + "%"; });
 
         };
 
@@ -138,9 +138,9 @@ clarityDirectives.directive( 'd3StackedBars', [
 
           svg.selectAll("*").remove();
 
-          x.domain(data.map(function(d) { return d.Name; }));
+          x.domain(data.map(function(d) { return d.name; }));
 
-          color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Name" && key !== "values"; }));
+          color.domain(d3.keys(data[0]).filter(function(key) { return key !== "name" && key !== "values"; }));
 
           data.forEach(function(d) {
           var y0 = 0;
@@ -180,7 +180,7 @@ clarityDirectives.directive( 'd3StackedBars', [
           bars.enter()
             .append("g")
             .attr("class", "bar")
-            .attr("transform", function(d) { return "translate(" + x(d.Name) + ",0)"; });
+            .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)"; });
 
           bars.selectAll("rect")
               .data(function(d) { return d.values; })
@@ -309,9 +309,9 @@ clarityDirectives.directive( 'd3StackedBarsSmall', [
 
           svg.selectAll("*").remove();
 
-          x.domain(data.map(function(d) { return d.Name; }));
+          x.domain(data.map(function(d) { return d.name; }));
 
-          color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Name" && key !== "values"; }));
+          color.domain(d3.keys(data[0]).filter(function(key) { return key !== "name" && key !== "values"; }));
 
           data.forEach(function(d) {
           var y0 = 0;
@@ -351,7 +351,7 @@ clarityDirectives.directive( 'd3StackedBarsSmall', [
           bars.enter()
             .append("g")
             .attr("class", "bar")
-            .attr("transform", function(d) { return "translate(" + x(d.Name) + ",0)"; });
+            .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)"; });
 
           bars.selectAll("rect")
               .data(function(d) { return d.values; })
@@ -479,9 +479,9 @@ clarityDirectives.directive( 'd3StackedBarsWide', [
 
           svg.selectAll("*").remove();
 
-          x.domain(data.map(function(d) { return d.Name; }));
+          x.domain(data.map(function(d) { return d.name; }));
 
-          color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Name" && key !== "values" && key !== "Description" && key !== "ID"; }));
+          color.domain(d3.keys(data[0]).filter(function(key) { return key !== "name" && key !== "values" && key !== "description" && key !== "id"; }));
 
           data.forEach(function(d) {
             var y0 = 0;
@@ -521,7 +521,7 @@ clarityDirectives.directive( 'd3StackedBarsWide', [
           bars.enter()
             .append("g")
             .attr("class", "bar")
-            .attr("transform", function(d) { return "translate(" + x(d.Name) + ",0)"; });
+            .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)"; });
 
           bars.selectAll("rect")
               .data(function(d) { return d.values; })
