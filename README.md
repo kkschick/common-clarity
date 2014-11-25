@@ -123,7 +123,7 @@ $ . env/bin/activate
 <pre><code>(env)$ pip install -r requirements.txt
 </code></pre>
 
-####Database
+#####Database
 
 1) To run the Postgres server, download and run [postgres.app](http://postgresapp.com/), and follow the instructions to set up Postgres on your machine ([for Mac])(http://postgresapp.com/documentation/cli-tools.html).  
 
@@ -139,11 +139,16 @@ $ . env/bin/activate
 (env)$ create_db()
 </code></pre>
 
-4) Run the app: 
+4) Still in your virtual environment, run standards_seed.py:
+
+<pre><code>(env)$ python standards_seed.py
+</code></pre>
+
+5) Run the app: 
 
 <pre><code>(env)$ python app.py
 </code></pre>
 
-5. Point your browser to:
+6) Point your browser to:
 
 <pre><code>http://localhost:5000/</code></pre>
