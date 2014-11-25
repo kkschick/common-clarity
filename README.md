@@ -55,7 +55,7 @@ The script [scores_seed.py](/scores_seed.py) was used to seed the tests and scor
 
 #####The RESTful API
 
-The module [api.py](/api.py) contains the RESTful API for CommonClarity. Each function is called by a Flask route in app.py and, when called, queries the server, manipulates and aggregates the data, and converts the response into JSON to display on the front-end.
+The module [api.py](/api.py) contains the RESTful API for CommonClarity. Each function is called by a Flask route in [app.py](/app.py) and, when called, queries the server, manipulates and aggregates the data, and converts the response into JSON to display on the front-end.
 
 #####AngularJS and D3
 
