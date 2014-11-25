@@ -18,6 +18,9 @@ CommonClarity makes it easy for teachers to upload their data and instantly gene
   - [Reporting Dashboard](#reporting-dashboard)
 - [Try It Yourself!] (#try-it-yourself)
 
+[Click here for a full dashboard view.](http://i.imgur.com/r8C9qb4.jpg)
+![Reporting dashboard](/static/screenshots/all_cohorts_dashboard.png)
+
 ####Technologies Used
 
 CommonClarity was written using AngularJS, D3, JavaScript, Python, Flask, HTML5, CSS3/Sass, jQuery, SQLAlchemy, and Postgresql.
