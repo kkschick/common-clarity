@@ -39,6 +39,10 @@ clarityDirectives.directive( 'd3Pie', [
 
         scope.render = function(data) {
 
+          if (data === undefined) {
+            return ;
+          }
+
           svg.selectAll("*").remove();
 
           var tip = d3.tip()
@@ -127,6 +131,10 @@ clarityDirectives.directive( 'd3StackedBars', [
 
 
         scope.render = function(data) {
+
+          if (data === undefined) {
+            return ;
+          }
 
           svg.selectAll("*").remove();
 
@@ -295,6 +303,10 @@ clarityDirectives.directive( 'd3StackedBarsSmall', [
 
         scope.render = function(data) {
 
+          if (data === undefined) {
+            return ;
+          }
+
           svg.selectAll("*").remove();
 
           x.domain(data.map(function(d) { return d.Name; }));
@@ -460,6 +472,10 @@ clarityDirectives.directive( 'd3StackedBarsWide', [
             .tickFormat(d3.format(".0%"));
 
         scope.render = function(data) {
+
+          if (data === undefined) {
+            return ;
+          }
 
           svg.selectAll("*").remove();
 
@@ -628,6 +644,10 @@ clarityDirectives.directive( 'd3StackedBarsWideStudent', [
 
         scope.render = function(data) {
 
+          if (data === undefined) {
+            return ;
+          }
+
           svg.selectAll("*").remove();
 
           x.domain(data.map(function(d) { return d.studentName; }));
@@ -792,6 +812,10 @@ clarityDirectives.directive( 'd3Bars', [
 
         scope.render = function(data) {
 
+          if (data === undefined) {
+            return ;
+          }
+
           svg.selectAll("*").remove();
 
           data.forEach(function(d) {
@@ -908,6 +932,10 @@ clarityDirectives.directive( 'd3BarsWide', [
             .tickFormat(d3.format(".0%"));
 
         scope.render = function(data) {
+
+          if (data === undefined) {
+            return ;
+          }
 
           svg.selectAll("*").remove();
 

@@ -488,7 +488,6 @@ def all_cohorts_data_most_recent_by_standard(teacher_id):
             standards = model.Standard.query.filter_by(id=score.standard_id).all()
             for standard in standards:
                 standards_list.append(standard)
-    print standards_list
     for standard in standards_list:
         scores_by_standard = {}
         scores_by_standard["Name"] = standard.code
@@ -769,7 +768,6 @@ def single_cohort_data_most_recent_by_standard(cohort_id):
 
     scores_list = []
 
-    # cohort = model.Cohort.query.filter_by(id=cohort_id).first()
     test = model.Test.query.filter_by(cohort_id=cohort_id).order_by(model.Test.test_date.desc()).first()
     students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
 
@@ -1073,7 +1071,7 @@ def student_improvement(student_id):
 
     if recent_num_m < prior_num_m:
         response = "scores decreased on the most recent test, from " + str(prior_num_m) + " standards met to only " + str(recent_num_m) + "."
-    elif difference > 0:
+    elif recent_num_m > prior_num_m:
         response = "scores improved on the most recent test, from " + str(prior_num_m) + " standards met to " + str(recent_num_m) + "."
     else:
         response = "scores remained the same on the most recent test, with " + str(recent_num_m) + " standards met."

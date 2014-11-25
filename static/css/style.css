@@ -5,6 +5,8 @@ body {
     background-image: url("/static/img/background.jpg");
     width: auto;
     margin-top: 0px;
+    /*background-position: no-repeat;*/
+    background-attachment: fixed;
 }
 
 a {
@@ -454,4 +456,9 @@ a:hover.tooltips span {
 .white-left {
   border-left: 3px solid white;
   padding-left: 30px;
+}
+
+.inline-ul {
+  display: inline;
+  padding: 0px;
 }
