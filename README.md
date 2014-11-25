@@ -9,36 +9,13 @@ Teachers are inundated with data from standardized tests but lack the tools and 
 
 CommonClarity was written using AngularJS, D3, JavaScript, Python, Flask, HTML5, CSS3, jQuery, Sass, SQLAlchemy, and Postgresql.
 
-#### Getting Started
+![Reporting dashboard](/static/screenshots/all_cohorts_dashboard.png)
 
-1. Clone the repository:
-
-    <code>$ git clone https://github.com/kkschick/CommonClarity.git</code>
-
-2. Create and activate a new virtual environment:
-
-    <code>$ virtualenv env</code>
-    
-    <code>$ . env/bin/activate/</code>
-    
-3. Install required packages:
-
-    <code>$ pip install -r requirements.txt</code>
-
-3. Run the app:
-
-    <code>$ python app.py</code>
-
-4. Point your browser to:
-
-    <code>http://localhost:5000/</code>
-
-
-###Product Features
+####Product Features
 - [Student set-up](#student-set-up)
 - [Easy data import](#easy-data-import)
 - [Reporting dashboard](#reporting-dashboard)
-
+####Getting Started
 
 ###Product Features
 
@@ -75,3 +52,29 @@ See how students are performing, according to specific Common Core State Standar
 Get a visual overview of how all the students in a class are performing:
 
 ![By student](/static/screenshots/class_perf_by_student.png)
+
+
+#### Getting Started
+
+1. Clone the repository:
+
+    <code>$ git clone https://github.com/kkschick/CommonClarity.git</code>
+
+2. Create and activate a new virtual environment:
+
+    <code>$ virtualenv env</code>
+    
+    <code>$ . env/bin/activate/</code>
+    
+3. Install required packages:
+
+    <code>$ pip install -r requirements.txt</code>
+
+3. Run the app:
+
+    <code>$ python app.py</code>
+
+4. Point your browser to:
+
+    <code>http://localhost:5000/</code>
+
