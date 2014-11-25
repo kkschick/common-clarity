@@ -9,17 +9,18 @@ Data-driven instruction has grown in popularity with the rise of standardized te
 
 CommonClarity makes it easy for teachers to upload their data and instantly generate a dashboard of reports, showing their students' strengths and weaknesses according to Common Core State Standards. Data are grouped in useful ways to expose patterns and track progress, so that teachers can better help students improve.
 
-####Technologies Used
-
-CommonClarity was written using AngularJS, D3, JavaScript, Python, Flask, HTML5, CSS3, jQuery, Sass, SQLAlchemy, and Postgresql.
-
 ####Table of Contents
+- [Technologies Used](#technologies-used)
 - [How It Works](#how-it-works)
 - [Product Screenshots](#product-screenshots)
-- [Student Set-up](#student-set-up)
-- [Easy Data Import](#easy-data-import)
-- [Reporting Dashboard](#reporting-dashboard)
+  - [Student Set-up](#student-set-up)
+  - [Easy Data Import](#easy-data-import)
+  - [Reporting Dashboard](#reporting-dashboard)
 - [Try It Yourself!] (#try-it-yourself)
+
+####Technologies Used
+
+CommonClarity was written using AngularJS, D3, JavaScript, Python, Flask, HTML5, CSS3/Sass, jQuery, SQLAlchemy, and Postgresql.
 
 ####How It Works
 
