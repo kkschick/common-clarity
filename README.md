@@ -9,7 +9,7 @@ Teachers are inundated with data from standardized tests but lack the tools and 
 
 CommonClarity was written using AngularJS, D3, JavaScript, Python, Flask, HTML5, CSS3, jQuery, Sass, SQLAlchemy, and Postgresql.
 
-![Reporting dashboard](/static/screenshots/all_cohorts_dashboard.png)
+![Full dashboard](/static/screenshots/full_dashboard.png)
 
 ####Product Features
 - [Student set-up](#student-set-up)
