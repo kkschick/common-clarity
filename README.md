@@ -125,7 +125,7 @@ $ . env/bin/activate
 
 #####Database
 
-1) To run the Postgres server, download and run [postgres.app](http://postgresapp.com/), and follow the instructions to set up Postgres on your machine—-[instructions for Mac](http://postgresapp.com/documentation/cli-tools.html).  
+1) To run the Postgres server, download and run [postgres.app](http://postgresapp.com/), and follow the instructions to set up Postgres on your machine—[instructions for Mac](http://postgresapp.com/documentation/cli-tools.html).  
 
 2) Create the database in PostgreSQL:
 
