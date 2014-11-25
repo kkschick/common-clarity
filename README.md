@@ -61,7 +61,7 @@ The module [api.py](/api.py) contains the RESTful API for CommonClarity. Each fu
 
 CommonClarity is built as a single-page webapp using AngularJS for the front end. Flask is used to serve the initial template ([index.html](/templates/index.html)) and the other pages are in [partials](/static/partials). The routes and controllers are configured in [app.js](/static/js/app.js). The controllers in [controllers.js](/static/js/controllers.js) make calls to RESTful API endpoints and Angular directives are used to display the JSON.
 
-Each report is drawn using D3 and a custom Angular directive [(directives.js)](/static/js/directives.js). Each graph is scaled according to the amount of data returned and features legends and tooltips.
+The reports are drawn using D3 and a custom Angular directive [(directives.js)](/static/js/directives.js). Each directive contains a render and a watch function: to watch for changes to the data and re-render the graph when changes are detected. Each graph is scaled according to the amount of data returned and features legends and tooltips.
 
 #####Product Screenshots
 
