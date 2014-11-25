@@ -12,7 +12,7 @@ CommonClarity makes it easy for teachers to upload their data and instantly gene
 ####Table of Contents
 - [Technologies Used](#technologies-used)
 - [How It Works](#how-it-works)
-- [Product Details and Screenshots](#product-details)
+- [Product Details](#product-details)
   - [The Database](#the-database)
   - [The RESTful API](#the-restful-api)
   - [AngularJS and D3](#angularjs-and-d3)
@@ -63,7 +63,7 @@ CommonClarity is built as a single-page webapp using AngularJS for the front end
 
 The reports are drawn using D3 and a custom Angular directive [(directives.js)](/static/js/directives.js). Each directive contains a render and a watch function: to watch for changes to the data and re-render the graph when changes are detected. Each graph is scaled according to the amount of data returned and features legends and tooltips.
 
-#####Product Screenshots
+####Product Screenshots
 
 [Click here to see a screenshot of the full dashboard](http://i.imgur.com/r8C9qb4.jpg), and scroll down for more product screenshots.
 
