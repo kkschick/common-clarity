@@ -34,63 +34,30 @@ CommonClarity was written using AngularJS, D3, JavaScript, Python, Flask, HTML5,
     <code>http://localhost:5000/</code>
 
 
-###Contents
-- [Data cleaning](#data-cleaning)
-- [Database seeding] (#database-seeding)
-- [CSV parsing] (#csv-parsing)
-- [Routing using Flask and Angular] (#routing-using-flask-and-angular)
-- [Data visualization using Angular and D3] (#data-visualization-using-angular-and-d3)
-  
 ###Product Features
 - [Student set-up](#student-set-up)
 - [Easy data import](#easy-data-import)
 - [Reporting dashboard](#reporting-dashboard)
-  - [Overall view](#overall-view)
-  - [Single class view](#single-class-view)
-  - [Student view](#student-view)
-  
-####Data cleaning
 
-t/k
 
-####Database seeding
-
-t/k
-
-####CSV parsing
-
-t/k
-
-####Routing using Flask and Angular
-
-t/k
-
-####Data visualization using Angular and D3
-
-t/k
-
-###Product features
+###Product Features
 
 ####Student set-up
 
-t/k
+![Student set-up](/static/screenshots/set_up_students.png)
 
 ####Easy data import
 
-t/k
+![Data import](/static/screenshots/import_test_data.png)
 
 ####Reporting dashboard
 
-t/k
+![Reporting dashboard](/static/screenshots/all_cohorts_dashboard.png)
 
-#####Overall view
+![Drill-down](/static/screenshots/drill_down.png)
 
-t/k
+![Student dashboard](/static/screenshots/student_dashboard.png)
 
-#####Single class view
+![Standard report](/static/screenshots/standards_report.png)
 
-t/k
-
-#####Student view
-
-t/k
+![By student](/static/screenshots/class_perf_by_student.png)
