@@ -4,8 +4,10 @@ from sqlalchemy import Column, Integer, String, Date, Text, Float
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
+import config
 
-engine = create_engine("postgresql://localhost:5432/clarity", echo=False)
+# engine = create_engine("postgresql://localhost:5432/clarity", echo=False)
+engine = create_engine(config.DB_URI, echo=False)
 session = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
 
 Base = declarative_base()
