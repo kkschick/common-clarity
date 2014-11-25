@@ -15,7 +15,7 @@ CommonClarity was written using AngularJS, D3, JavaScript, Python, Flask, HTML5,
 - [Student set-up](#student-set-up)
 - [Easy data import](#easy-data-import)
 - [Reporting dashboard](#reporting-dashboard)
-####Getting Started
+- [Getting started] (#getting-started)
 
 ###Product Features
 
