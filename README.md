@@ -105,26 +105,50 @@ Get a visual overview of how all the students in a class are performing.
 
 ####Try It Yourself!
 
-1. Clone the repository:
+#####Environment 
 
-    <code>$ git clone https://github.com/kkschick/CommonClarity.git</code>
+1) Clone the repository:
 
-2. Create and activate a new virtual environment:
+<pre><code>$ git clone https://github.com/kkschick/CommonClarity.git</code></pre>
 
-    <code>$ virtualenv env</code>
-    
-    <code>$ . env/bin/activate/</code>
-    
-3. Install required packages:
+2) Create and activate a virtual environment in the same directory: 
 
-    <code>$ pip install -r requirements.txt</code>
+<pre><code>$ pip install virtualenv
+$ virtualenv env
+$ . env/bin/activate 
+</code></pre>
 
-3. Run the app:
+3) Install the required packages using pip:
 
-    <code>$ python app.py</code>
+<pre><code>(env)$ pip install -r requirements.txt
+</code></pre>
 
-4. Point your browser to:
+#####Database
 
-    <code>http://localhost:5000/</code>
+1) To run the Postgres server, download and run [postgres.app](http://postgresapp.com/), and follow the instructions to set up Postgres on your machine ([for Mac])(http://postgresapp.com/documentation/cli-tools.html).  
 
-5. Log into the app using kkschick@gmail.com / password to see a demo of the dashboard.
+2) Create the database in PostgreSQL:
+
+<pre><code>$ psql
+# CREATE DATABASE clarity;
+</code></pre>
+
+3) And then, in your virtual environment, create the database using Python:
+
+<pre><code>(env)$ python -i model.py
+(env)$ create_db()
+</code></pre>
+
+4) Still in your virtual environment, run standards_seed.py:
+
+<pre><code>(env)$ python standards_seed.py
+</code></pre>
+
+5) Run the app: 
+
+<pre><code>(env)$ python app.py
+</code></pre>
+
+6) Point your browser to:
+
+<pre><code>http://localhost:5000/</code></pre>
