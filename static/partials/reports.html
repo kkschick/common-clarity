@@ -121,18 +121,37 @@
 
     <div ng-controller="ReportsController">
         <div ng-show="tab === 3">
-            <form action="/upload/" method="POST" enctype="multipart/form-data">
-                <h2>IMPORT TEST DATA</h2>
-                <h4>SELECT A CLASS:</h4>
-                    <select ng-model="cohort_select" name="cohort" id="cohort" required="required" class="form-field">
-                        <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
-                    </select><br><br>
-                TEST NAME: <input type="text" name="test_name" class="form-field"><br><br>
-                TEST DATE: <input type="date" name="test_date" class="form-field"><br><br>
-                <input type="file" name="csvfile" class="form-field"> <br><br>
+            <table class="settings-table">
+                <tr>
+                    <td>
+                        <form action="/upload/" method="POST" enctype="multipart/form-data">
+                            <h2>IMPORT TEST DATA</h2>
+                            <h4>SELECT A CLASS:</h4>
+                                <select ng-model="cohort_select" name="cohort" id="cohort" required="required" class="form-field">
+                                    <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
+                                </select><br><br>
+                            TEST NAME: <input type="text" name="test_name" class="form-field"><br><br>
+                            TEST DATE: <input type="date" name="test_date" class="form-field"><br><br>
+                            <input type="file" name="csvfile" class="form-field"> <br><br>
 
-                <input type="submit" name="submit" value="IMPORT TEST" ng-show="importClickedButton = true" class="button special">
-            </form>
+                            <input type="submit" name="submit" value="IMPORT TEST" ng-show="importClickedButton = true" class="button special">
+                        </form>
+                    </td>
+                    <td class="white-left">
+                        <h2>UPLOAD INSTRUCTIONS</h2>
+                        <ul>
+                            <li>Make sure your file is in the CSV (comma-separated values) file format.</li>
+                            <li>The top row of your file should list your students' names in the format LAST_NAME, FIRST_NAME.</li>
+                            <li>The Common Core State Standards should be listed in the first column of the file.</li>
+                            <li>The last two columns of your spreadsheet should contain your district and school's scores.</li>
+                            <li>Scores must be either M, A, or FB, or they will not be evaluated properly.</li>
+                        </ul><br>
+                        <form action="/getsamplefile/" method="POST" enctype="multipart/form-data">
+                            <a href="/getsamplefile/" class="special-link">CLICK TO DOWNLOAD A SAMPLE FILE</a>
+                        </form>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div ng-show="tab === 1">

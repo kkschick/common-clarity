@@ -114,7 +114,7 @@ clarityControllers.controller('SettingsController', ['$scope', '$http', 'ModalSe
 }]);
 
 
-clarityControllers.controller('ReportsController', ['$scope', '$http', function($scope, $http){
+clarityControllers.controller('ReportsController', ['$scope', '$http', 'ModalService', function($scope, $http, ModalService) {
 
     $scope.allSelected = true;
     $scope.selectedCohort = 0;

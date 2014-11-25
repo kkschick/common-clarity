@@ -1,4 +1,4 @@
-from flask import Flask, make_response, send_file, session, request, redirect
+from flask import Flask, make_response, send_file, session, request, redirect, send_from_directory
 import api
 import json
 import os
@@ -20,7 +20,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-@app.route('/upload/', methods=['GET', 'POST'])
+@app.route("/upload/", methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         csvfile = request.files['csvfile']
@@ -34,7 +34,7 @@ def upload_file():
     api.parse_CSV(file_path, test_name, test_date, cohort_id)
     return redirect("/#/reports/")
 
-@app.route('/upload2/', methods=['GET', 'POST'])
+@app.route("/upload2/", methods=['GET', 'POST'])
 def upload_class_file():
     if request.method == 'POST':
         csvfile = request.files['studentfile']
@@ -50,9 +50,13 @@ def upload_class_file():
 
     return redirect("/#/reports/")
 
+@app.route("/getsamplefile/")
+def download_file():
+    file_path = app.config['UPLOAD_FOLDER'] + "sample_file.csv"
+    return send_file(file_path)
+
 def _convert_to_JSON(result):
     """Convert result object to a JSON web request."""
-
     response = make_response(json.dumps(result))
     response.headers['Access-Control-Allow-Origin'] = "*"
     response.mimetype = "application/json"
