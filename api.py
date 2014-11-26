@@ -570,7 +570,7 @@ def all_single_cohort_data(teacher_id):
     """Run all single cohort functions and compile into one giant JSON to send
     back to Angular."""
 
-    all_cohort_data_by_cohort = []
+    all_cohort_data_by_cohort = {}
 
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
 
@@ -597,8 +597,8 @@ def all_single_cohort_data(teacher_id):
         temp_dict = {}
         temp_dict["report7"] = single_cohort_scores_by_student(cohort.id)
         cohort_list.append(temp_dict)
-        cohort_data = {"dataValues": cohort_list}
-        all_cohort_data_by_cohort.append(cohort_data)
+        cohort_data = {"dataValues": cohort_list, "cohortName": cohort.name}
+        all_cohort_data_by_cohort[cohort.id] = cohort_data
 
     return all_cohort_data_by_cohort
 
@@ -924,7 +924,7 @@ def all_single_student_data(teacher_id):
     """Run all single student functions and compile into one giant JSON to send
     back to Angular."""
 
-    all_student_data_by_student = []
+    all_student_data_by_student = {}
 
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
 
@@ -950,8 +950,9 @@ def all_single_student_data(teacher_id):
             temp_dict = {}
             temp_dict["report6"] = student_falling_behind_score_count(student.id)
             student_list.append(temp_dict)
-            student_data = {"dataValues": student_list, "firstName": student.first_name}
-            all_student_data_by_student.append(student_data)
+            full_name = student.first_name + " " + student.last_name
+            student_data = {"dataValues": student_list, "firstName": student.first_name, "fullName": full_name}
+            all_student_data_by_student[student.id] = student_data
 
     return all_student_data_by_student
 
