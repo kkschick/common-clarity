@@ -12,6 +12,10 @@ app.config['SECRET_KEY'] = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FS
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
+@app.route("/test")
+def test():
+    return _convert_to_JSON(api.all_single_cohort_data(1))
+
 @app.route("/")
 def index():
     return send_file("templates/index.html")
@@ -195,6 +199,12 @@ def student_improvement_on_test():
 def student_falling_behind():
     student_id = request.args.get("id")
     response = api.student_falling_behind_score_count(student_id)
+    return _convert_to_JSON(response)
+
+@app.route("/api/allsinglecohortdata/")
+def all_single_cohort_data_by_cohort():
+    teacher_id = session['user']
+    response = api.all_single_cohort_data(teacher_id)
     return _convert_to_JSON(response)
 
 @app.route("/api/signup/", methods=['POST'])

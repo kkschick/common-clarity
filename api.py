@@ -566,6 +566,42 @@ def all_cohorts_top_struggle_students(teacher_id):
 
     return scores_list
 
+def all_single_cohort_data(teacher_id):
+    """Run all single cohort functions and compile into one giant JSON to send
+    back to Angular."""
+
+    all_cohort_data_by_cohort = []
+
+    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+
+    for cohort in cohorts:
+        cohort_list = []
+        temp_dict = {}
+        temp_dict["report1"] = single_cohort_top_struggle_standards(cohort.id)
+        cohort_list.append(temp_dict)
+        temp_dict = {}
+        temp_dict["report2"] = single_cohort_pie_chart(cohort.id)
+        cohort_list.append(temp_dict)
+        temp_dict = {}
+        temp_dict["report3"] = single_cohort_most_recent_comp_to_normscores(cohort.id)
+        cohort_list.append(temp_dict)
+        temp_dict = {}
+        temp_dict["report4"] = single_cohort_data_by_test(cohort.id)
+        cohort_list.append(temp_dict)
+        temp_dict = {}
+        temp_dict["report5"] = single_cohort_data_most_recent_by_standard(cohort.id)
+        cohort_list.append(temp_dict)
+        temp_dict = {}
+        temp_dict["report6"] = single_cohort_top_struggle_students(cohort.id)
+        cohort_list.append(temp_dict)
+        temp_dict = {}
+        temp_dict["report7"] = single_cohort_scores_by_student(cohort.id)
+        cohort_list.append(temp_dict)
+        cohort_data = {cohort.id: cohort_list}
+        all_cohort_data_by_cohort.append(cohort_data)
+
+    return all_cohort_data_by_cohort
+
 def single_cohort_top_struggle_standards(cohort_id):
 
     """Identify the top standards students in a cohort are struggling with
