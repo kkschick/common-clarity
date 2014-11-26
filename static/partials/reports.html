@@ -158,25 +158,26 @@
 
             <div class="header-small">
                 <div class="no-margin inline left">
-                    <h2 class="no-margin" ng-show="allSelected">REPORTS FOR ALL CLASSES:</h2>
-                    <h2 class="no-margin" ng-model="selectedCohort">REPORTS FOR {{cohortDataByCohort[selectedCohort].cohortName | uppercase}}:</h2>
-                    <h2 class="no-margin" ng-model="selectedStudent">REPORTS FOR {{studentDataByStudent[selectedStudent].fullName | uppercase}}:</h2>
+                    <h2 class="no-margin" ng-model="allSelected" ng-show="selectedCohort == 0">REPORTS FOR ALL CLASSES:</h2>
+                    <h2 class="no-margin" ng-model="selectedCohort" ng-show="selectedCohort > 0" ng-hide="selectedStudent > 0">REPORTS FOR {{cohortDataByCohort[selectedCohort].cohortName | uppercase}}:</h2>
+                    <h2 class="no-margin" ng-model="selectedStudent" ng-show="selectedStudent > 0" ng-hide="selectedCohort >= 0">REPORTS FOR {{studentDataByStudent[selectedStudent].fullName | uppercase}}:</h2>
                 </div>
                 <div class="inline right-align">
-                        <form name="reportCohort">
-                            DRILL DOWN: <select ng-model="selectedCohort" name="cohort" id="cohort" required="required" class="form-field">
-                                <option value="0" selected="selected">All Classes</option>
-                                <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
-                            </select>&nbsp;&nbsp;&nbsp;&nbsp;<select ng-disabled="!selectedCohort" ng-show="selectedCohort > 0" ng-model="selectedStudent" name="student" id="student" class="form-field">
-                                <option selected="selected" value="0" disabled="disabled">Student (optional)</option>
-                                <option ng-repeat="student in cohorts[selectedCohort - 1].students" value="{{student.id}}">{{student.name}}</option>
+                        <form name="reportCohort" ng-model="selectedUser">
+                            DRILL DOWN: <select name="cohort" id="cohort" ng-model="selectedCohort" required="required" class="form-field">
+                                <option ng-value="0" selected="selected">All Classes</option>
+                                <option ng-repeat="cohort in cohorts" ng-value="{{cohort.cohort_id}}">{{cohort.name}}</option>
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;<select ng-disabled="!selectedCohort" ng-show="selectedCohort > 0" ng-init="selectedCohort=0" ng-model="selectedStudent" name="student" id="student" class="form-field">
+                                <option selected="selected" ng-value="0" disabled="disabled">Student (optional)</option>
+                                <option ng-repeat="student in cohorts[selectedCohort - 1].students" ng-value="{{student.id}}">{{student.name}}</option>
                             </select>&nbsp;&nbsp;&nbsp;&nbsp;
                         </form>
                 </div>
             </div>
 cohort: {{selectedCohort}}
 student: {{selectedStudent}}
-            <div gridster ng-show="selectedCohort == 0">
+user: {{selectedUser}}
+            <div gridster ng-model="allSelected" ng-show="selectedCohort == 0">
                 <ul>
                     <li gridster-item row="0" col="0" size-x="4" size-y="2">
                         <p class="border-text">Top standards needing improvement<br>
@@ -323,7 +324,7 @@ student: {{selectedStudent}}
                 </ul>
             </div>
 
-            <div gridster ng-model="selectedCohort" ng-show="selectedCohort > 0">
+            <div gridster ng-model="selectedCohort" ng-show="selectedCohort > 0" ng-hide="selectedStudent">
                 <ul>
                     <li gridster-item row="0" col="0" size-x="4" size-y="2">
                         <p class="border-text">Top standards needing improvement<br>
@@ -475,7 +476,7 @@ student: {{selectedStudent}}
                 </ul>
             </div>
 
-            <div gridster ng-model="selectedStudent">
+            <div gridster ng-model="selectedStudent" ng-show="selectedStudent > 0" ng-hide="selectedCohort >= 0">
                 <ul>
                     <li gridster-item row="0" col="0" size-x="2" size-y="2">
                         <p class="border-text" ng-model="studentDataByStudent[selectedStudent].dataValues[0].report1">{{studentDataByStudent[selectedStudent].firstName}} met {{studentDataByStudent[selectedStudent].dataValues[0].report1[0].value | number:0}}% of<br>standards on the last test</p>

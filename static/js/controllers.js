@@ -104,7 +104,7 @@ clarityControllers.controller('SettingsController', ['$scope', '$http', 'ModalSe
 
         $http.get("/api/getclasses/").success(function(data) {
             $scope.cohorts = data;
-    });
+        });
     };
 
     $http.get("/api/getclasses/").success(function(data) {
@@ -116,13 +116,10 @@ clarityControllers.controller('SettingsController', ['$scope', '$http', 'ModalSe
 
 clarityControllers.controller('ReportsController', ['$scope', '$http', 'ModalService', function($scope, $http, ModalService) {
 
-    $scope.allSelected = true;
-    $scope.selectedCohort = 0;
-    $scope.selectedStudent = 0;
+    // $scope.allSelected = true;
+    // $scope.selectedCohort = 0;
+    // $scope.selectedStudent = 0;
 
-    if ($scope.studentSelected > 0) {
-        $scope.selectedCohort = 0;
-    }
 
     $http.get("/api/getclasses/").success(function(data) {
         $scope.cohorts = data;
