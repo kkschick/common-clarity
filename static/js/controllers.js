@@ -120,6 +120,10 @@ clarityControllers.controller('ReportsController', ['$scope', '$http', 'ModalSer
     $scope.selectedCohort = 0;
     $scope.selectedStudent = 0;
 
+    if ($scope.studentSelected > 0) {
+        $scope.selectedCohort = 0;
+    }
+
     $http.get("/api/getclasses/").success(function(data) {
         $scope.cohorts = data;
     });

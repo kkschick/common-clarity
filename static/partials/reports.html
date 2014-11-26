@@ -171,12 +171,13 @@
                                 <option selected="selected" value="0" disabled="disabled">Student (optional)</option>
                                 <option ng-repeat="student in cohorts[selectedCohort - 1].students" value="{{student.id}}">{{student.name}}</option>
                             </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <button ng-click="viewReport()" class="button special" id="update">REFRESH</button>
+                            <!-- <button ng-click="viewReport()" class="button special" id="update">REFRESH</button> -->
                         </form>
                 </div>
             </div>
-
-<!--             <div gridster ng-show="allSelected">
+cohort: {{selectedCohort}}
+student: {{selectedStudent}}
+            <div gridster ng-show="selectedCohort == 0">
                 <ul>
                     <li gridster-item row="0" col="0" size-x="4" size-y="2">
                         <p class="border-text">Top standards needing improvement<br>
@@ -323,7 +324,7 @@
                 </ul>
             </div>
 
-            <div gridster ng-model="selectedCohort" ng-show="cohortSelected">
+            <div gridster ng-model="selectedCohort" ng-show="selectedCohort > 0">
                 <ul>
                     <li gridster-item row="0" col="0" size-x="4" size-y="2">
                         <p class="border-text">Top standards needing improvement<br>
@@ -473,9 +474,9 @@
                     </li>
 
                 </ul>
-            </div> -->
+            </div>
 
-            <div gridster ng-model="selectedStudent" ng-show="studentSelected">
+            <div gridster ng-model="selectedStudent" ng-show="studentSelected && selectedCohort > 0">
                 <ul>
                     <li gridster-item row="0" col="0" size-x="2" size-y="2">
                         <p class="border-text" ng-model="studentDataByStudent[selectedStudent - 2].dataValues[0].report1">{{studentDataByStudent[selectedStudent - 2].firstName}} met {{studentDataByStudent[selectedStudent - 2].dataValues[0].report1[0].value | number:0}}% of<br>standards on the last test</p>
