@@ -155,7 +155,6 @@
         </div>
 
         <div ng-show="tab === 1">
-
             <div class="header-small">
                 <div class="no-margin inline left">
                     <h2 class="no-margin" ng-model="allSelected" ng-show="selectedCohort == 0">REPORTS FOR ALL CLASSES:</h2>
@@ -167,7 +166,7 @@
                             DRILL DOWN: <select name="cohort" id="cohort" ng-model="selectedCohort" ng-change="onChange(selectedCohort)" required="required" class="form-field">
                                 <option ng-value="0" selected="selected">All Classes</option>
                                 <option ng-repeat="cohort in cohorts" ng-value="{{cohort.cohort_id}}">{{cohort.name}}</option>
-                            </select>&nbsp;&nbsp;&nbsp;&nbsp;<select ng-disabled="!selectedCohort" ng-show="selectedCohort > 0" ng-model="selectedStudent" ng-change="onStudChange(selectedStudent)" name="student" id="student" class="form-field">
+                            </select>&nbsp;&nbsp;&nbsp;&nbsp;<select ng-disabled="!selectedCohort" ng-model="selectedStudent" ng-change="onStudChange(selectedStudent)" name="student" id="student" class="form-field">
                                 <option selected="selected" ng-value="0" disabled="disabled">Student (optional)</option>
                                 <option ng-repeat="student in cohorts[selectedCohort - 1].students" ng-value="{{student.id}}">{{student.name}}</option>
                             </select>&nbsp;&nbsp;&nbsp;&nbsp;

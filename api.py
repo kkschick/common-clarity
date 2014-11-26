@@ -602,6 +602,42 @@ def all_single_cohort_data(teacher_id):
 
     return all_cohort_data_by_cohort
 
+def all_single_student_data(teacher_id):
+    """Run all single student functions and compile into one giant JSON to send
+    back to Angular."""
+
+    all_student_data_by_student = {}
+
+    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+
+    for cohort in cohorts:
+        for studentcohort in cohort.studentcohorts:
+            student = studentcohort.student
+            student_list = []
+            temp_dict = {}
+            temp_dict["report1"] = student_pie_chart(student.id)
+            student_list.append(temp_dict)
+            temp_dict = {}
+            temp_dict["report2"] = student_top_struggle_standards(student.id)
+            student_list.append(temp_dict)
+            temp_dict = {}
+            temp_dict["report3"] = student_most_recent_comp_to_normscores(student.id)
+            student_list.append(temp_dict)
+            temp_dict = {}
+            temp_dict["report4"] = student_data_by_test(student.id)
+            student_list.append(temp_dict)
+            temp_dict = {}
+            temp_dict["report5"] = student_improvement(student.id)
+            student_list.append(temp_dict)
+            temp_dict = {}
+            temp_dict["report6"] = student_falling_behind_score_count(student.id)
+            student_list.append(temp_dict)
+            full_name = student.first_name + " " + student.last_name
+            student_data = {"dataValues": student_list, "firstName": student.first_name, "fullName": full_name}
+            all_student_data_by_student[student.id] = student_data
+
+    return all_student_data_by_student
+
 def single_cohort_top_struggle_standards(cohort_id):
 
     """Identify the top standards students in a cohort are struggling with
@@ -919,42 +955,6 @@ def single_cohort_scores_by_student(cohort_id):
     student_scores_list.sort(key=itemgetter("studentName"))
 
     return student_scores_list
-
-def all_single_student_data(teacher_id):
-    """Run all single student functions and compile into one giant JSON to send
-    back to Angular."""
-
-    all_student_data_by_student = {}
-
-    cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
-
-    for cohort in cohorts:
-        for studentcohort in cohort.studentcohorts:
-            student = studentcohort.student
-            student_list = []
-            temp_dict = {}
-            temp_dict["report1"] = student_pie_chart(student.id)
-            student_list.append(temp_dict)
-            temp_dict = {}
-            temp_dict["report2"] = student_top_struggle_standards(student.id)
-            student_list.append(temp_dict)
-            temp_dict = {}
-            temp_dict["report3"] = student_most_recent_comp_to_normscores(student.id)
-            student_list.append(temp_dict)
-            temp_dict = {}
-            temp_dict["report4"] = student_data_by_test(student.id)
-            student_list.append(temp_dict)
-            temp_dict = {}
-            temp_dict["report5"] = student_improvement(student.id)
-            student_list.append(temp_dict)
-            temp_dict = {}
-            temp_dict["report6"] = student_falling_behind_score_count(student.id)
-            student_list.append(temp_dict)
-            full_name = student.first_name + " " + student.last_name
-            student_data = {"dataValues": student_list, "firstName": student.first_name, "fullName": full_name}
-            all_student_data_by_student[student.id] = student_data
-
-    return all_student_data_by_student
 
 def student_pie_chart(student_id):
     """Aggregate M/A/FB scores from most recent test for pie chart.
