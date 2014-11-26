@@ -169,14 +169,14 @@
                                 <option ng-repeat="cohort in cohorts" value="{{cohort.cohort_id}}">{{cohort.name}}</option>
                             </select>&nbsp;&nbsp;&nbsp;&nbsp;<select ng-disabled="!selectedCohort" ng-show="selectedCohort > 0" ng-model="selectedStudent" name="student" id="student" class="form-field">
                                 <option selected="selected" value="0" disabled="disabled">Student (optional)</option>
-                                <option ng-repeat="student in cohorts[selectedCohort - 1].students" value="{{student}}">{{student.name}}</option>
+                                <option ng-repeat="student in cohorts[selectedCohort - 1].students" value="{{student.id}}">{{student.name}}</option>
                             </select>&nbsp;&nbsp;&nbsp;&nbsp;
                             <button ng-click="viewReport()" class="button special" id="update">REFRESH</button>
                         </form>
                 </div>
             </div>
 
-            <div gridster ng-show="allSelected">
+<!--             <div gridster ng-show="allSelected">
                 <ul>
                     <li gridster-item row="0" col="0" size-x="4" size-y="2">
                         <p class="border-text">Top standards needing improvement<br>
@@ -323,11 +323,11 @@
                 </ul>
             </div>
 
-            <div gridster ng-show="cohortSelected">
+            <div gridster ng-model="selectedCohort" ng-show="cohortSelected">
                 <ul>
                     <li gridster-item row="0" col="0" size-x="4" size-y="2">
                         <p class="border-text">Top standards needing improvement<br>
-                        <a href="" ng-click="show=!show" class="special-link">Click to show more</a><span class="special-text"> / Hover to see students who did not meet standard</span>
+                        <a ng-click="show=!show" class="special-link">Click to show more</a><span class="special-text"> / Hover to see students who did not meet standard</span>
                         </p>
                         <table class="standard-table">
                             <tr style="font-size:14px">
@@ -359,12 +359,12 @@
                                     </a>
                                 </td>
                             </tr>
-                            <tr ng-show="!show" ng-repeat="item in oneCohortTopFB | orderBy:orderByField:reverse">
+                            <tr ng-show="!show" ng-repeat="item in cohortDataByCohort[selectedCohort - 1].dataValues[0].report1.slice(0,5) | orderBy:orderByField:reverse">
                                 <td style="font-size:16px">{{item.name}}</td>
                                 <td style="font-size:10.5px"><a class="tooltips">{{item.description}}<span>STUDENTS WHO DID NOT MEET STANDARD: <ul class="inline-ul" ng-repeat="student in item.students">{{student}} | </ul></span></a></td>
                                 <td style="font-size:16px">{{item.percent | number:0}}%</td>
                             </tr>
-                            <tr ng-show="show" ng-repeat="item in oneCohortTopFBAll | orderBy:orderByField:reverse">
+                            <tr ng-show="show" ng-repeat="item in cohortDataByCohort[selectedCohort - 1].dataValues[0].report1 | orderBy:orderByField:reverse">
                                 <td style="font-size:16px">{{item.name}}</td>
                                 <td style="font-size:11.5px"><a class="tooltips">{{item.description}}<span>STUDENTS WHO DID NOT MEET STANDARD: <ul class="inline-ul" ng-repeat="student in item.students">{{student}} | </ul></span></a></td>
                                 <td style="font-size:16px">{{item.percent | number:0}}%</td>
@@ -372,27 +372,27 @@
                         </table>
                     </li>
                     <li gridster-item row="0" col="4" size-x="2" size-y="2">
-                        <p class="border-text" ng-model="oneCohortPie">Only {{oneCohortPie[0].value | number:0}}% of standards were<br>met on the last test</p>
-                        <d3-pie data="oneCohortPie"></d3-pie>
+                        <p class="border-text" ng-model="cohortDataByCohort[selectedCohort - 1].dataValues[1].report2">Only {{cohortDataByCohort[selectedCohort - 1].dataValues[1].report2[0].value | number:0}}% of standards were<br>met on the last test</p>
+                        <d3-pie data="cohortDataByCohort[selectedCohort - 1].dataValues[1].report2"></d3-pie>
                     </li>
                     <li gridster-item row="3" col="0" size-x="6" size-y="3">
-                        <p class="border-text" ng-model="oneCohortByStudent">Student performance broken out by student</p>
-                        <d3-stacked-bars-wide-student data="oneCohortByStudent"></d3-stacked-bars-wide-student>
+                        <p class="border-text" ng-model="cohortDataByCohort[selectedCohort - 1].dataValues[6].report7">Student performance broken out by student</p>
+                        <d3-stacked-bars-wide-student data="cohortDataByCohort[selectedCohort - 1].dataValues[6].report7"></d3-stacked-bars-wide-student>
                     </li>
                     <li gridster-item row="6" col="0" size-x="2" size-y="2">
-                        <p class="border-text" style="font-size:14px" ng-model="oneCohortNorm">Students met {{(oneCohortNorm[2].value * 100) | number:0}}% of standards,<br>compared to {{(oneCohortNorm[0].value * 100) | number:0}}% of standards at<br>{{oneCohortNorm[0].cohortName}} overall</p>
-                        <d3-bars data="oneCohortNorm"></d3-bars>
+                        <p class="border-text" style="font-size:14px" ng-model="cohortDataByCohort[selectedCohort - 1].dataValues[2].report3">Students met {{(cohortDataByCohort[selectedCohort - 1].dataValues[2].report3[2].value * 100) | number:0}}% of standards,<br>compared to {{(cohortDataByCohort[selectedCohort - 1].dataValues[2].report3[0].value * 100) | number:0}}% of standards at<br>{{cohortDataByCohort[selectedCohort - 1].dataValues[2].report3[0].cohortName}} overall</p>
+                        <d3-bars data="cohortDataByCohort[selectedCohort - 1].dataValues[2].report3"></d3-bars>
                     </li>
                     <li gridster-item row="6" col="2" size-x="4" size-y="2">
-                        <p class="border-text" ng-model="oneCohortData">Student performance on all tests this year</p>
-                        <d3-stacked-bars data="oneCohortData"></d3-stacked-bars>
+                        <p class="border-text" ng-model="cohortDataByCohort[selectedCohort - 1].dataValues[3].report4">Student performance on all tests this year</p>
+                        <d3-stacked-bars data="cohortDataByCohort[selectedCohort - 1].dataValues[3].report4"></d3-stacked-bars>
                     </li>
                     <li gridster-item row="8" col="0" size-x="4" size-y="3">
-                        <p class="border-text" ng-model="oneCohortStandard">Student performance on the most recent test<br>broken out by Common Core State Standard</p>
-                        <d3-stacked-bars-wide data="oneCohortStandard"></d3-stacked-bars-wide>
+                        <p class="border-text" ng-model="cohortDataByCohort[selectedCohort - 1].dataValues[4].report5">Student performance on the most recent test<br>broken out by Common Core State Standard</p>
+                        <d3-stacked-bars-wide data="cohortDataByCohort[selectedCohort - 1].dataValues[4].report5"></d3-stacked-bars-wide>
                     </li>
                     <li gridster-item row="8" col="4" size-x="2" size-y="5">
-                        <p class="border-text" ng-model="tableOneCohortStandard">Standards tested on most<br>recent test</p>
+                        <p class="border-text" ng-model="cohortDataByCohort[selectedCohort - 1].dataValues[4].report5">Standards tested on most<br>recent test</p>
 
                         <table class="standard-table">
                             <tr style="font-size:12px">
@@ -415,14 +415,14 @@
                                     </a>
                                 </td>
                             </tr>
-                            <tr ng-repeat="standard in tableOneCohortStandard | orderBy:orderByField:switch">
+                            <tr ng-repeat="standard in cohortDataByCohort[selectedCohort - 1].dataValues[4].report5 | orderBy:orderByField:switch">
                                 <td style="font-size:16px">{{standard.name}}</td>
                                 <td style="font-size:11px">{{standard.description}}</td>
                             </tr>
                         </table>
                     </li>
                     <li gridster-item row="11" col="0" size-x="4" size-y="2">
-                        <p class="border-text" ng-model="oneCohortStudents">Students requiring the most help</p><br>
+                        <p class="border-text" ng-model="cohortDataByCohort[selectedCohort - 1].dataValues[5].report6">Students requiring the most help</p><br>
                         <div>
                             <table class="standard-table">
                                 <tr>
@@ -462,7 +462,7 @@
                                             </span>
                                         </a>
                                     </td>
-                                <tr ng-repeat="item in oneCohortStudents | orderBy:orderByValue:sort" style="font-size:12px">
+                                <tr ng-repeat="item in cohortDataByCohort[selectedCohort - 1].dataValues[5].report6.slice(0,10) | orderBy:orderByValue:sort" style="font-size:12px">
                                     <td>{{item.name | uppercase}}</td>
                                     <td>{{item.A | number:0}}%</td>
                                     <td>{{item.FB | number:0}}%</td>
@@ -473,30 +473,30 @@
                     </li>
 
                 </ul>
-            </div>
+            </div> -->
 
-            <div gridster ng-show="studentSelected">
+            <div gridster ng-model="selectedStudent" ng-show="studentSelected">
                 <ul>
                     <li gridster-item row="0" col="0" size-x="2" size-y="2">
-                        <p class="border-text" ng-model="studentPie">{{firstName}} met {{studentPie[0].value | number:0}}% of<br>standards on the last test</p>
-                        <d3-pie data="studentPie"></d3-pie>
+                        <p class="border-text" ng-model="studentDataByStudent[selectedStudent - 2].dataValues[0].report1">{{studentDataByStudent[selectedStudent - 2].firstName}} met {{studentDataByStudent[selectedStudent - 2].dataValues[0].report1[0].value | number:0}}% of<br>standards on the last test</p>
+                        <d3-pie data="studentDataByStudent[selectedStudent - 2].dataValues[0].report1"></d3-pie>
                     </li>
                     <li gridster-item row="0" col="2" size-x="1" size-y="1">
-                        <p class="text-no-border" ng-model="studentImprovementMsg">{{firstName}}'s {{studentImprovementMsg.message}}</p>
+                        <p class="text-no-border" ng-model="studentDataByStudent[selectedStudent - 2].dataValues[4].report5">{{studentDataByStudent[selectedStudent - 2].firstName}}'s {{studentDataByStudent[selectedStudent - 2].dataValues[4].report5.message}}</p>
                     </li>
                     <li gridster-item row="1" col="2" size-x="1" size-y="1">
-                        <p class="text-no-border" ng-model="studentBehind">The most recent test showed that {{firstName}} is falling behind on {{studentBehind.count}} standards.</p>
+                        <p class="text-no-border" ng-model="studentDataByStudent[selectedStudent - 2].dataValues[5].report6">The most recent test showed that {{studentDataByStudent[selectedStudent - 2].firstName}} is falling behind on {{studentDataByStudent[selectedStudent - 2].dataValues[5].report6.count}} standards.</p>
                     </li>
                     <li gridster-item row="0" col="4" size-x="3" size-y="2">
-                        <p class="border-text" ng-model="oneStudentData">Student performance on all tests this year</p>
-                        <d3-stacked-bars-small data="oneStudentData"></d3-stacked-bars-small>
+                        <p class="border-text" ng-model="studentDataByStudent[selectedStudent - 2].dataValues[3].report4">Student performance on all tests this year</p>
+                        <d3-stacked-bars-small data="studentDataByStudent[selectedStudent - 2].dataValues[3].report4"></d3-stacked-bars-small>
                     </li>
                     <li gridster-item row="2" col="0" size-x="2" size-y="2">
-                        <p class="border-text" style="font-size:14px" ng-model="studentNorm">{{firstName}} met {{(studentNorm[3].value * 100) | number:0}}% of standards,<br>compared to {{(studentNorm[0].value * 100) | number:0}}% of standards met<br>at {{studentNorm[0].cohortName}} overall</p>
-                        <d3-bars-wide data="studentNorm"></d3-bars-wide>
+                        <p class="border-text" style="font-size:14px" ng-model="studentDataByStudent[selectedStudent - 2].dataValues[2].report3">{{studentDataByStudent[selectedStudent - 2].firstName}} met {{(studentDataByStudent[selectedStudent - 2].dataValues[2].report3[3].value * 100) | number:0}}% of standards,<br>compared to {{(studentDataByStudent[selectedStudent - 2].dataValues[2].report3[0].value * 100) | number:0}}% of standards met<br>at {{studentDataByStudent[selectedStudent - 2].dataValues[2].report3[0].cohortName}} overall</p>
+                        <d3-bars-wide data="studentDataByStudent[selectedStudent - 2].dataValues[2].report3"></d3-bars-wide>
                     </li>
                     <li gridster-item row="2" col="2" size-x="4" size-y="2">
-                        <p class="border-text">Standards {{firstName}} is struggling with</p>
+                        <p class="border-text">Standards {{studentDataByStudent[selectedStudent - 2].firstName}} is struggling with</p>
                         <table class="standard-table">
                             <tr style="font-size:14px">
                                 <td style="width:120px">
@@ -527,7 +527,7 @@
                                     </a>
                                 </td>
                             </tr>
-                            <tr ng-repeat="item in studentTopFB | orderBy:orderByField:reverse">
+                            <tr ng-repeat="item in studentDataByStudent[selectedStudent - 2].dataValues[1].report2.slice(0,5) | orderBy:orderByField:reverse">
                                 <td style="font-size:14px">{{item.name}}</td>
                                 <td style="font-size:11.5px">{{item.description}}</td>
                                 <td style="font-size:14px">{{item.score}}</td>

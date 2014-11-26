@@ -14,7 +14,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/test")
 def test():
-    return _convert_to_JSON(api.all_single_cohort_data(1))
+    return _convert_to_JSON(api.all_single_student_data(1))
 
 @app.route("/")
 def index():
@@ -205,6 +205,12 @@ def student_falling_behind():
 def all_single_cohort_data_by_cohort():
     teacher_id = session['user']
     response = api.all_single_cohort_data(teacher_id)
+    return _convert_to_JSON(response)
+
+@app.route("/api/allsinglestudentdata/")
+def all_single_student_data_by_student():
+    teacher_id = session['user']
+    response = api.all_single_student_data(teacher_id)
     return _convert_to_JSON(response)
 
 @app.route("/api/signup/", methods=['POST'])

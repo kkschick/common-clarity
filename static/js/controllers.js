@@ -158,115 +158,126 @@ clarityControllers.controller('ReportsController', ['$scope', '$http', 'ModalSer
         $scope.orderByValue = '-total';
     });
 
-    $scope.viewReport = function() {
+    // Get all cohort data by cohort
+    $http.get("/api/allsinglecohortdata/").success(function(data) {
+        $scope.cohortDataByCohort = data;
+    });
 
-        $scope.selectedUser = null;
+    // Get all student data by student
+    $http.get("/api/allsinglestudentdata/").success(function(data) {
+        $scope.studentDataByStudent = data;
+    });
 
-        $scope.studentSelected = false;
-        $scope.cohortSelected = false;
-        $scope.allSelected = false;
-        $scope.showByStudent = false;
 
-        $scope.viewReportClicked = true;
+    // $scope.viewReport = function() {
 
-        if ($scope.selectedStudent) {
-            $scope.viewReportClicked = false;
-            var student = JSON.parse($scope.selectedStudent);
-            $scope.selectedUser = student.name;
-            $scope.firstName = ((student.name).split(" "))[0];
-            $scope.studentSelected = true;
-            $scope.cohortSelected = false;
-            $scope.allSelected = false;
+    //     $scope.selectedUser = null;
 
-            // Overall pie chart data of most recent test
-            $http.get("/api/studentpie/", {params: { id: student.id }}).success(function(data) {
-                $scope.studentPie = data;
-            });
+    //     $scope.studentSelected = false;
+    //     $scope.cohortSelected = false;
+    //     $scope.allSelected = false;
+    //     $scope.showByStudent = false;
 
-            // Top standards student is struggling with
-            $http.get("/api/studenttopfb/", {params: { id: student.id }}).success(function(data) {
-                $scope.studentTopFB = data.slice(0,5);
-                $scope.orderByField = '-score';
-            });
+    //     $scope.viewReportClicked = true;
 
-            // Bar chart of % met compared to norms
-            $http.get("/api/studentnorm/", {params: { id: student.id }}).success(function(data) {
-                $scope.studentNorm = data;
-            });
+    //     if ($scope.selectedStudent) {
+    //         $scope.viewReportClicked = false;
+    //         var student = JSON.parse($scope.selectedStudent);
+    //         $scope.selectedUser = student.name;
+    //         $scope.firstName = ((student.name).split(" "))[0];
+    //         $scope.studentSelected = true;
+    //         $scope.cohortSelected = false;
+    //         $scope.allSelected = false;
 
-            // Stacked bar chart of scores on all tests over time
-            $http.get("/api/studentcounts/", { params: {id: student.id }}).success(function(data){
-                $scope.oneStudentData = data;
-            });
+    //         // Overall pie chart data of most recent test
+    //         $http.get("/api/studentpie/", {params: { id: student.id }}).success(function(data) {
+    //             $scope.studentPie = data;
+    //         });
 
-            // Student improvement message
-            $http.get("/api/studentimprovement/", { params: {id: student.id }}).success(function(data){
-                $scope.studentImprovementMsg = data;
-            });
+    //         // Top standards student is struggling with
+    //         $http.get("/api/studenttopfb/", {params: { id: student.id }}).success(function(data) {
+    //             $scope.studentTopFB = data.slice(0,5);
+    //             $scope.orderByField = '-score';
+    //         });
 
-            // Number of standards student is falling behind on
-            $http.get("/api/studentbehind/", { params: {id: student.id }}).success(function(data){
-                $scope.studentBehind = data;
-            });
+    //         // Bar chart of % met compared to norms
+    //         $http.get("/api/studentnorm/", {params: { id: student.id }}).success(function(data) {
+    //             $scope.studentNorm = data;
+    //         });
 
-            $scope.selectedStudent = null;
-        }
+    //         // Stacked bar chart of scores on all tests over time
+    //         $http.get("/api/studentcounts/", { params: {id: student.id }}).success(function(data){
+    //             $scope.oneStudentData = data;
+    //         });
 
-        else if ($scope.selectedCohort > 0) {
-            $scope.selectedStudent = 0;
-            $scope.showByStudent = true;
-            $scope.selectedUser = $scope.cohorts[$scope.selectedCohort - 1].name;
-            $scope.studentSelected = false;
-            $scope.cohortSelected = true;
-            $scope.allSelected = false;
+    //         // Student improvement message
+    //         $http.get("/api/studentimprovement/", { params: {id: student.id }}).success(function(data){
+    //             $scope.studentImprovementMsg = data;
+    //         });
 
-            // Top standards students are struggling with
-            $http.get("/api/singlecohorttopfb/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-                $scope.oneCohortTopFB = data.slice(0, 5);
-                $scope.oneCohortTopFBAll = data;
-                $scope.orderByField = 'percent';
-            });
+    //         // Number of standards student is falling behind on
+    //         $http.get("/api/studentbehind/", { params: {id: student.id }}).success(function(data){
+    //             $scope.studentBehind = data;
+    //         });
 
-            // Overall pie chart data of most recent test
-            $http.get("/api/singlecohortpie/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-                $scope.oneCohortPie = data;
-            });
+    //         $scope.selectedStudent = null;
+    //     }
 
-            // Bar graph data comparing students to school/district
-            $http.get("/api/singlecohortnorm/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-                $scope.oneCohortNorm = data;
-            });
+    //     else if ($scope.selectedCohort > 0) {
+    //         $scope.selectedStudent = 0;
+    //         $scope.showByStudent = true;
+    //         $scope.selectedUser = $scope.cohorts[$scope.selectedCohort - 1].name;
+    //         $scope.studentSelected = false;
+    //         $scope.cohortSelected = true;
+    //         $scope.allSelected = false;
 
-            // All data from all tests for stacked bar graph
-            $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-                $scope.oneCohortData = data;
-            });
+    //         // Top standards students are struggling with
+    //         $http.get("/api/singlecohorttopfb/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+    //             $scope.oneCohortTopFB = data.slice(0, 5);
+    //             $scope.oneCohortTopFBAll = data;
+    //             $scope.orderByField = 'percent';
+    //         });
 
-            // Most recent test broken out by standard
-            $http.get("/api/singlecohortbystandard/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-                $scope.oneCohortStandard = data;
-                $scope.tableOneCohortStandard = angular.copy(data);
-            });
+    //         // Overall pie chart data of most recent test
+    //         $http.get("/api/singlecohortpie/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+    //             $scope.oneCohortPie = data;
+    //         });
 
-            // Top students who are struggling to meet standards
-            $http.get("/api/singlecohortstudents/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-                $scope.oneCohortStudents = data.slice(0,10);
-                $scope.orderByValue = '-total';
-            });
+    //         // Bar graph data comparing students to school/district
+    //         $http.get("/api/singlecohortnorm/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+    //             $scope.oneCohortNorm = data;
+    //         });
 
-            // Scores broken out by student
-            $http.get("/api/singlecohortbystudent/", {params: { id: $scope.selectedCohort }}).success(function(data) {
-                $scope.oneCohortByStudent = data;
-            });
-        }
+    //         // All data from all tests for stacked bar graph
+    //         $http.get("/api/singlecohortcounts/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+    //             $scope.oneCohortData = data;
+    //         });
 
-        else {
-            $scope.studentSelected = false;
-            $scope.cohortSelected = false;
-            $scope.allSelected = true;
-            $scope.selectedStudent = 0;
-        }
+    //         // Most recent test broken out by standard
+    //         $http.get("/api/singlecohortbystandard/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+    //             $scope.oneCohortStandard = data;
+    //             $scope.tableOneCohortStandard = angular.copy(data);
+    //         });
 
-    };
+    //         // Top students who are struggling to meet standards
+    //         $http.get("/api/singlecohortstudents/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+    //             $scope.oneCohortStudents = data.slice(0,10);
+    //             $scope.orderByValue = '-total';
+    //         });
+
+    //         // Scores broken out by student
+    //         $http.get("/api/singlecohortbystudent/", {params: { id: $scope.selectedCohort }}).success(function(data) {
+    //             $scope.oneCohortByStudent = data;
+    //         });
+    //     }
+
+    //     else {
+    //         $scope.studentSelected = false;
+    //         $scope.cohortSelected = false;
+    //         $scope.allSelected = true;
+    //         $scope.selectedStudent = 0;
+    //     }
+
+    // };
 
 }]);
