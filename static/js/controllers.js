@@ -116,10 +116,15 @@ clarityControllers.controller('SettingsController', ['$scope', '$http', 'ModalSe
 
 clarityControllers.controller('ReportsController', ['$scope', '$http', 'ModalService', function($scope, $http, ModalService) {
 
-    // $scope.allSelected = true;
-    // $scope.selectedCohort = 0;
-    // $scope.selectedStudent = 0;
+    $scope.selectedCohort = 0;
 
+    $scope.onChange = function(value) {
+        $scope.selectedStudent = null;
+    };
+
+    $scope.onStudChange = function(value) {
+        $scope.selectedCohort = null;
+    };
 
     $http.get("/api/getclasses/").success(function(data) {
         $scope.cohorts = data;
