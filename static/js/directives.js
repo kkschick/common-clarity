@@ -444,7 +444,7 @@ clarityDirectives.directive( 'd3StackedBarsWide', [
         data: '='
       },
       link: function (scope, element) {
-        var margin = {top: 30, right: 60, bottom: 60, left: 70},
+        var margin = {top: 30, right: 60, bottom: 60, left: 80},
           width = 700 - margin.left - margin.right,
           height = 460 - margin.top - margin.bottom;
 

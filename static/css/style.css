@@ -103,7 +103,8 @@ a {
 
 .form-field {
     height: 25px;
-    font-size: 1em;
+    font-size: .9em;
+    border: #83d3c9 1px;
 }
 
 .under-nav {
@@ -197,6 +198,19 @@ form p input {
 }
 
 .standard-table, .standard-table tr, .standard-table tr td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+.student-table {
+    width: auto;
+    text-transform: none;
+    margin: auto;
+    text-align: left;
+}
+
+.student-table, .student-table tr, .student-table tr td {
     border: 1px solid white;
     border-collapse: collapse;
     padding: 5px;

@@ -367,7 +367,6 @@ def all_cohorts_most_recent_comp_to_normscores(teacher_id):
 
     # Get most recent % of standards met by calling other function
     summed_scores = (all_cohorts_pie_chart(teacher_id))[0]
-    print summed_scores
     summed_reformatted = {"cohortName": "My Students", "value": ((summed_scores["value"])/100)}
     final_scores.append(summed_reformatted)
 
@@ -596,6 +595,9 @@ def all_single_cohort_data(teacher_id):
         cohort_list.append(temp_dict)
         temp_dict = {}
         temp_dict["report7"] = single_cohort_scores_by_student(cohort.id)
+        cohort_list.append(temp_dict)
+        temp_dict = {}
+        temp_dict["report8"] = single_cohort_data_most_recent_by_standard(cohort.id)
         cohort_list.append(temp_dict)
         cohort_data = {"dataValues": cohort_list, "cohortName": cohort.name}
         all_cohort_data_by_cohort[cohort.id] = cohort_data

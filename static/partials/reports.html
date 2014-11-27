@@ -103,13 +103,38 @@
             </td>
             <td class="white-left">
             <h2>MY CLASSES</h2>
+            <h4 class="special-text">VIEW AND EDIT CLASSES AND STUDENTS</h4>
                 <table class="big-table">
                     <tr>
                         <td ng-repeat="cohort in cohorts">
                             <ul class="list-of-links">
-                                <li><div ng-show="!collapsed" ng-class="{'inline arrow-right' : !collapsed}"></div><div ng-show="collapsed" ng-class="{'inline arrow-down' : collapsed}"></div>&nbsp;&nbsp;<div class="inline"><a ng-model="collapsed" ng-click="collapsed=!collapsed" class="class-link">{{cohort.name}}</a></div></li>
+                                <li>
+                                    <div ng-show="!collapsed" ng-class="{'inline arrow-right' : !collapsed}"></div>
+                                    <div ng-show="collapsed" ng-class="{'inline arrow-down' : collapsed}"></div>&nbsp;&nbsp;
+                                    <div class="inline">
+                                        <div ng-hide="editorEnabled">
+                                            <a ng-model="collapsed" ng-click="collapsed=!collapsed" class="class-link">{{cohort.name}}</a>
+                                            <a href="" class="special-link" ng-click="editorEnabled=!editorEnabled">EDIT</a>
+                                        </div>
+                                        <div ng-show="editorEnabled">
+                                            <input ng-model="cohort.name">
+                                            <a href="" class="special-link" ng-click="editorEnabled=!editorEnabled">SAVE</a>
+                                        </div>
+                                    </div>
+                                </li>
+
+
                                 <ul>
-                                    <li ng-repeat="student in cohort.students" ng-show="collapsed">{{student.name}}</li>
+                                    <li ng-repeat="student in cohort.students" ng-show="collapsed">
+                                        <div ng-hide="editorEnabled">
+                                            {{student.name}}
+<!--                                             <a href="" class="special-link" ng-click="editorEnabled=!editorEnabled">EDIT</a> -->
+                                        </div>
+                                        <div ng-show="editorEnabled">
+                                            <input ng-model="student.name">
+<!--                                             <a href="" class="special-link" ng-click="editorEnabled=!editorEnabled">SAVE</a> -->
+                                        </div>
+                                    </li>
                                 </ul>
                         </td>
                     </tr>
@@ -271,7 +296,7 @@
                     <li gridster-item row="8" col="0" size-x="4" size-y="2">
                         <p class="border-text" ng-model="allCohortsStudents">Students requiring the most help</p><br>
                         <div>
-                            <table class="standard-table">
+                            <table class="student-table">
                                 <tr>
                                     <td>
                                         <a href="" ng-click="orderByValue='name'; sort = !sort">
@@ -390,7 +415,7 @@
                         <d3-stacked-bars-wide data="cohortDataByCohort[selectedCohort].dataValues[4].report5"></d3-stacked-bars-wide>
                     </li>
                     <li gridster-item row="8" col="4" size-x="2" size-y="5">
-                        <p class="border-text" ng-model="cohortDataByCohort[selectedCohort].dataValues[4].report5">Standards tested on most<br>recent test</p>
+                        <p class="border-text" ng-model="cohortDataByCohort[selectedCohort].dataValues[7].report8">Standards tested on most<br>recent test</p>
 
                         <table class="standard-table">
                             <tr style="font-size:12px">
@@ -413,7 +438,7 @@
                                     </a>
                                 </td>
                             </tr>
-                            <tr ng-repeat="standard in cohortDataByCohort[selectedCohort].dataValues[4].report5 | orderBy:orderByField:switch">
+                            <tr ng-repeat="standard in cohortDataByCohort[selectedCohort].dataValues[7].report8 | orderBy:orderByField:switch">
                                 <td style="font-size:16px">{{standard.name}}</td>
                                 <td style="font-size:11px">{{standard.description}}</td>
                             </tr>
@@ -422,7 +447,7 @@
                     <li gridster-item row="11" col="0" size-x="4" size-y="2">
                         <p class="border-text" ng-model="cohortDataByCohort[selectedCohort].dataValues[5].report6">Students requiring the most help</p><br>
                         <div>
-                            <table class="standard-table">
+                            <table class="student-table">
                                 <tr>
                                     <td>
                                         <a href="" ng-click="orderByValue='name'; sort = !sort">

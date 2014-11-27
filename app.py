@@ -11,6 +11,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+@app.route("/test/")
+def test():
+    return _convert_to_JSON(api.single_cohort_data_most_recent_by_standard(1))
 
 @app.route("/")
 def index():
