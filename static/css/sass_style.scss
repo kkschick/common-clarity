@@ -1,0 +1,482 @@
+$main-teal: #83d3c9;
+$teal-border: solid #83d3c9 1px;
+$small-spacing: 0.1em;
+$box-shadow-color: inset 0 0 100px rgba(0,0,0,.5);
+
+body {
+    font-family: 'Lato', sans-serif;
+    letter-spacing: $small-spacing;
+    color: white;
+    background-image: url("/static/img/background.jpg");
+    width: auto;
+    margin-top: 0px;
+    background-attachment: fixed;
+}
+
+.header {
+    width: auto;
+    height: 80px;
+}
+
+.header-small {
+    width: auto;
+    height: 50px;
+}
+
+#fl-left {
+    float: left;
+    position: relative;
+    margin-left: 10px;
+}
+
+#fl-right {
+    float: right;
+    position: relative;
+
+    ul {
+
+      li {
+          display: inline-block;
+          margin-right: 1.5em;
+          font-size: 1em;
+          right: 1.5em;
+          top: 0.75em;
+
+          a {
+              border: solid 1px transparent;
+              line-height: 1em;
+              padding: 0.6em 0.75em;
+              text-decoration: none;
+          }
+
+      }
+
+      li.active a {
+          border: solid 1px $main-teal;
+      }
+
+      li:hover a {
+          border: solid 1px;
+      }
+    }
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.hover-link {
+    text-decoration: underline;
+}
+
+.hover-link:hover {
+    text-decoration: none;
+}
+
+.button {
+    background: none;
+    border: solid 1px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    letter-spacing: $small-spacing;
+    cursor: pointer;
+    text-transform: uppercase;
+    padding: 0.6em 0.75em;
+}
+
+.button.special {
+    background: $main-teal;
+    border: $teal-border;
+    line-height: 1em;
+    padding: 0.6em 0.75em;
+    font-size: 1em;
+}
+
+.button.small {
+    border-radius: 100%;
+    background: $main-teal;
+    border: $teal-border;
+    font-size: 1em;
+}
+
+.button.special:hover, .button.small:hover {
+    background: transparent;
+    border: solid white 1px;
+}
+
+.form-field {
+    height: 25px;
+    font-size: .9em;
+    border: $main-teal 1px;
+}
+
+.under-nav {
+    box-shadow: $box-shadow-color;
+    position: relative;
+    text-align: center;
+    margin-left: 18%;
+    margin-right: 18%;
+    padding: 30px;
+    margin-top: 80px;
+}
+
+.under-nav-login-box {
+    box-shadow: $box-shadow-color;
+    position: relative;
+    text-align: center;
+    margin-left: 25%;
+    margin-right: 25%;
+    padding: 30px;
+    margin-top: 80px;
+}
+
+.large-under-nav {
+    box-shadow: $box-shadow-color;
+    position: relative;
+    margin-left: 1%;
+    margin-right: 2%;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+.sign-in-box {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.teal-text {
+  color: $main-teal;
+}
+
+.lead {
+  text-transform: uppercase;
+}
+
+label {
+    display: inline-block;
+}
+
+input {
+    display: inline-block;
+}
+
+p {
+    text-align: center;
+}
+
+form p {
+    text-align:left;
+
+    input {
+        float: right;
+    }
+}
+
+.list-of-links {
+    list-style: none;
+    padding-left: 0;
+}
+
+.class-link {
+  text-decoration: none;
+  color: white;
+}
+
+.class-link:hover {
+  text-decoration: underline;
+}
+
+.big-table {
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    table-layout: fixed;
+}
+
+.standard-table {
+    width: auto;
+    text-transform: none;
+    margin: 10px;
+    text-align: left;
+}
+
+.standard-table, .standard-table tr, .standard-table tr td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+.student-table {
+    width: auto;
+    text-transform: none;
+    margin: auto;
+    text-align: left;
+}
+
+.student-table, .student-table tr, .student-table tr td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+th {
+    font-size: 0.75em;
+}
+
+td {
+    vertical-align: top;
+}
+
+#add-student-table {
+  text-align: left;
+}
+
+hr {
+    height: 2px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: white;
+}
+
+.chart {
+  width: 0;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.axis path {
+  fill: none;
+  stroke: #FFFFFF;
+  shape-rendering: crispEdges;
+}
+
+
+.d3-tip {
+  line-height: 1;
+  font-size: 12px;
+  text-transform: uppercase;
+  padding: 12px;
+  box-shadow: inset 0 0 100px rgba(0,0,0,.95);
+  color: #fff;
+  border-radius: 2px;
+  z-index: 10000;
+}
+
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+  z-index: 10000;
+}
+
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+  z-index: 10000;
+}
+
+#overlay {
+    position: fixed;
+    left: 25%;
+    top: 25%;
+    padding: 25px;
+    border: 3px solid white;
+    background: rgba(50, 50, 50, 0.8);
+    width: 50%;
+    z-index: 100;
+}
+
+#overlay ul li {
+    margin-left: 10px;
+}
+
+#overlay2 {
+    position: fixed;
+    left: 5%;
+    top: 5%;
+    padding: 25px;
+    border: 3px solid white;
+    background: rgba(50, 50, 50, 0.8);
+    width: 50%;
+    z-index: 100;
+}
+
+.special-link {
+  text-decoration: none;
+  color: $main-teal;
+  font-size: 11px;
+}
+
+.special-link:hover {
+  text-decoration: underline;
+  color: white;
+}
+
+.special-text {
+  text-decoration: none;
+  color: $main-teal;
+  font-size: 11px;
+}
+
+.mini-table tr td {
+  color: white;
+  border: 1px solid white;
+  border-collapse: collapse;
+  height: 20px;
+  text-align: left;
+  table-layout: fixed;
+}
+
+.arrow-right {
+  width: 6;
+  height: 6;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 6px solid $main-teal;
+}
+
+.arrow-down {
+  width: 6;
+  height: 6;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid $main-teal;
+}
+
+.arrow-up {
+  width: 6;
+  height: 6;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid $main-teal;
+}
+
+
+.inline {
+  display: inline-block;
+}
+
+.left {
+  float: left;
+}
+
+.right-align {
+  float: right;
+}
+
+.no-margin {
+  margin: 5px;
+  margin-bottom: 0px;
+}
+
+.tab:hover a {
+  background-color: $main-teal;
+  border: $teal-border;
+}
+
+.active a {
+  background-color: $main-teal;
+  border: $teal-border;
+}
+
+.lower {
+  text-transform: none;
+}
+
+.gridster-content ul li {
+  box-shadow: $box-shadow-color;
+  text-align: center;
+  border: 1px solid white;
+}
+
+.border-text {
+    border: solid 1px;
+    display: inline-block;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: white;
+    letter-spacing: $small-spacing;
+    text-transform: uppercase;
+    padding: 0.6em 0.75em;
+}
+
+.text-no-border {
+    display: inline-block;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: white;
+    letter-spacing: $small-spacing;
+    text-transform: uppercase;
+    padding: 0.6em 0.75em;
+}
+
+.student-box {
+  padding: 0px 20px 0px 20px;
+}
+
+a.tooltips {
+  position: relative;
+  display: inline;
+}
+a.tooltips span {
+  position: absolute;
+  width:550px;
+  color: #FFFFFF;
+  background: #000000;
+  height: auto;
+  line-height: 20px;
+  font-size: 12px;
+  text-align: center;
+  visibility: hidden;
+  border-radius: 6px;
+}
+a.tooltips span:after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -8px;
+  width: 0; height: 0;
+  border-bottom: 8px solid #000000;
+  border-right: 8px solid transparent;
+  border-left: 8px solid transparent;
+}
+a:hover.tooltips span {
+  visibility: visible;
+  opacity: 0.8;
+  top: 30px;
+  left: 50%;
+  margin-left: -76px;
+  z-index: 999;
+}
+
+.settings-table {
+  width: auto;
+}
+
+.settings-table tr td {
+  width: 50%;
+}
+
+.white-left {
+  border-left: 3px solid white;
+  padding-left: 30px;
+}
+
+.inline-ul {
+  display: inline;
+  padding: 0px;
+}
