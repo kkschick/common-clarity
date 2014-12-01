@@ -7,3 +7,4 @@ WTForms==1.0.2
 Werkzeug==0.8.3
 psycopg2==2.5.4
 wsgiref==0.1.2
+requests==2.3.0
