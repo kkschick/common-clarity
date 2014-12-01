@@ -17,6 +17,7 @@ def test():
 
 @app.route("/")
 def index():
+    print session
     return send_file("templates/index.html")
 
 def allowed_file(filename):
