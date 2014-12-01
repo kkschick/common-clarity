@@ -13,7 +13,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/test/")
 def test():
-    return _convert_to_JSON(api.single_cohort_data_most_recent_by_standard(1))
+    return _convert_to_JSON(api.student_pie_chart(2))
 
 @app.route("/")
 def index():

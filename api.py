@@ -1079,6 +1079,229 @@ def single_cohort_scores_by_student(cohort_id):
 
     return student_scores_list
 
+# def get_cohort_id(student_id):
+
+#     # Get student cohort ID
+#     cohort_id = (model.StudentCohort.query.filter_by(student_id=student_id).first()).cohort_id
+#     return cohort_id
+
+# def student_pie_chart(student_id):
+#     """Aggregate M/A/FB scores from most recent test for pie chart.
+#     for single student."""
+
+#     # Create empty list to hold the score aggregation
+#     summed_scores = []
+
+#     # Get student cohort ID
+#     cohort_id = get_cohort_id(student_id)
+
+#     # Get most recent test for the cohort
+#     test = get_most_recent_test(cohort_id)
+
+#     m_total = 0
+#     a_total = 0
+#     fb_total = 0
+
+#     # Get scores for most recent test
+#     scores = model.Score.query.filter_by(test_id=test.id, student_id=student_id).all()
+
+#     # Initialize counters at zero
+#     m_count = 0
+#     a_count = 0
+#     fb_count = 0
+
+#     # Loop through score objects and get score value, append to list
+#     for score in scores:
+#         if score.score == 'M':
+#             m_count +=1
+#         elif score.score == 'A':
+#             a_count +=1
+#         elif score.score == 'FB':
+#             fb_count += 1
+
+#     # Increment totals
+#     m_total += m_count
+#     a_total += a_count
+#     fb_total += fb_count
+
+#     # Calculate percentages of each score
+#     total = m_total + a_total + fb_total
+#     m_perc = (float(m_total) / float(total)) * 100
+#     a_perc = (float(a_total) / float(total)) * 100
+#     fb_perc = (float(fb_total) / float(total)) * 100
+
+#     # Add percentages to dict
+#     m_dict = {"score": "M", "value": m_perc}
+#     a_dict = {"score": "A", "value": a_perc}
+#     fb_dict = {"score": "FB", "value": fb_perc}
+
+#     # Add dicts to list
+#     summed_scores.append(m_dict)
+#     summed_scores.append(a_dict)
+#     summed_scores.append(fb_dict)
+
+#     return summed_scores
+
+# def student_top_struggle_standards(student_id):
+
+#     """Identify the top standards students are struggling with."""
+
+#     scores_list = []
+
+#     # Get most recent test for the cohort
+#     cohort_id = get_cohort_id(student_id)
+#     test = get_most_recent_test(cohort_id)
+
+#     # Get student scores for most recent test
+#     scores = model.Score.query.filter_by(test_id=test.id, student_id=student_id).all()
+
+#     # Loop through scores and add standards if score was A or FB
+#     for score in scores:
+#         if score.score == "A" or score.score == "FB":
+#             score_dict = {}
+#             score_dict["name"] = score.standard.code
+#             score_dict["description"] = score.standard.description
+#             score_dict["score"] = score.score
+#             scores_list.append(score_dict)
+
+#     # Sort list of dicts by score and reverse
+#     scores_list.sort(key=itemgetter("score"))
+#     scores_list.reverse()
+
+#     return scores_list
+
+# def student_most_recent_comp_to_normscores(student_id):
+
+#     final_scores = []
+
+#     # Get student name
+#     student = model.User.query.filter_by(id=student_id).first()
+#     student_name = student.first_name + " " + student.last_name
+
+#     # Get most recent % of standards met for student
+#     summed_scores = (student_pie_chart(student_id))[0]
+#     summed_reformatted = {"cohortName": student_name, "value": ((summed_scores["value"])/100)}
+#     final_scores.append(summed_reformatted)
+
+#     # Get most recent % of standards met for class overall
+#     cohort_id = get_cohort_id(student_id)
+#     summed_scores = (single_cohort_pie_chart(cohort_id))[0]
+#     summed_reformatted = {"cohortName": "My Students", "value": ((summed_scores["value"])/100)}
+#     final_scores.append(summed_reformatted)
+
+#     # Get most recent test ID for cohort
+#     test = get_most_recent_test(cohort_id)
+
+#     # Get norm scores for those test IDs
+#     cohort_names = []
+#     normscores = model.NormScore.query.filter_by(test_id=test.id).all()
+#     for normscore in normscores:
+#         if normscore.cohort_name not in cohort_names:
+#             cohort_names.append(normscore.cohort_name)
+
+#     # Loop through cohort names and sum item percentages
+#     for item in cohort_names:
+#         final_dict = {}
+#         final_dict["cohortName"] = item
+#         final_dict["value"] = 0
+#         item_total = 0
+#         for normscore in normscores:
+#             if normscore.cohort_name == item:
+#                 final_dict["value"] += normscore.score
+#                 item_total += 1
+#         final_dict["value"] = final_dict["value"] / float(item_total)
+#         final_scores.append(final_dict)
+
+#     # Reverse final list of scores
+#     final_scores.reverse()
+
+#     return final_scores
+
+# def student_data_by_test(student_id):
+
+#     # Get student cohort
+#     cohort_id = get_cohort_id(student_id)
+
+#     # Initialize response list, counters, and total dict
+#     scores_list = []
+#     total_dict = {"name": "All Tests"}
+#     scores_list.append(total_dict)
+#     m_total = 0
+#     a_total = 0
+#     fb_total = 0
+
+#     # Get all tests for cohort
+#     tests = model.Test.query.filter_by(cohort_id=cohort_id).all()
+
+#     # Loop through tests and get scores
+#     for test in tests:
+#         scores_dict = {}
+#         scores_dict["name"] = test.name
+#         scores = model.Score.query.filter_by(test_id=test.id, student_id=student_id).all()
+
+#         m_count = 0
+#         a_count = 0
+#         fb_count = 0
+
+#         # Loop through scores and sum up each type
+#         for score in scores:
+#             if score.score == 'M':
+#                 m_count +=1
+#             elif score.score == 'A':
+#                 a_count +=1
+#             elif score.score == 'FB':
+#                 fb_count += 1
+
+#         # Increment totals
+#         m_total += m_count
+#         a_total += a_count
+#         fb_total += fb_count
+
+#         # Add counts to scores dict
+#         scores_dict["3"] = m_count
+#         scores_dict["2"] = a_count
+#         scores_dict["1"] = fb_count
+#         scores_list.append(scores_dict)
+
+#     # Add totals to total dict
+#     total_dict["3"] = m_total
+#     total_dict["2"] = a_total
+#     total_dict["1"] = fb_total
+
+#     return scores_list
+
+# def student_improvement(student_id):
+
+#     """Get student scores for all tests and compare # of standards met
+#     from most recent test to prior test."""
+
+#     student_scores = student_data_by_test(student_id)
+
+#     most_recent_test = student_scores[-1]
+#     one_prior_test = student_scores[-2]
+
+#     recent_num_m = most_recent_test["3"]
+#     prior_num_m = one_prior_test["3"]
+
+#     if recent_num_m < prior_num_m:
+#         response = "scores decreased on the most recent test, from " + str(prior_num_m) + " standards met to only " + str(recent_num_m) + "."
+#     elif recent_num_m > prior_num_m:
+#         response = "scores improved on the most recent test, from " + str(prior_num_m) + " standards met to " + str(recent_num_m) + "."
+#     else:
+#         response = "scores remained the same on the most recent test, with " + str(recent_num_m) + " standards met."
+
+#     return {"message": response}
+
+# def student_falling_behind_score_count(student_id):
+
+#     """Get the number of standards the student is falling behind on."""
+
+#     student_scores = student_data_by_test(student_id)
+
+#     fb_count = student_scores[-1]["1"]
+
+#     return {"count": fb_count}
+
 def student_pie_chart(student_id):
     """Aggregate M/A/FB scores from most recent test for pie chart.
     for single student."""
@@ -1279,4 +1502,3 @@ def student_falling_behind_score_count(student_id):
     fb_count = student_scores[-1]["1"]
 
     return {"count": fb_count}
-
