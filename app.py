@@ -3,11 +3,13 @@ import api
 import json
 import os
 from werkzeug import secure_filename
+from flask.ext.heroku import Heroku
 
 UPLOAD_FOLDER = "./static/uploads/"
 ALLOWED_EXTENSIONS = set(['csv'])
 
 app = Flask(__name__)
+heroku = Heroku(app)
 app.config['SECRET_KEY'] = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
