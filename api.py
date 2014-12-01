@@ -6,7 +6,7 @@ from operator import itemgetter
 
 """Error Handler"""
 
-def dash_error(error):
+def clarity_error(error):
     """Handle API errors.
 
         error: (string) error message
@@ -25,7 +25,8 @@ def get_user(email, password):
     """Check if user exists; if exists, authenticate pw and return success msg"""
 
     user = model.User.query.filter_by(email=email).first()
-    return user
+    if user:
+        return user
 
 """Log-out"""
 
@@ -39,9 +40,14 @@ def logout():
 def create_teacher_user(user_type, email, password, first_name, last_name):
     """Get form data and add new user to users table"""
 
-    user = model.User(user_type=user_type, email=email, password=password, first_name=first_name, last_name=last_name)
-    model.session.add(user)
-    model.session.commit()
+    # Check if user exists
+    user = model.User.query.filter_by(email=email).first()
+
+    # If user doesn't exist, create user
+    if user == None:
+        user = model.User(user_type=user_type, email=email, password=password, first_name=first_name, last_name=last_name)
+        model.session.add(user)
+        model.session.commit()
 
 
 """Settings"""
@@ -51,17 +57,21 @@ def get_teacher_cohorts(teacher_id):
     Use teacher_id to get cohort_ids associated with that teacher and
     return them. If none, return False."""
 
+    # Get all teacher's cohorts
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+
     all_cohorts = []
+
+    # For each class, add the ID, name, and list of students
     for cohort in cohorts:
         full_class = {}
-        cohort_id = cohort.id
-        students = get_students_in_cohort(cohort_id)
-        full_class["cohort_id"] = cohort_id
+        students = get_students_in_cohort(cohort.id)
+        full_class["cohort_id"] = cohort.id
         full_class["name"] = cohort.name
         full_class["students"] = students
         all_cohorts.append(full_class)
 
+    # Sort list of dicts by cohort name
     all_cohorts.sort(key=itemgetter("name"))
 
     return all_cohorts
@@ -70,14 +80,19 @@ def get_students_in_cohort(cohort_id):
     """Use cohort_ids associated with teacher_id to query studentcohorts
     to get student names for that cohort. If none, return False."""
 
+    # Get all students associated with each of a teacher's cohort ID
     students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
+
     student_names = []
+
+    # For each student, add student name and ID
     for student in students:
         student_dict = {}
         student_dict["name"] = student.student.first_name + ' ' + student.student.last_name
         student_dict["id"] = student.student.id
         student_names.append(student_dict)
 
+    # Sort list of dicts by student name
     student_names.sort(key=itemgetter("name"))
 
     return student_names
@@ -85,20 +100,38 @@ def get_students_in_cohort(cohort_id):
 def add_new_cohort(name, teacher_id):
     """Create new cohort in cohorts table. Return cohort_id."""
 
-    cohort = model.Cohort(name=name, teacher_id=teacher_id)
-    model.session.add(cohort)
-    model.session.commit()
-    new_cohort = model.Cohort.query.filter_by(name=name).first()
-    return new_cohort.id
+    # Query cohorts to see if cohort exists
+    cohort = model.Cohort.query.filter_by(name=name, teacher_id=teacher_id).first()
+
+    # If cohort doesn't yet exist, create it and return the ID
+    if cohort == None:
+        cohort = model.Cohort(name=name, teacher_id=teacher_id)
+        model.session.add(cohort)
+        model.session.commit()
+        new_cohort = model.Cohort.query.filter_by(name=name).first()
+        return new_cohort.id
+
+    # Otherwise, return the cohort's ID
+    else:
+        return cohort.id
 
 def create_student(user_type, first_name, last_name):
     """Create new student user in users table. Return cohort_id."""
 
-    user = model.User(user_type=user_type, first_name=first_name, last_name=last_name)
-    model.session.add(user)
-    model.session.commit()
-    new_user = model.User.query.filter_by(first_name=first_name, last_name=last_name).first()
-    return new_user.id
+    # See if student already exists
+    student = model.User.query.filter_by(first_name=first_name, last_name=last_name).first()
+
+    # If student doesn't exist, add it and return ID
+    if student == None:
+        user = model.User(user_type=user_type, first_name=first_name, last_name=last_name)
+        model.session.add(user)
+        model.session.commit()
+        new_user = model.User.query.filter_by(first_name=first_name, last_name=last_name).first()
+        return new_user.id
+
+    # Otherwise, return ID
+    else:
+        return student.id
 
 def add_student_to_cohort(student_id, cohort_id):
     """Add newly-created student to studentcohorts table."""
@@ -110,18 +143,33 @@ def add_student_to_cohort(student_id, cohort_id):
 def create_student_from_csv(csv_path, cohort_id, user_type):
     """Parse CSV of new students and add each to users table in database."""
 
+    # Read in CSV file of students
     with open(csv_path, 'rb') as f:
+
+        # Split at the comma
         reader = csv.reader(f, delimiter=',')
+
+        # Skip header row
         headers = reader.next()
+
+        # Go through rows and add each student
         for row in reader:
             if row:
-                user = model.User(user_type=user_type, first_name=row[0], last_name=row[1])
-                model.session.add(user)
-                model.session.commit()
-                student_id = (model.User.query.filter_by(first_name=row[0], last_name=row[1]).first()).id
-                studentcohort = model.StudentCohort(student_id=student_id, cohort_id=cohort_id)
-                model.session.add(studentcohort)
-                model.session.commit()
+
+                # Check if student exists
+                student = model.User.query.filter_by(first_name=row[0], last_name=row[1]).first()
+
+                # If student doesn't exist, add student and add to student cohorts table
+                if student == None:
+                    user = model.User(user_type=user_type, first_name=row[0], last_name=row[1])
+                    model.session.add(user)
+                    model.session.commit()
+
+                    # Get student's ID and add to studentcohorts table
+                    student_id = (model.User.query.filter_by(first_name=row[0], last_name=row[1]).first()).id
+                    studentcohort = model.StudentCohort(student_id=student_id, cohort_id=cohort_id)
+                    model.session.add(studentcohort)
+                    model.session.commit()
 
 
 """Reports"""
@@ -132,8 +180,10 @@ def parse_CSV(csv_path, name, date, cohort_id):
     get user_id and standard_id. Use test_id returned from create_new_test, user_id,
     and standard_id, and add score to scores table."""
 
+    # Format date object
     date = datetime.strptime(date, "%Y-%m-%d")
 
+    # Open CSV file to read
     with open(csv_path, 'rb') as f:
 
         # Create new test in tests database
@@ -141,25 +191,28 @@ def parse_CSV(csv_path, name, date, cohort_id):
         model.session.add(test)
         model.session.commit()
 
+        # Split at comma
         reader = csv.reader(f, delimiter=',')
 
-        # Create list with the headers and filter it to be just student names
+        # Create list with the headers and filter it into student names list and norms list
         headers = reader.next()
         students = headers[1:-2]
         norms = headers[-2:]
 
-        # Read through the rest of the file and add the standards and scores to lists
+        # Read through the rest of the file and add the standards, scores, and normscores to lists
         standards = []
         scores = []
         norm_scores = []
-        for rows in reader:
-            standards.append(rows[0])
-            scores.append(rows[1:-2])
-            norm_scores.append(rows[-2:])
+        for row in reader:
+            if row:
+                standards.append(row[0])
+                scores.append(row[1:-2])
+                norm_scores.append(row[-2:])
 
         # Create list of standard IDs
         standard_ids = []
         for standard in standards:
+
             # Split standard on the space and only take the code
             standard_split = standard.split(" ")
             standard_code = standard_split[0]
@@ -206,7 +259,7 @@ def parse_CSV(csv_path, name, date, cohort_id):
                 student = model.User(user_type="student", first_name=first_name, last_name=last_name)
                 model.session.add(student)
                 model.session.commit()
-                student.id = (model.User.query.filter_by(last_name=last_name, first_name=first_name).first()).id
+                student_id = (model.User.query.filter_by(last_name=last_name, first_name=first_name).first()).id
             else:
                 student_id = student.id
 
@@ -227,6 +280,7 @@ def parse_CSV(csv_path, name, date, cohort_id):
                 i += 1
             j += 1
 
+        # Iterate through the students, standards, and normscores, and add the normscores to the DB
         j = 0
         for item in norms:
             i = 0
@@ -239,6 +293,16 @@ def parse_CSV(csv_path, name, date, cohort_id):
 
         model.session.commit()
 
+def get_most_recent_tests(cohorts):
+
+    """Get most recent test IDs for a teacher ID"""
+
+    most_recent_tests = []
+    for cohort in cohorts:
+        test = model.Test.query.filter_by(cohort_id=cohort.id).order_by(model.Test.test_date.desc()).first()
+        most_recent_tests.append(test.id)
+    return most_recent_tests
+
 def all_cohorts_top_struggle_standards(teacher_id):
 
     """Identify the top standards students are struggling with and which
@@ -248,10 +312,7 @@ def all_cohorts_top_struggle_standards(teacher_id):
 
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
 
-    most_recent_tests = []
-    for cohort in cohorts:
-        test = model.Test.query.filter_by(cohort_id=cohort.id).order_by(model.Test.test_date.desc()).first()
-        most_recent_tests.append(test.id)
+    most_recent_tests = get_most_recent_tests(cohorts)
 
     student_ids = []
     standards_list = []
@@ -264,9 +325,7 @@ def all_cohorts_top_struggle_standards(teacher_id):
     for test_id in most_recent_tests:
         scores = model.Score.query.filter_by(test_id=test_id, student_id=student_ids[0].student.id).all()
         for score in scores:
-            standards = model.Standard.query.filter_by(id=score.standard_id).all()
-            for standard in standards:
-                standards_list.append(standard)
+            standards_list.append(score.standard)
 
     for standard in standards_list:
         scores_by_standard = {}
@@ -281,18 +340,16 @@ def all_cohorts_top_struggle_standards(teacher_id):
             a_count = 0
             fb_count = 0
 
-            for student in student_ids:
-                scores = model.Score.query.filter_by(student_id=student.student.id, test_id=test_id, standard_id=standard.id).all()
+            scores = model.Score.query.filter_by(test_id=test_id, standard_id=standard.id).all()
 
-                for score in scores:
-                    if score.score == "M":
-                        m_count += 1
-                    elif score.score == "A":
-                        a_count += 1
-                        # scores_by_standard["Students"].append(student.student.first_name + " " + student.student.last_name)
-                    elif score.score == "FB":
-                        fb_count += 1
-                        scores_by_standard["students"].append(student.student.first_name + " " + student.student.last_name)
+            for score in scores:
+                if score.score == "M":
+                    m_count += 1
+                elif score.score == "A":
+                    a_count += 1
+                elif score.score == "FB":
+                    fb_count += 1
+                    scores_by_standard["students"].append(score.student.first_name + " " + score.student.last_name)
 
         m_percent = (float(m_count) / float(total_scores)) * 100
         scores_by_standard["percent"] = m_percent
@@ -373,10 +430,7 @@ def all_cohorts_most_recent_comp_to_normscores(teacher_id):
     # Get most recent test IDs for teacher's cohorts
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
 
-    most_recent_tests = []
-    for cohort in cohorts:
-        test = model.Test.query.filter_by(cohort_id=cohort.id).order_by(model.Test.test_date.desc()).first()
-        most_recent_tests.append(test.id)
+    most_recent_tests = get_most_recent_tests(cohorts)
 
     # Get norm scores for those test IDs
     cohort_names = []
@@ -409,8 +463,10 @@ def all_cohorts_data_by_test(teacher_id):
 
     # Get all teacher cohorts
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+
     # Make list of all tests associated with teacher's cohorts
     all_tests = []
+
     for cohort in cohorts:
 
         # Get all tests associated with that cohort id
@@ -419,21 +475,27 @@ def all_cohorts_data_by_test(teacher_id):
         for test in tests:
             all_tests.append(test)
 
+    # Initialize empty response list and counters
     resp_list = []
     m_total = 0
     a_total = 0
     fb_total = 0
 
+    # Add total dict to response list
     total_dict = {"name": "All Tests"}
     resp_list.append(total_dict)
 
+    # Loop through tests
     for test in all_tests:
         resp_dict = {}
+
+        # Add test name to dict
         resp_dict["name"] = test.name
 
         # Get all scores associated with each test id
         scores = model.Score.query.filter_by(test_id=test.id).all()
 
+        # Loop through scores and count values
         m_count = 0
         a_count = 0
         fb_count = 0
@@ -445,14 +507,18 @@ def all_cohorts_data_by_test(teacher_id):
             elif score.score == 'FB':
                 fb_count += 1
 
+        # Increment totals
         m_total += m_count
         a_total += a_count
         fb_total += fb_count
+
+        # Add counts to dict for that test
         resp_dict["3"] = m_count
         resp_dict["2"] = a_count
         resp_dict["1"] = fb_count
         resp_list.append(resp_dict)
 
+    # Add total counts to total dict
     total_dict["3"] = m_total
     total_dict["2"] = a_total
     total_dict["1"] = fb_total
@@ -465,47 +531,49 @@ def all_cohorts_data_most_recent_by_standard(teacher_id):
 
     scores_list = []
 
+    # Get teacher's classes and most recent tests
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
+    most_recent_tests = get_most_recent_tests(cohorts)
 
-    most_recent_tests = []
-    for cohort in cohorts:
-        test = model.Test.query.filter_by(cohort_id=cohort.id).order_by(model.Test.test_date.desc()).first()
-        most_recent_tests.append(test.id)
-
+    # Get all students in each class
     student_ids = []
-    standards_list = []
     for cohort in cohorts:
         students = cohort.studentcohorts
         for student in students:
             student_ids.append(student.student.id)
+
+    # Get all standards tested on the most recent tests
+    standards_list = []
     for test_id in most_recent_tests:
         scores = model.Score.query.filter_by(test_id=test_id, student_id=student_ids[0]).all()
         for score in scores:
-            standards = model.Standard.query.filter_by(id=score.standard_id).all()
-            for standard in standards:
-                standards_list.append(standard)
+            standards_list.append(score.standard)
+
+    # Loop through standards and add each to a dict
     for standard in standards_list:
         scores_by_standard = {}
         scores_by_standard["name"] = standard.code
         scores_by_standard["description"] = standard.description
         scores_by_standard["id"] = standard.id
 
+        # Loop through tests and get scores, count num of each score
         for test_id in most_recent_tests:
             m_count = 0
             a_count = 0
             fb_count = 0
             total_length = 0
-            for student_id in student_ids:
-                scores = model.Score.query.filter_by(student_id=student_id, test_id=test_id, standard_id=standard.id).all()
-                for score in scores:
-                    total_length += 1
-                    if score.score == "M":
-                        m_count += 1
-                    elif score.score == "A":
-                        a_count += 1
-                    elif score.score == "FB":
-                        fb_count += 1
 
+            scores = model.Score.query.filter_by(test_id=test_id, standard_id=standard.id).all()
+            for score in scores:
+                total_length += 1
+                if score.score == "M":
+                    m_count += 1
+                elif score.score == "A":
+                    a_count += 1
+                elif score.score == "FB":
+                    fb_count += 1
+
+        # Add score counts to dict, along with percentage of Ms to sort by
         scores_by_standard["3"] = m_count
         scores_by_standard["2"] = a_count
         scores_by_standard["1"] = fb_count
@@ -513,9 +581,11 @@ def all_cohorts_data_most_recent_by_standard(teacher_id):
 
         scores_list.append(scores_by_standard)
 
+    # Sort list of dicts by percent of Ms
     scores_list.sort(key=itemgetter("percent"))
     scores_list.reverse()
 
+    # Remove percentage from each dict in the list
     for dict in scores_list:
         if 'percent' in dict:
             del dict['percent']
@@ -528,14 +598,17 @@ def all_cohorts_top_struggle_students(teacher_id):
 
     scores_list = []
 
+    # Get teacher's cohorts
     cohorts = model.Cohort.query.filter_by(teacher_id=teacher_id).all()
 
+    # Get students in those cohorts
     student_list = []
     for cohort in cohorts:
         students = cohort.studentcohorts
         for student in students:
             student_list.append(student)
 
+    # Get each student's scores and sum up counts of each score
     for student in student_list:
         scores = model.Score.query.filter_by(student_id=student.student.id).all()
         total_scores = len(scores)
@@ -550,9 +623,11 @@ def all_cohorts_top_struggle_students(teacher_id):
             elif score.score == "FB":
                 fb_count += 1
 
+        # Calculate total percentages of As and FBs
         a_percent = (float(a_count) / float(total_scores)) * 100
         fb_percent = (float(fb_count) / float(total_scores)) * 100
 
+        # Add student to dict with name, percent of As, FBs, and totals
         scores_by_student = {}
         scores_by_student["name"] = student.student.first_name + " " + student.student.last_name
         scores_by_student["A"] = a_percent
@@ -560,6 +635,7 @@ def all_cohorts_top_struggle_students(teacher_id):
         scores_by_student["total"] = a_percent + fb_percent
         scores_list.append(scores_by_student)
 
+    # Sort list of dicts by the total percentage of As plus FBs and reverse list
     scores_list.sort(key=itemgetter("total"))
     scores_list.reverse()
 
@@ -640,6 +716,18 @@ def all_single_student_data(teacher_id):
 
     return all_student_data_by_student
 
+def get_most_recent_test(cohort_id):
+
+    # Get most recent test for the cohort
+    test = model.Test.query.filter_by(cohort_id=cohort_id).order_by(model.Test.test_date.desc()).first()
+    return test
+
+def get_students_in_class(cohort_id):
+
+    # Get all the students in that cohort
+    students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
+    return students
+
 def single_cohort_top_struggle_standards(cohort_id):
 
     """Identify the top standards students in a cohort are struggling with
@@ -648,21 +736,16 @@ def single_cohort_top_struggle_standards(cohort_id):
     scores_list = []
 
     # Get most recent test for the cohort
-    test = model.Test.query.filter_by(cohort_id=cohort_id).order_by(model.Test.test_date.desc()).first()
+    test = get_most_recent_test(cohort_id)
 
     # Get all the students in that cohort
-    students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
-
-    # for student in students: student.student gives student user obj
-
-    standards_list = []
+    students = get_students_in_class(cohort_id)
 
     # Get the standards students were tested on in most recent test
+    standards_list = []
     scores = model.Score.query.filter_by(test_id=test.id, student_id=students[0].student.id).all()
     for score in scores:
-        standards = model.Standard.query.filter_by(id=score.standard_id).all()
-        for standard in standards:
-            standards_list.append(standard)
+        standards_list.append(score.standard)
 
     # Go through standards and add metadata about each to dictionary
     for standard in standards_list:
@@ -677,24 +760,25 @@ def single_cohort_top_struggle_standards(cohort_id):
         a_count = 0
         fb_count = 0
 
-        for student in students:
-            scores = model.Score.query.filter_by(student_id=student.student.id, test_id=test.id, standard_id=standard.id).all()
+        # Loop through scores and add up counts of each
+        scores = model.Score.query.filter_by(test_id=test.id, standard_id=standard.id).all()
 
-            for score in scores:
-                if score.score == "M":
-                    m_count += 1
-                elif score.score == "A":
-                    a_count += 1
-                    # scores_by_standard["Students"].append(student.student.first_name + " " + student.student.last_name)
-                elif score.score == "FB":
-                    fb_count += 1
-                    scores_by_standard["students"].append(student.student.first_name + " " + student.student.last_name)
+        for score in scores:
+            if score.score == "M":
+                m_count += 1
+            elif score.score == "A":
+                a_count += 1
+            elif score.score == "FB":
+                fb_count += 1
+                scores_by_standard["students"].append(score.student.first_name + " " + score.student.last_name)
 
+        # Calculate percentage of Ms
         m_percent = (float(m_count) / float(total_scores)) * 100
         scores_by_standard["percent"] = m_percent
         scores_list.append(scores_by_standard)
         scores_by_standard["students"].sort()
 
+    # Sort list of dicts by percent of Ms
     scores_list.sort(key=itemgetter("percent"))
 
     return scores_list
@@ -707,7 +791,7 @@ def single_cohort_pie_chart(cohort_id):
     summed_scores = []
 
     # Get most recent test for the cohort
-    test = model.Test.query.filter_by(cohort_id=cohort_id).order_by(model.Test.test_date.desc()).first()
+    test = get_most_recent_test(cohort_id)
 
     m_total = 0
     a_total = 0
@@ -730,19 +814,23 @@ def single_cohort_pie_chart(cohort_id):
         elif score.score == 'FB':
             fb_count += 1
 
+    # Increment totals
     m_total += m_count
     a_total += a_count
     fb_total += fb_count
 
+    # Calculate total and find percentages of each score
     total = m_total + a_total + fb_total
     m_perc = (float(m_total) / float(total)) * 100
     a_perc = (float(a_total) / float(total)) * 100
     fb_perc = (float(fb_total) / float(total)) * 100
 
+    # Add each percentage to dict
     m_dict = {"score": "M", "value": m_perc}
     a_dict = {"score": "A", "value": a_perc}
     fb_dict = {"score": "FB", "value": fb_perc}
 
+    # Add dicts to response list
     summed_scores.append(m_dict)
     summed_scores.append(a_dict)
     summed_scores.append(fb_dict)
@@ -759,7 +847,7 @@ def single_cohort_most_recent_comp_to_normscores(cohort_id):
     final_scores.append(summed_reformatted)
 
     # Get most recent test ID for cohort
-    test = model.Test.query.filter_by(cohort_id=cohort_id).order_by(model.Test.test_date.desc()).first()
+    test = get_most_recent_test(cohort_id)
 
     # Get norm scores for those test IDs
     cohort_names = []
@@ -769,19 +857,26 @@ def single_cohort_most_recent_comp_to_normscores(cohort_id):
         if normscore.cohort_name not in cohort_names:
             cohort_names.append(normscore.cohort_name)
 
+    # Loop through cohort names and add name and sum up values
     for item in cohort_names:
         final_dict = {}
         final_dict["cohortName"] = item
         final_dict["value"] = 0
-        # final_dict[item] = 0
         item_total = 0
+
+        # Loop thorugh normscores and increment values
         for normscore in normscores:
             if normscore.cohort_name == item:
                 final_dict["value"] += normscore.score
                 item_total += 1
+
+        # Calculate percentage and add to final dict
         final_dict["value"] = final_dict["value"] / float(item_total)
+
+        # Add final dict to list
         final_scores.append(final_dict)
 
+    # Sort list of dicts by cohort name
     final_scores.sort(key=itemgetter("cohortName"))
 
     return final_scores
@@ -793,21 +888,25 @@ def single_cohort_data_by_test(cohort_id):
     # Get tests for that cohort
     tests = model.Test.query.filter_by(cohort_id=cohort_id).all()
 
+    # Initialize empty response list and set counters to zero
     resp_list = []
     m_total = 0
     a_total = 0
     fb_total = 0
 
+    # Add total dict to response list
     total_dict = {"name": "All Tests"}
     resp_list.append(total_dict)
 
+    # Loop through tests
     for test in tests:
         resp_dict = {}
         resp_dict["name"] = test.name
 
         # Get all scores associated with each test id
         scores = model.Score.query.filter_by(test_id=test.id).all()
-        total_length = len(scores)
+
+        # Loop through scores and count up each score
         m_count = 0
         a_count = 0
         fb_count = 0
@@ -819,14 +918,18 @@ def single_cohort_data_by_test(cohort_id):
             elif score.score == 'FB':
                 fb_count += 1
 
+        # Increment totals
         m_total += m_count
         a_total += a_count
         fb_total += fb_count
+
+        # Add counts to response dict
         resp_dict["3"] = m_count
         resp_dict["2"] = a_count
         resp_dict["1"] = fb_count
         resp_list.append(resp_dict)
 
+    # Add totals to total dict
     total_dict["3"] = m_total
     total_dict["2"] = a_total
     total_dict["1"] = fb_total
@@ -839,48 +942,54 @@ def single_cohort_data_most_recent_by_standard(cohort_id):
 
     scores_list = []
 
-    test = model.Test.query.filter_by(cohort_id=cohort_id).order_by(model.Test.test_date.desc()).first()
-    students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
+    # Get most recent test
+    test = get_most_recent_test(cohort_id)
 
+    # Get students in class
+    students = get_students_in_class(cohort_id)
+
+    # Get standards from test and add to list
     standards_list = []
-
     scores = model.Score.query.filter_by(test_id=test.id, student_id=students[0].student.id).all()
     for score in scores:
-        standards = model.Standard.query.filter_by(id=score.standard_id).all()
-        for standard in standards:
-            standards_list.append(standard)
+        standards_list.append(score.standard)
 
+    # Loop through standards
     for standard in standards_list:
+
+        # Add standard metadata to dict
         scores_by_standard = {}
         scores_by_standard["name"] = standard.code
         scores_by_standard["description"] = standard.description
         scores_by_standard["id"] = standard.id
 
+        # Initialize counters at zero
         m_count = 0
         a_count = 0
         fb_count = 0
-        for student in students:
-            scores = model.Score.query.filter_by(student_id=student.student.id, test_id=test.id, standard_id=standard.id).all()
 
-            for score in scores:
+        # Get scores and loop through, counting up each score
+        scores = model.Score.query.filter_by(test_id=test.id, standard_id=standard.id).all()
+        for score in scores:
+            if score.score == "M":
+                m_count += 1
+            elif score.score == "A":
+                a_count += 1
+            elif score.score == "FB":
+                fb_count += 1
 
-                if score.score == "M":
-                    m_count += 1
-                elif score.score == "A":
-                    a_count += 1
-                elif score.score == "FB":
-                    fb_count += 1
-
-            scores_by_standard["3"] = m_count
-            scores_by_standard["2"] = a_count
-            scores_by_standard["1"] = fb_count
-            scores_by_standard["percent"] = (m_count / float(30))
-
+        # Add counts to dict and calculate percentage of Ms, add dict to list
+        scores_by_standard["3"] = m_count
+        scores_by_standard["2"] = a_count
+        scores_by_standard["1"] = fb_count
+        scores_by_standard["percent"] = (m_count / float(30))
         scores_list.append(scores_by_standard)
 
+    # Sort list of dicts by percentage of Ms and reverse it
     scores_list.sort(key=itemgetter("percent"))
     scores_list.reverse()
 
+    # Remove percentage of Ms from each dict
     for dict in scores_list:
         if "percent" in dict:
             del dict["percent"]
@@ -893,11 +1002,15 @@ def single_cohort_top_struggle_students(cohort_id):
 
     scores_list = []
 
-    students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
+    # Get all students in class
+    students = get_students_in_class(cohort_id)
 
+    # Loop through students and get scores
     for student in students:
         scores = model.Score.query.filter_by(student_id=student.student.id).all()
         total_scores = len(scores)
+
+        # Loop through scores and add up counts of each score
         m_count = 0
         a_count = 0
         fb_count = 0
@@ -909,9 +1022,11 @@ def single_cohort_top_struggle_students(cohort_id):
             elif score.score == "FB":
                 fb_count += 1
 
+        # Calculate percentages of As and FBs
         a_percent = (float(a_count) / float(total_scores)) * 100
         fb_percent = (float(fb_count) / float(total_scores)) * 100
 
+        # Add scores to dict, add dict to response list
         scores_by_student = {}
         scores_by_student["name"] = student.student.first_name + " " + student.student.last_name
         scores_by_student["A"] = a_percent
@@ -919,6 +1034,7 @@ def single_cohort_top_struggle_students(cohort_id):
         scores_by_student["total"] = a_percent + fb_percent
         scores_list.append(scores_by_student)
 
+    # Sort and reverse list of dicts by total percentage of As and FBs
     scores_list.sort(key=itemgetter("total"))
     scores_list.reverse()
 
@@ -926,7 +1042,8 @@ def single_cohort_top_struggle_students(cohort_id):
 
 def single_cohort_scores_by_student(cohort_id):
 
-    students = model.StudentCohort.query.filter_by(cohort_id=cohort_id).all()
+    # Get students in class
+    students = get_students_in_class(cohort_id)
 
     student_scores_list = []
 
@@ -934,12 +1051,14 @@ def single_cohort_scores_by_student(cohort_id):
 
         student_score_dict = {}
 
+        # Get student scores
         scores = model.Score.query.filter_by(student_id=student.student.id).all()
 
         m_count = 0
         a_count = 0
         fb_count = 0
 
+        # Loop through scores and sum up counts of each
         for score in scores:
             if score.score == "M":
                 m_count += 1
@@ -948,12 +1067,14 @@ def single_cohort_scores_by_student(cohort_id):
             elif score.score == "FB":
                 fb_count += 1
 
+        # Add scores to dict, add dict to list
         student_score_dict["studentName"] = student.student.first_name + " " + student.student.last_name
         student_score_dict["3"] = m_count
         student_score_dict["2"] = a_count
         student_score_dict["1"] = fb_count
         student_scores_list.append(student_score_dict)
 
+    # Sort list of dicts by student name
     student_scores_list.sort(key=itemgetter("studentName"))
 
     return student_scores_list
