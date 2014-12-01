@@ -199,6 +199,7 @@ clarityDirectives.directive( 'd3StackedBars', [
             .attr("y", function(d, i) { return y(d.y1) + (y(d.y0) - y(d.y1))/2; })
             .style("text-anchor", "middle")
             .text(function(d) {
+              console.log(d);
               if (d.name != "values") {
                   return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
               }});
