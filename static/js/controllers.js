@@ -122,6 +122,7 @@ clarityControllers.controller('SettingsController', ['$scope', '$http', 'ModalSe
 clarityControllers.controller('ReportsController', ['$scope', '$http', 'ModalService', function($scope, $http, ModalService) {
 
     $scope.selectedCohort = 0;
+    $scope.selectedStudent = 0;
 
     $scope.onChange = function(value) {
         $scope.selectedStudent = null;
