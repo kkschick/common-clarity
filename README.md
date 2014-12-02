@@ -9,6 +9,8 @@ Data-driven instruction has grown in popularity with the rise of standardized te
 
 CommonClarity makes it easy for teachers to upload their data and instantly generate a dashboard of reports, showing their students' strengths and weaknesses according to Common Core State Standards. Data are grouped in useful ways to expose patterns and track progress, so that teachers can better help students improve.
 
+CommonClarity is deployed on Heroku at [http://common-clarity.herokuapp.com/](http://common-clarity.herokuapp.com/). To view a sample dashboard, log into the app using these credentials: common(at)clarity(dot)com // password.
+
 ####Table of Contents
 - [Technologies Used](#technologies-used)
 - [How It Works](#how-it-works)
