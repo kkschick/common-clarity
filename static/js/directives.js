@@ -11,6 +11,7 @@ clarityDirectives.directive( 'd3Pie', [
       scope: {
         data: '='
       },
+
       link: function (scope, element) {
 
         var margin = {top: 50, right: 30, bottom: 30, left: 30},
@@ -907,7 +908,7 @@ clarityDirectives.directive( 'd3BarsWide', [
         data: '='
       },
       link: function (scope, element) {
-        var margin = {top: 15, right: 60, bottom: 150, left: 100},
+        var margin = {top: 20, right: 60, bottom: 150, left: 100},
           width = 400 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom;
 
@@ -1002,11 +1003,12 @@ clarityDirectives.directive( 'd3BarsWide', [
                       return x(d.cohortName) + (x.rangeBand() / 4) - 5;
                   })
                   .attr("y", function(d) {
-                      return y(d.value) + 40;
+                      return y(d.value) -5;
                   })
                   .text(function(d) {
                       return (d.value * 100).toFixed() + "%";
-                  });
+                  })
+                  .style("fill", "white");
 
 
       };
