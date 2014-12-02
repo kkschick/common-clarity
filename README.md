@@ -17,6 +17,7 @@ CommonClarity is deployed on Heroku at [http://common-clarity.herokuapp.com/](ht
 - [Product Details](#product-details)
   - [The Database](#the-database)
   - [The RESTful API](#the-restful-api)
+    - [Optimizing Queries](#optimizing-queries) 
   - [AngularJS and D3](#angularjs-and-d3)
 - [Product Screenshots](#product-screenshots)
   - [Student Set-up](#student-set-up)
@@ -58,6 +59,17 @@ The script [scores_seed.py](/scores_seed.py) was used to seed the tests and scor
 #####The RESTful API
 
 The module [api.py](/api.py) contains the RESTful API for CommonClarity. Each function is called by a Flask route in [app.py](/app.py) and, when called, queries the server, manipulates and aggregates the data, and converts the response into JSON to display on the front-end.
+
+######Optimizing Queries
+
+Upon reviewing my RESTful API, I noticed some inefficiencies in my queries: namely, that I wasn't using the backref relationships in my database as effectively as I could, and I had quite a lot of nested for-loops. After targeting those issues, I was able to significantly improve performance time for the queries that were taking a long time:
+
+```
+Query                           Pre-optimization time   Post-optimization time    Improvement
+All cohorts by standard         1912ms                  133ms                     93% faster
+Top "falling behind" standards  1940ms                  370ms                     81% faster
+All single cohort data          3659ms                  852ms                     77% faster
+```
 
 #####AngularJS and D3
 
