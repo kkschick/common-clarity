@@ -4,24 +4,35 @@
 
 var clarityDirectives = angular.module('clarityDirectives', []);
 
+
+//////////////////////////////////////////
+//// Custom directive for a pie chart ////
+//////////////////////////////////////////
+
 clarityDirectives.directive( 'd3Pie', [
   function () {
     return {
+      // Restrict to be an element
       restrict: 'E',
+      // Add two-way binding
       scope: {
         data: '='
       },
 
+      // Add linking function to draw graph
       link: function (scope, element) {
 
+        // Define margins and radius
         var margin = {top: 50, right: 30, bottom: 30, left: 30},
           width = 400 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom,
           radius = Math.min(width, height) / 2;
 
+        // Define colors
         var color = d3.scale.ordinal()
           .range(["#547980", "#45ADA8", "#9DE0AD"]);
 
+        // Define arcs and pie chart
         var arc = d3.svg.arc()
           .outerRadius(radius - 10)
           .innerRadius(0);
@@ -32,20 +43,25 @@ clarityDirectives.directive( 'd3Pie', [
             return d.value;
             });
 
+        // Define svg element
         var svg = d3.select(element[0]).append("svg")
             .attr("width", width)
             .attr("height", height)
           .append("g")
             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+        // Render function to draw the graph
         scope.render = function(data) {
 
+          // If data doesn't exist, return nothing
           if (data === undefined) {
             return ;
           }
 
+          // Remove all svg elements before re-drawing graph
           svg.selectAll("*").remove();
 
+          // Define and call tooltips
           var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([60, 0])
@@ -63,11 +79,11 @@ clarityDirectives.directive( 'd3Pie', [
 
           svg.call(tip);
 
-
           data.forEach(function(d) {
             d.value = +d.value;
           });
 
+          // Draw and scale graph and fill with appropriate colors
           var g = svg.selectAll(".arc")
               .data(pie(data))
             .enter().append("g")
@@ -79,6 +95,7 @@ clarityDirectives.directive( 'd3Pie', [
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide);
 
+          // Add text labels to graph
           g.append("text")
             .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
             .attr("dy", ".35em")
@@ -86,7 +103,7 @@ clarityDirectives.directive( 'd3Pie', [
             .text(function(d) { return d.data.value.toFixed() + "%"; });
 
         };
-
+          // $watch function to watch data for changes and re-render graph when changes detected
           scope.$watch('data', function(){
               scope.render(scope.data);
           });
@@ -95,14 +112,25 @@ clarityDirectives.directive( 'd3Pie', [
   }
 ]);
 
+
+////////////////////////////////////////////////////////
+//// Custom directive for a basic stacked bar chart ////
+////////////////////////////////////////////////////////
+
 clarityDirectives.directive( 'd3StackedBars', [
   function () {
     return {
+      // Restrict to be an element
       restrict: 'E',
+      // Add two-way binding
       scope: {
         data: '='
       },
+
+      // Add linking function to draw graph
       link: function (scope, element) {
+
+        // Define margins
         var margin = {top: 20, right: 60, bottom: 50, left: 80},
           width = 600 - margin.left - margin.right,
           height = 300 - margin.top - margin.bottom;
@@ -130,13 +158,15 @@ clarityDirectives.directive( 'd3StackedBars', [
             .orient("left")
             .tickFormat(d3.format(".0%"));
 
-
+        // Render function to draw the graph
         scope.render = function(data) {
 
+          // If data doesn't exist, return nothing
           if (data === undefined) {
             return ;
           }
 
+          // Remove all svg elements before re-drawing graph
           svg.selectAll("*").remove();
 
           x.domain(data.map(function(d) { return d.name; }));
@@ -256,24 +286,35 @@ clarityDirectives.directive( 'd3StackedBars', [
           }});
       };
 
+          // $watch function to watch data for changes and re-render graph when changes detected
           scope.$watch('data', function(){
               scope.render(scope.data);
           });
-
 
         }
     };
   }
 ]);
 
+
+///////////////////////////////////////////////////////////////////////
+//// Custom directive for a small version of the stacked bar chart ////
+///////////////////////////////////////////////////////////////////////
+
 clarityDirectives.directive( 'd3StackedBarsSmall', [
   function () {
     return {
+      // Restrict to be an element
       restrict: 'E',
+      // Add two-way binding
       scope: {
         data: '='
       },
+
+      // Add linking function to draw graph
       link: function (scope, element) {
+
+        // Define margins
         var margin = {top: 20, right: 60, bottom: 50, left: 80},
           width = 500 - margin.left - margin.right,
           height = 300 - margin.top - margin.bottom;
@@ -301,13 +342,15 @@ clarityDirectives.directive( 'd3StackedBarsSmall', [
             .orient("left")
             .tickFormat(d3.format(".0%"));
 
-
+        // Render function to draw the graph
         scope.render = function(data) {
 
+          // If data doesn't exist, return nothing
           if (data === undefined) {
             return ;
           }
 
+          // Remove all svg elements before re-drawing graph
           svg.selectAll("*").remove();
 
           x.domain(data.map(function(d) { return d.name; }));
@@ -427,24 +470,35 @@ clarityDirectives.directive( 'd3StackedBarsSmall', [
           }});
       };
 
+          // $watch function to watch data for changes and re-render graph when changes detected
           scope.$watch('data', function(){
               scope.render(scope.data);
           });
-
 
         }
     };
   }
 ]);
 
+
+//////////////////////////////////////////////////////////////////////
+//// Custom directive for a wide version of the stacked bar chart ////
+//////////////////////////////////////////////////////////////////////
+
 clarityDirectives.directive( 'd3StackedBarsWide', [
   function () {
     return {
+      // Restrict to be an element
       restrict: 'E',
+      // Add two-way binding
       scope: {
         data: '='
       },
+
+      // Add linking function to draw graph
       link: function (scope, element) {
+
+        // Define margins
         var margin = {top: 30, right: 60, bottom: 60, left: 80},
           width = 700 - margin.left - margin.right,
           height = 460 - margin.top - margin.bottom;
@@ -472,12 +526,15 @@ clarityDirectives.directive( 'd3StackedBarsWide', [
             .orient("left")
             .tickFormat(d3.format(".0%"));
 
+        // Render function to draw the graph
         scope.render = function(data) {
 
+          // If data doesn't exist, return nothing
           if (data === undefined) {
             return ;
           }
 
+          // Remove all svg elements before re-drawing graph
           svg.selectAll("*").remove();
 
           x.domain(data.map(function(d) { return d.name; }));
@@ -598,24 +655,35 @@ clarityDirectives.directive( 'd3StackedBarsWide', [
           }});
       };
 
+          // $watch function to watch data for changes and re-render graph when changes detected
           scope.$watch('data', function(){
               scope.render(scope.data);
           });
-
 
         }
     };
   }
 ]);
 
+
+///////////////////////////////////////////////////////////////////////////
+//// Custom directive for the student version of the stacked bar chart ////
+///////////////////////////////////////////////////////////////////////////
+
 clarityDirectives.directive( 'd3StackedBarsWideStudent', [
   function () {
     return {
+      // Restrict to be an element
       restrict: 'E',
+      // Add two-way binding
       scope: {
         data: '='
       },
+
+      // Add linking function to draw graph
       link: function (scope, element) {
+
+        // Define margins
         var margin = {top: 20, right: 60, bottom: 100, left: 80},
           width = 1080 - margin.left - margin.right,
           height = 480 - margin.top - margin.bottom;
@@ -643,12 +711,15 @@ clarityDirectives.directive( 'd3StackedBarsWideStudent', [
             .orient("left")
             .tickFormat(d3.format(".0%"));
 
+        // Render function to draw the graph
         scope.render = function(data) {
 
+          // If data doesn't exist, return nothing
           if (data === undefined) {
             return ;
           }
 
+          // Remove all svg elements before re-drawing graph
           svg.selectAll("*").remove();
 
           x.domain(data.map(function(d) { return d.studentName; }));
@@ -769,24 +840,35 @@ clarityDirectives.directive( 'd3StackedBarsWideStudent', [
           }});
       };
 
+          // $watch function to watch data for changes and re-render graph when changes detected
           scope.$watch('data', function(){
               scope.render(scope.data);
           });
-
 
         }
     };
   }
 ]);
 
+
+////////////////////////////////////////////////
+//// Custom directive for a basic bar chart ////
+////////////////////////////////////////////////
+
 clarityDirectives.directive( 'd3Bars', [
   function () {
     return {
+      // Restrict to be an element
       restrict: 'E',
+      // Add two-way binding
       scope: {
         data: '='
       },
+
+      // Add linking function to draw graph
       link: function (scope, element) {
+
+        // Define margins
         var margin = {top: 15, right: 60, bottom: 150, left: 100},
           width = 400 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom;
@@ -811,12 +893,15 @@ clarityDirectives.directive( 'd3Bars', [
             .orient("left")
             .tickFormat(d3.format(".0%"));
 
+        // Render function to draw the graph
         scope.render = function(data) {
 
+          // If data doesn't exist, return nothing
           if (data === undefined) {
             return ;
           }
 
+          // Remove all svg elements before re-drawing graph
           svg.selectAll("*").remove();
 
           data.forEach(function(d) {
@@ -862,7 +947,6 @@ clarityDirectives.directive( 'd3Bars', [
               .attr("width", x.rangeBand())
               .attr("y", function(d) { return y(d.value); })
               .attr("height", function(d) { return height - y(d.value); });
-
 
           svg.selectAll("rect")
             .data(data)
@@ -887,27 +971,37 @@ clarityDirectives.directive( 'd3Bars', [
                   .text(function(d) {
                       return (d.value * 100).toFixed() + "%";
                   });
-
-
       };
 
+          // $watch function to watch data for changes and re-render graph when changes detected
+          scope.$watch('data', function(){
+              scope.render(scope.data);
+          });
 
-        scope.$watch('data', function(){
-            scope.render(scope.data);
-        });
       }
     };
   }
 ]);
 
+
+//////////////////////////////////////////////////////////////
+//// Custom directive for a wide version of the bar chart ////
+//////////////////////////////////////////////////////////////
+
 clarityDirectives.directive( 'd3BarsWide', [
   function () {
     return {
+      // Restrict to be an element
       restrict: 'E',
+      // Add two-way binding
       scope: {
         data: '='
       },
+
+      // Add linking function to draw graph
       link: function (scope, element) {
+
+        // Define margins
         var margin = {top: 20, right: 60, bottom: 150, left: 100},
           width = 400 - margin.left - margin.right,
           height = 360 - margin.top - margin.bottom;
@@ -932,12 +1026,15 @@ clarityDirectives.directive( 'd3BarsWide', [
             .orient("left")
             .tickFormat(d3.format(".0%"));
 
+        // Render function to draw the graph
         scope.render = function(data) {
 
+          // If data doesn't exist, return nothing
           if (data === undefined) {
             return ;
           }
 
+          // Remove all svg elements before re-drawing graph
           svg.selectAll("*").remove();
 
           data.forEach(function(d) {
@@ -983,7 +1080,6 @@ clarityDirectives.directive( 'd3BarsWide', [
               .attr("width", x.rangeBand())
               .attr("y", function(d) { return y(d.value); })
               .attr("height", function(d) { return height - y(d.value); });
-
 
           svg.selectAll("rect")
             .data(data)
@@ -1010,13 +1106,12 @@ clarityDirectives.directive( 'd3BarsWide', [
                   })
                   .style("fill", "white");
 
-
       };
 
-
-        scope.$watch('data', function(){
-            scope.render(scope.data);
-        });
+          // $watch function to watch data for changes and re-render graph when changes detected
+          scope.$watch('data', function(){
+              scope.render(scope.data);
+          });
       }
     };
   }
