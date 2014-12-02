@@ -141,9 +141,10 @@ $ . env/bin/activate
 (env)$ create_db()
 </code></pre>
 
-4) Still in your virtual environment, run standards_seed.py:
+4) Still in your virtual environment, create the database tables and seed the standards table:
 
-<pre><code>(env)$ python standards_seed.py
+<pre><code>(env)$ python model.py
+(env)$ python standards_seed.py
 </code></pre>
 
 5) Run the app: 
