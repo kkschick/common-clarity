@@ -8,6 +8,7 @@ $solid-white-border: 1px solid white;
 $thick-white-border: 3px solid white;
 $white: #FFFFFF;
 $black: #000000;
+$medium-teal: #45ADA8;
 
 body {
     font-family: 'Lato', sans-serif;
@@ -285,9 +286,9 @@ a {
 
 .button.small {
     border-radius: 100%;
-    background: $main-teal;
-    border: $teal-border;
-    font-size: 1em;
+    background: $medium-teal;
+    border: 1px solid $medium-teal;
+    font-size: .5em;
 }
 
 .button.special:hover, .button.small:hover {

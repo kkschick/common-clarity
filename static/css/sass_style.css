@@ -217,9 +217,9 @@ a {
 
 .button.small {
   border-radius: 100%;
-  background: #83d3c9;
-  border: solid #83d3c9 1px;
-  font-size: 1em; }
+  background: #45ADA8;
+  border: 1px solid #45ADA8;
+  font-size: .5em; }
 
 .button.special:hover, .button.small:hover {
   background: transparent;
