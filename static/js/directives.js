@@ -398,7 +398,7 @@ clarityDirectives.directive( 'd3StackedBarsSmall', [
             .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)"; });
 
           bars.selectAll("rect")
-              .data(function(d) { return d.values; })
+              .data(function(d) { console.log(d); return d.values; })
             .enter().append("rect")
               .attr("width", x.rangeBand())
               .attr("class", "rect")
@@ -414,7 +414,8 @@ clarityDirectives.directive( 'd3StackedBarsSmall', [
             .attr("y", function(d, i) { return y(d.y1) + (y(d.y0) - y(d.y1))/2; })
             .style("text-anchor", "middle")
             .text(function(d) {
-              if (d.name != "values") {
+              console.log(d);
+              if (d.name != "values" && d.y0 >= 0 && d.y1 >= 0) {
                   return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
               }});
 
@@ -599,7 +600,7 @@ clarityDirectives.directive( 'd3StackedBarsWide', [
             .style("text-anchor", "middle")
             .style("font-size", "12px")
             .text(function(d) {
-              if (d.name != "values") {
+              if (d.name != "values" && d.y0 >= 0) {
                   return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
               }});
 
@@ -784,7 +785,7 @@ clarityDirectives.directive( 'd3StackedBarsWideStudent', [
             .style("text-anchor", "middle")
             .style("font-size", "12px")
             .text(function(d) {
-              if (d.name != "values") {
+              if (d.name != "values" && d.y0 >= 0) {
                   return ((((y(d.y0) - y(d.y1)) / height) * 100).toFixed()) + "%";
               }});
 
