@@ -26,7 +26,7 @@ CommonClarity makes it easy for teachers to upload their data and instantly gene
 
 CommonClarity was written using AngularJS, D3, JavaScript, Python, Flask, HTML5, CSS3/Sass, jQuery, BeautifulSoup, SQLAlchemy, and Postgresql.
 
-[Click here for a full dashboard view.](http://i.imgur.com/r8C9qb4.jpg)
+[Click here for a full dashboard view.](http://i.imgur.com/w4oMPPT.jpg)
 ![Reporting dashboard](/static/screenshots/all_cohorts_dashboard.png)
 
 ####How It Works
@@ -65,7 +65,7 @@ The reports are drawn using D3 and a custom Angular directive [(directives.js)](
 
 ####Product Screenshots
 
-[Click here to see a screenshot of the full dashboard](http://i.imgur.com/r8C9qb4.jpg), and scroll down for more product screenshots.
+[Click here to see a screenshot of the full dashboard](http://i.imgur.com/w4oMPPT.jpg), and scroll down for more product screenshots.
 
 #####Student Set-up
 
@@ -83,7 +83,7 @@ Easily import your standardized test data into the system.
 
 Once your data is imported, the reporting dashboard will automatically update with your new data.
 
-[Click here for a full dashboard view.](http://i.imgur.com/r8C9qb4.jpg)
+[Click here for a full dashboard view.](http://i.imgur.com/w4oMPPT.jpg)
 ![Reporting dashboard](/static/screenshots/all_cohorts_dashboard.png)
 
 Use the drill-down menus to view all your classes at once, one class individually, or one particular student.
