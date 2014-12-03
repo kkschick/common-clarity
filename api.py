@@ -26,7 +26,7 @@ def get_user(email, password):
 
     user = model.User.query.filter_by(email=email).first()
     if user:
-        return user
+        return user.id
 
 """Log-out"""
 
@@ -48,6 +48,7 @@ def create_teacher_user(user_type, email, password, first_name, last_name):
         user = model.User(user_type=user_type, email=email, password=password, first_name=first_name, last_name=last_name)
         model.session.add(user)
         model.session.commit()
+    return "Successfully Added!"
 
 
 """Settings"""

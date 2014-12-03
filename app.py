@@ -11,10 +11,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '24KJSF98325KJLSDF972saf29832LFjasf87FZKFJL78f7ds98FSDKLF'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route("/test/")
-def test():
-    return _convert_to_JSON(api.student_pie_chart(2))
-
 @app.route("/")
 def index():
     return send_file("templates/index.html")
@@ -150,8 +146,8 @@ def login_user():
     user_to_login = json.loads(request.data)
     email = user_to_login.get("email")
     password = user_to_login.get("password")
-    user = api.get_user(email, password)
-    session['user'] = user.id
+    user_id = api.get_user(email, password)
+    session['user'] = user_id
     return "Success"
 
 @app.route("/api/logout/", methods=['POST'])
