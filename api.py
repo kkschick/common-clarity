@@ -27,6 +27,8 @@ def get_user(email, password):
     user = model.User.query.filter_by(email=email).first()
     if user:
         return user.id
+    else:
+        return "User does not exist."
 
 """Log-out"""
 
@@ -140,6 +142,7 @@ def add_student_to_cohort(student_id, cohort_id):
     studentcohort = model.StudentCohort(student_id=student_id, cohort_id=cohort_id)
     model.session.add(studentcohort)
     model.session.commit()
+    return "Successfully Added!"
 
 def create_student_from_csv(csv_path, cohort_id, user_type):
     """Parse CSV of new students and add each to users table in database."""
