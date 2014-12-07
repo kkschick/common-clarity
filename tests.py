@@ -16,7 +16,6 @@ class FlaskrTestCase(unittest.TestCase):
         os.close(self.db_fd)
         os.unlink(app.app.config['DATABASE'])
 
-    # Test that pages are displayed properly
     def testIndexPage(self):
         response = self.app.get("/")
         self.assertIn("CommonClarity", response.data)

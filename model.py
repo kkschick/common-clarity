@@ -6,14 +6,19 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 import config
 
-# engine = create_engine("postgresql://localhost:5432/clarity", echo=False)
+########### SESSION ###########
+
 engine = create_engine(config.DB_URI, echo=False)
 session = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
+
+########### END SESSION ###########
+
+
+########### CLASS DEFINITIONS ###########
 
 Base = declarative_base()
 Base.query = session.query_property()
 
-### Class declarations go here
 class User(Base):
     __tablename__ = "users"
 
@@ -87,8 +92,8 @@ class NormScore(Base):
     test = relationship("Test", backref=backref("normscores", order_by=id))
     standard = relationship("Standard", backref=backref("normscores", order_by=id))
 
+########### END CLASS DEFINITIONS ###########
 
-### End class declarations
 
 def create_tables():
     Base.metadata.create_all(engine)
