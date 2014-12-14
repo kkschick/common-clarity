@@ -5,7 +5,8 @@ body {
   background-image: url("/static/img/background.jpg");
   width: auto;
   margin-top: 0px;
-  background-attachment: fixed; }
+  background-attachment: fixed;
+  padding-bottom: 25px; }
 
 .header {
   width: auto;
@@ -14,6 +15,20 @@ body {
 .header-small {
   width: auto;
   height: 50px; }
+
+.footer {
+  width: auto;
+  height: 30px;
+  background: inset 0 0 100px rgba(0, 0, 0, 0.5);
+  bottom: 0px;
+  margin: 0 40%;
+  position: relative; }
+  .footer .footer-text {
+    padding: 1em 0 .5em 0;
+    height: 30px;
+    font-size: .8em; }
+    .footer .footer-text a:hover {
+      color: white; }
 
 #fl-left {
   float: left;

@@ -18,6 +18,7 @@ body {
     width: auto;
     margin-top: 0px;
     background-attachment: fixed;
+    padding-bottom: 25px;
 }
 
 .header {
@@ -28,6 +29,25 @@ body {
 .header-small {
     width: auto;
     height: 50px;
+}
+
+.footer {
+  width: auto;
+  height: 30px;
+  background: $box-shadow-color;
+  bottom: 0px;
+  margin: 0 40%;
+  position: relative;
+
+  .footer-text {
+    padding: 1em 0 .5em 0;
+    height: 30px;
+    font-size: .8em;
+
+    a:hover {
+      color: white;
+    }
+  }
 }
 
 #fl-left {
