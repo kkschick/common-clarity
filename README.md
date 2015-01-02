@@ -1,15 +1,17 @@
-CommonClarity
+[CommonClarity](http://common-clarity.herokuapp.com/)
 =============
 
-CommonClarity transforms standardized test data into a visual, interactive reporting dashboard for teachers, to help inform and target instruction.
+Built by [Katie Schick](http://www.kkschick.com)
+
+CommonClarity is deployed on Heroku at [http://common-clarity.herokuapp.com/](http://common-clarity.herokuapp.com/). To view a sample dashboard, log into the app using these credentials: common(at)clarity(dot)com // password.
 
 ####The Project
+
+CommonClarity transforms standardized test data into a visual, interactive reporting dashboard for teachers, to help inform and target instruction.
 
 Data-driven instruction has grown in popularity with the rise of standardized testing. In many districts around the country, students take standardized tests nearly every other month. These tests generate a huge amount of data, which teachers are expected to utilize to inform instruction; however, they lack the time and the tools to make sense of it.
 
 CommonClarity makes it easy for teachers to upload their data and instantly generate a dashboard of reports, showing their students' strengths and weaknesses according to Common Core State Standards. Data are grouped in useful ways to expose patterns and track progress, so that teachers can better help students improve.
-
-CommonClarity is deployed on Heroku at [http://common-clarity.herokuapp.com/](http://common-clarity.herokuapp.com/). To view a sample dashboard, log into the app using these credentials: common(at)clarity(dot)com // password.
 
 ####Table of Contents
 - [Technologies Used](#technologies-used)
