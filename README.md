@@ -1,7 +1,7 @@
 [CommonClarity](http://common-clarity.herokuapp.com/)
 =============
 
-Built by [Katie Schick](http://www.kkschick.com)
+####Built by [Katie Schick](http://www.kkschick.com)
 
 CommonClarity is deployed on Heroku at [http://common-clarity.herokuapp.com/](http://common-clarity.herokuapp.com/). To view a sample dashboard, log into the app using these credentials: common(at)clarity(dot)com // password.
 
