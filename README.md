@@ -1,4 +1,4 @@
-[CommonClarity](http://common-clarity.herokuapp.com/)
+CommonClarity
 =============
 
 ####Built by [Katie Schick](http://www.kkschick.com)
