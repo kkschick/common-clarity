@@ -3,9 +3,6 @@
 
 ####Built by [Katie Schick](http://www.kkschick.com)
 
-####[Explore the deployed app](http://common-clarity.herokuapp.com/)
-Click LOG IN to view a sample dashboard.
-
 ####The Project
 
 CommonClarity transforms standardized test data into a visual, interactive reporting dashboard for teachers, to help inform and target instruction.
